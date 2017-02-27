@@ -1,8 +1,8 @@
 # Dawn Chorus
 
-Targets: 
-- iOS 10.0 or greater
-- Android x.x or greater
+Targets:   
+- iOS 10.0 or greater  
+- Android 4.1 or greater
 
 ###App Description
 
@@ -15,21 +15,25 @@ Innovation Studio is the design, development, and workflow laboratory at Carnegi
 
 ###Getting Started
 
-1. Install all React Native dependencies  
+1\. Install all React Native dependencies  
 [React Native getting started guide](https://facebook.github.io/react-native/docs/getting-started.html)
-2. Install project dependencies  
+
+2\. Install project dependencies  
 ```
 npm i
 ```  
-3. Run on the iOS simulator  
+
+3a\. Run on the iOS simulator  
 ```
 react-native run-ios
 ```
 
-or Android device
+3b\. or Android emulator  
 ```
 react-native run-android
 ```
+
+Building for Release and/or to a real Device is an exercise left to the reader.
 
 ###Intellectual Property
 
