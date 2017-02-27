@@ -1,0 +1,68 @@
+# OSX
+#
+.DS_Store
+
+# Xcode
+#
+build/
+!**/*.xcodeproj
+!**/*.pbxproj
+!**/*.xcworkspacedata
+!**/*.xcsettings
+!**/*.xcscheme
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+*.xccheckout
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
+*.xcuserstate
+project.xcworkspace
+
+# Gradle
+/build/
+/Examples/**/android/app/build/
+/Examples/**/android/app/gradle/
+/Examples/**/android/app/gradlew
+/Examples/**/android/app/gradlew.bat
+/ReactAndroid/build/
+
+# Android
+.idea
+.gradle
+local.properties
+*.iml
+/android/
+
+# node.js
+#
+node_modules/
+npm-debug.log
+*.log
+.nvm
+
+# Buck
+.buckd
+buck-out
+/ReactAndroid/src/main/jni/prebuilt/lib/armeabi-v7a/
+/ReactAndroid/src/main/jni/prebuilt/lib/x86/
+/ReactAndroid/src/main/gen
+android/app/libs
+android/keystores/debug.keystore
+release-key.keystore
+index.android.bundle.meta 6.27.04 PM copy
+index.android.bundle.meta
+index.android.bundle
+index.android 6.27.04 PM copy.bundle
+
+# Test generated files
+/ReactAndroid/src/androidTest/assets/AndroidTestBundle.js
+*.js.meta
