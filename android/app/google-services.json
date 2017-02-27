@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "498330741881",
+    "project_id": "firebase-dawn-chorus"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:498330741881:android:74ded2f27389d540",
+        "android_client_info": {
+          "package_name": "com.dawnchorus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFcy-CuL70QaU-axTSBslOAjAz5Ioov-w"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
