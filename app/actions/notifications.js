@@ -99,9 +99,14 @@ export function scheduleAlarm(alarm) {
 
 export function scheduleSnoozedAlarm(alarm) {
   const date = moment();
+  const snoozeTime = moment();
+  snoozeTime.add(10, 'minutes');
+  snoozeTime.set('second', 0);
+  snoozeTime.set('millisecond', 0);
+
+  date.add(10, 'minutes');
   date.set('second', 0);
   date.set('millisecond', 0);
-  date.add(9, 'minutes');
 
   alarm.chorus.map((bird, index) => {
     if (bird !== null) {
@@ -119,9 +124,9 @@ export function scheduleSnoozedAlarm(alarm) {
 
   return {
     time: {
-      actual: date,
-      hour: date.hour(),
-      minute: date.minute(),
+      actual: snoozeTime,
+      hour: snoozeTime.hour(),
+      minute: snoozeTime.minute(),
     },
   };
 }
