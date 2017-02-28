@@ -112,13 +112,16 @@ const AlarmListScreen = (props) => {
   let messageHeight;
 
   if (props.notificationPermission === NOTIFICATION_PERMISSIONS_STATUS_DENIED) {
-    message = 'Please leave your phone unlocked and open to Dawn Chorus. Don\'t forget to connect to power!';
     if (Platform.OS === 'android') {
+      message = 'Oops! In order for your alarms to work please allow Dawn Chorus to send you notifications.';
+      messageButtonLabel = 'Dawn Chorus settings';
+      messageButtonAccessibility = 'Go to Dawn Chorus settings';
       messageButtonPress = () => {
         NativeModules.NotificationsPermissions.goToSettings();
       };
     }
     if (Platform.OS === 'ios') {
+      message = 'Please leave your volume up, phone unlocked and open to Dawn Chorus. Don\'t forget to connect to power!';
       toSettingsMessage = (
         <View style={styles.messageText}>
           <Text
