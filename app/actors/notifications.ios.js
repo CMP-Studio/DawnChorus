@@ -105,9 +105,6 @@ export default class NotificationActor extends Component {
   async checkStatus() {
     try {
       const permissions = await NativeModules.CMSiOSNotificationPermissionsManager.checkPermissions();
-      if (permissions !== NOTIFICATION_PERMISSIONS_STATUS_AUTHORIZED) {
-        this.dispatch(cancelAllAlarms());
-      }
       this.dispatch(updateNotificationPermissions(permissions));
     } catch (e) {
       console.log(e);
