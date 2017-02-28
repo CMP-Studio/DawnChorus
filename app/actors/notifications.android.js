@@ -1,6 +1,3 @@
-import {
-  Component,
-} from 'react';
 
 import {
   NativeModules,
@@ -17,9 +14,8 @@ import {
 
 import { soundAlarm, snoozeAlarm, stopAlarm, cancelAllAlarms } from '../actions/alarm';
 
-export default class NotificationActor extends Component {
+export default class NotificationActor {
   constructor(store) {
-    super();
     this.dispatch = store.dispatch;
 
     AppState.addEventListener('change', () => {
@@ -47,10 +43,7 @@ export default class NotificationActor extends Component {
       requestPermissions: true,
     });
 
-    (() => {
-      PushNotification.registerNotificationActions(['Snooze', 'Stop']);
-    })();
-
+    PushNotification.registerNotificationActions(['Snooze', 'Stop']);
     this.checkStatus();
   }
 

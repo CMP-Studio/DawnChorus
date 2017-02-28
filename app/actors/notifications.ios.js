@@ -1,6 +1,3 @@
-import {
-  Component,
-} from 'react';
 
 import {
   NativeModules,
@@ -20,9 +17,8 @@ import {
 
 import { soundAlarm, snoozeAlarm, stopAlarm, cancelAllAlarms } from '../actions/alarm';
 
-export default class NotificationActor extends Component {
+export default class NotificationActor {
   constructor(store) {
-    super();
     this.dispatch = store.dispatch;
 
     // Everytime app is opened, check if notifications are still on
@@ -81,7 +77,7 @@ export default class NotificationActor extends Component {
     });
   }
 
-  componentWillUnmount() {
+  killActor() {
     AppState.removeEventListener('change');
     SilentSwitch.removeEventListener();
     NotificationsIOS.removeEventListener('notificationReceivedForeground', this.onNotificationReceivedForeground.bind(this));
