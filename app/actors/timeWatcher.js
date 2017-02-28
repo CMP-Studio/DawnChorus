@@ -1,5 +1,5 @@
 
-const ONE_MINUTE = 60 * 1000;
+const MINUTE = 60 * 1000;
 
 const TIMER_TYPE_TIMEOUT = 'TIMER_TYPE_TIMEOUT';
 const TIMER_TYPE_INTERVAL = 'TIMER_TYPE_INTERVAL';
@@ -30,7 +30,9 @@ export default class TimeWatcherActor {
   }
 
   watchTime() {
-    this.repeatEvery(this.checkAlarms, ONE_MINUTE);
+    // Check if it's this minute then check every minute after
+    this.checkAlarms();
+    this.repeatEvery(this.checkAlarms, MINUTE);
   }
 
   checkAlarms() {
