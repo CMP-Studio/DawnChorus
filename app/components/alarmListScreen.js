@@ -127,7 +127,7 @@ const AlarmListScreen = (props) => {
               { marginBottom: 10 },
             ]}
           >
-            To hear alarms even when your phone is locked, allow Dawn Chorus to send you notifications.
+            To hear alarms outside of the app, please allow Dawn Chorus to send you notifications.
           </Text>
           <TouchableOpacity
             activeOpacity={0.7}
@@ -152,7 +152,7 @@ const AlarmListScreen = (props) => {
           </TouchableOpacity>
         </View>
       );
-      messageHeight = 220;
+      messageHeight = 230;
     } else if (Platform.OS === 'android') {
       messageHeight = 180;
     }
