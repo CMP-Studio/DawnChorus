@@ -1,4 +1,3 @@
-
 import { AsyncStorage } from 'react-native';
 import moment from 'moment';
 
@@ -41,7 +40,7 @@ export function checkAlarms(dispatch) {
   const now = moment();
   const hour = now.hour();
   const minute = now.minute();
-  let activeAlarmObject;
+  let activeAlarmObject = null;
   let foundAlarm = false;
 
   // See if any alarms should sound
