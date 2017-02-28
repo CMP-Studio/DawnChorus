@@ -24,7 +24,7 @@ export default class AccessibilityActor {
     this.checkStatus();
   }
 
-  componentWillUnmount() {
+  killActor() {
     this.AccessibilityManagerObserver.removeEventListener();
   }
 

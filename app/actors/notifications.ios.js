@@ -77,7 +77,7 @@ export default class NotificationActor {
     });
   }
 
-  componentWillUnmount() {
+  killActor() {
     AppState.removeEventListener('change');
     SilentSwitch.removeEventListener();
     NotificationsIOS.removeEventListener('notificationReceivedForeground', this.onNotificationReceivedForeground.bind(this));
