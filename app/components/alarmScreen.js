@@ -262,6 +262,10 @@ class AlarmScreen extends Component {
                 position={birdPosition}
                 index={index}
                 onPress={() => {
+                  if (!this.props.alarm.snoozed) {
+                    this.props.actions.snoozeAlarm(this.props.alarm.uuid);
+                  }
+
                   this.props.actions.showInfoCards(bird, index);
                 }}
               />
