@@ -2610,6 +2610,10 @@ react-native-animatable@^0.6.1:
   version "1.0.5"
   resolved "https://github.com/CMP-Studio/react-native-flip-view#03c9209757192333d0e3260be7e04ee64701db05"
 
+react-native-idle-timer@^2.1.3:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/react-native-idle-timer/-/react-native-idle-timer-2.1.3.tgz#011ead9bcac635cd16287b19066aaf3df91eff67"
+
 "react-native-notifications@git://github.com/sticknor/react-native-notifications.git#passInID":
   version "1.0.2"
   resolved "git://github.com/sticknor/react-native-notifications.git#173b211f2b1c298c09b17da1956959eb8dccfd88"

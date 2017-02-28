@@ -1,0 +1,26 @@
+{
+  parser: "babel-eslint",
+  extends: "airbnb",
+  rules: {
+    import/no-unresolved: 0,
+    arrow-body-style: [0, "always"],
+    global-require: 0,
+    generator-star-spacing: 0,
+    react/jsx-boolean-value: 0,
+    no-unused-vars: [2, {vars: "all", "args": "none" }],
+    react/no-unused-prop-types: [0, { skipShapeProps: true }],
+    react/jsx-filename-extension: [1, { extensions: [".js", ".jsx"] }],
+    react/forbid-prop-types: [0, { forbid: [] }],
+    class-methods-use-this: ["error", { "exceptMethods": ["componentDidMount", "render"] }]
+  },
+  parserOptions: {
+        ecmaFeatures: {
+            jsx: true,
+            classes: true,
+            experimentalObjectRestSpread: true
+        }
+    },
+    globals: {
+        __DEV__: false,
+    },
+}

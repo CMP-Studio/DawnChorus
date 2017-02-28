@@ -35,6 +35,7 @@
 		32CA92661DEF1B8500BE46F7 /* CMSiOSNotificationPermissionsManagerBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 32CA92651DEF1B8500BE46F7 /* CMSiOSNotificationPermissionsManagerBridge.m */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		836C9067E24241BB9E93A1E9 /* libRCTSilentSwitch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 225ED7A73CAD4438953A2F8B /* libRCTSilentSwitch.a */; };
+		8667F0011B0846468A453211 /* libRNIdleTimer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E9B73ADE76642AFBA1E6183 /* libRNIdleTimer.a */; };
 		E95AB1E71E1D82B0001A4E2C /* american_redstart_notification.aif in Resources */ = {isa = PBXBuildFile; fileRef = E95AB1D31E1D82B0001A4E2C /* american_redstart_notification.aif */; };
 		E95AB1E81E1D82B0001A4E2C /* baltimore_oriole_notification.aif in Resources */ = {isa = PBXBuildFile; fileRef = E95AB1D41E1D82B0001A4E2C /* baltimore_oriole_notification.aif */; };
 		E95AB1E91E1D82B0001A4E2C /* black_capped_chickadee_notification.aif in Resources */ = {isa = PBXBuildFile; fileRef = E95AB1D51E1D82B0001A4E2C /* black_capped_chickadee_notification.aif */; };
@@ -151,6 +152,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 83CBBA2E1A601D0E00E9B192;
 			remoteInfo = React;
+		};
+		3228010F1E65EC7400E60BEF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 30B0AFF4331D4EE2AF5ACCF8 /* RNIdleTimer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 01D7495A1CC96385007E93FA;
+			remoteInfo = RNIdleTimer;
 		};
 		3241C8141DDB626000A7700F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -289,6 +297,8 @@
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		17EFC3D0A2404DF1B7603314 /* RCTSilentSwitch.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTSilentSwitch.xcodeproj; path = "../node_modules/react-native-silent-switch/RCTSilentSwitch.xcodeproj"; sourceTree = "<group>"; };
 		225ED7A73CAD4438953A2F8B /* libRCTSilentSwitch.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTSilentSwitch.a; sourceTree = "<group>"; };
+		2E9B73ADE76642AFBA1E6183 /* libRNIdleTimer.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNIdleTimer.a; sourceTree = "<group>"; };
+		30B0AFF4331D4EE2AF5ACCF8 /* RNIdleTimer.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNIdleTimer.xcodeproj; path = "../node_modules/react-native-idle-timer/ios/RNIdleTimer.xcodeproj"; sourceTree = "<group>"; };
 		3241C8101DDB626000A7700F /* RNNotifications.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNNotifications.xcodeproj; path = "../node_modules/react-native-notifications/RNNotifications/RNNotifications.xcodeproj"; sourceTree = "<group>"; };
 		32511D2B1E3A622C0029E644 /* CMSAccessibilityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CMSAccessibilityManager.swift; sourceTree = "<group>"; };
 		32511D2C1E3A622C0029E644 /* CMSAccessibilityManagerBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMSAccessibilityManagerBridge.m; sourceTree = "<group>"; };
@@ -379,6 +389,7 @@
 				E9EDA6CD1E01CAA200702DC9 /* libRNShakeEvent.a in Frameworks */,
 				1C625B35FF61432EA98E6C6C /* libRNSound.a in Frameworks */,
 				836C9067E24241BB9E93A1E9 /* libRCTSilentSwitch.a in Frameworks */,
+				8667F0011B0846468A453211 /* libRNIdleTimer.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -505,6 +516,14 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		322800F61E65EC7300E60BEF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				322801101E65EC7400E60BEF /* libRNIdleTimer.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		3241C8111DDB626000A7700F /* Products */ = {
@@ -636,6 +655,7 @@
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				4DBEFE8CA3BD463C8D8D0D7D /* RNSound.xcodeproj */,
 				17EFC3D0A2404DF1B7603314 /* RCTSilentSwitch.xcodeproj */,
+				30B0AFF4331D4EE2AF5ACCF8 /* RNIdleTimer.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -825,6 +845,10 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
+					ProductGroup = 322800F61E65EC7300E60BEF /* Products */;
+					ProjectRef = 30B0AFF4331D4EE2AF5ACCF8 /* RNIdleTimer.xcodeproj */;
+				},
+				{
 					ProductGroup = 3241C8111DDB626000A7700F /* Products */;
 					ProjectRef = 3241C8101DDB626000A7700F /* RNNotifications.xcodeproj */;
 				},
@@ -907,6 +931,13 @@
 			fileType = archive.ar;
 			path = libReact.a;
 			remoteRef = 146834031AC3E56700842450 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		322801101E65EC7400E60BEF /* libRNIdleTimer.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNIdleTimer.a;
+			remoteRef = 3228010F1E65EC7400E60BEF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		3241C8151DDB626000A7700F /* libRNNotifications.a */ = {
@@ -1169,6 +1200,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1187,6 +1219,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1217,6 +1250,7 @@
 					"$(SRCROOT)/../node_modules/react-native-permissions/**",
 					"$(SRCROOT)/../node_modules/react-native-silent-switch",
 					"$(SRCROOT)/../node_modules/bugsnag-react-native/cocoa/**",
+					"$(SRCROOT)/../node_modules/react-native-idle-timer/ios/RNIdleTimer",
 				);
 				INFOPLIST_FILE = DawnChorus/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -1252,6 +1286,7 @@
 					"$(SRCROOT)/../node_modules/react-native-permissions/**",
 					"$(SRCROOT)/../node_modules/react-native-silent-switch",
 					"$(SRCROOT)/../node_modules/bugsnag-react-native/cocoa/**",
+					"$(SRCROOT)/../node_modules/react-native-idle-timer/ios/RNIdleTimer",
 				);
 				INFOPLIST_FILE = DawnChorus/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -1316,6 +1351,7 @@
 					"$(SRCROOT)/../node_modules/react-native-silent-switch",
 					"$(SRCROOT)/../node_modules/bugsnag-react-native/cocoa/**",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS/**",
+					"$(SRCROOT)/../node_modules/react-native-idle-timer/ios/RNIdleTimer",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1365,6 +1401,7 @@
 					"$(SRCROOT)/../node_modules/react-native-silent-switch",
 					"$(SRCROOT)/../node_modules/bugsnag-react-native/cocoa/**",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS/**",
+					"$(SRCROOT)/../node_modules/react-native-idle-timer/ios/RNIdleTimer",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
