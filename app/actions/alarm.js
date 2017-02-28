@@ -1,5 +1,6 @@
 
 import { AsyncStorage } from 'react-native';
+import moment from 'moment';
 
 import {
   scheduleAlarm,
@@ -16,6 +17,7 @@ export const LOAD_ALARMS = 'LOAD_ALARMS';
 export const UPDATE_ALARMS_LIST = 'UPDATE_ALARMS_LIST';
 
 export const NEW_ALARM = 'NEW_ALARM';
+export const CHECK_ALARMS = 'CHECK_ALARMS';
 export const SOUND_ALARM = 'SOUND_ALARM';
 export const STOP_ALARM = 'STOP_ALARM';
 export const SNOOZE_ALARM = 'SNOOZE_ALARM';
@@ -33,6 +35,38 @@ function loadAlarmsSuccess(alarmList) {
     type: LOAD_ALARMS,
     alarmList,
   };
+}
+
+export function checkAlarms(dispatch) {
+  const now = moment();
+  const hour = now.hour();
+  const minute = now.minute();
+  let activeAlarmObject;
+  let foundAlarm = false;
+
+  // See if any alarms should sound
+  alarms.map((alarm) => {
+    if (alarm.uuid === activeAlarm) {
+      activeAlarmObject = alarm;
+      return alarm;
+    } else {
+      if (alarm.on && alarm.time.hour === hour && alarm.time.minute === minute) {
+        dispatch(soundAlarm(alarm.uuid));
+        foundAlarm = true;
+      }
+      return alarm;
+    }
+  });
+
+  if (foundAlarm) return;
+
+  // Sound snoozed alarm if needed
+  if (activeAlarmObject !== undefined && activeAlarmObject.snoozed) {
+    if (activeAlarmObject.time.hour === hour &&
+        activeAlarmObject.time.minute === minute) {
+          dispatch(soundAlarm(activeAlarm));
+    }
+  }
 }
 
 export function loadAlarms() {
