@@ -138,10 +138,10 @@ const AlarmListScreen = (props) => {
                 return Linking.openURL('app-settings:');
               });
             }}
-            accessibilityLabel={'Go to notification settings'}
+            accessibilityLabel={'Go to Dawn Chorus settings'}
           >
             <Text style={[globalStyles.bodyTextLight, styles.urlButtonText]}>
-              Notification settings
+              Dawn Chorus settings
             </Text>
             <View style={styles.arrow}>
               <Image
