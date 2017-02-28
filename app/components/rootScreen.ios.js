@@ -295,14 +295,12 @@ class RootScreen extends Component {
       }
 
       case ALARM_LIST_SCREEN: {
-        const enabled = notificationPermission === NOTIFICATION_PERMISSIONS_STATUS_AUTHORIZED;
-
         rightButton = (
           <Text
             style={[styles.navButtonText,
               {
                 fontSize: 40,
-                opacity: enabled ? 1 : 0.5,
+                opacity: 1,
               },
             ]}
           >
@@ -310,10 +308,10 @@ class RootScreen extends Component {
           </Text>
         );
 
-        rightPress = enabled ? this.props.actions.newAlarm : null;
+        rightPress = this.props.actions.newAlarm;
         accessible = route.key === currentScene;
         accessibilityLabel = 'New alarm.';
-        accessibilityTraits = enabled ? 'button' : ['button', 'disabled'];
+        accessibilityTraits = 'button';
         break;
       }
 

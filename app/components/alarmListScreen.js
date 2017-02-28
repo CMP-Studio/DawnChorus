@@ -214,7 +214,7 @@ const AlarmListScreen = (props) => {
                index={index}
                total={props.alarms.length}
                alarm={alarm}
-               disabled={props.notificationPermission === NOTIFICATION_PERMISSIONS_STATUS_DENIED}
+               disabled={props.notificationPermission === NOTIFICATION_PERMISSIONS_STATUS_DENIED && Platform.OS === 'android'}
                disabledOnPress={() => {
                  messageRef.shake(250);
                }}
