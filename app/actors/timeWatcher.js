@@ -1,10 +1,12 @@
 
+import IdleTimerManager from 'react-native-idle-timer';
+
+import { checkAlarms } from '../actions/alarm';
+
 const MINUTE = 60 * 1000;
 
 const TIMER_TYPE_TIMEOUT = 'TIMER_TYPE_TIMEOUT';
 const TIMER_TYPE_INTERVAL = 'TIMER_TYPE_INTERVAL';
-
-import { checkAlarms } from '../actions/alarm';
 
 export default class TimeWatcherActor {
   constructor(store) {
@@ -12,7 +14,8 @@ export default class TimeWatcherActor {
     this.timerID = null;
     this.timerType = null;
 
-    this.watchTime()
+    IdleTimerManager.setIdleTimerDisabled(true);
+    this.watchTime();
   }
 
   repeatEvery(func, interval) {
@@ -33,10 +36,12 @@ export default class TimeWatcherActor {
 
   watchTime() {
     // Check if it's this minute then check every minute after
-    this.repeatEvery(() => { checkAlarms(this.dispatch) }, MINUTE);
+    this.repeatEvery(() => { checkAlarms(this.dispatch); }, MINUTE);
   }
 
   killActor() {
+    IdleTimerManager.setIdleTimerDisabled(false);
+
     if (this.timerType) {
       switch (this.timerType) {
         case TIMER_TYPE_TIMEOUT: {
