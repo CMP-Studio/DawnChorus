@@ -114,13 +114,16 @@ export default class NotificationActor {
       if (permissions !== NOTIFICATION_PERMISSIONS_STATUS_AUTHORIZED) {
         // If we cannot get push notification permissions then watch
         // the time to sound alarms
-        this.TimeWatcherActor = new TimeWatcherActor(this.store);
+        if (this.TimeWatcherActor == null) {
+          this.TimeWatcherActor = new TimeWatcherActor(this.store);
+        }
       } else {
         if (this.TimeWatcherActor) {
           this.TimeWatcherActor.killActor();
+          this.TimeWatcherActor = null;
         }
       }
-      
+
       this.dispatch(updateNotificationPermissions(permissions));
     } catch (e) {
       console.log(e);
