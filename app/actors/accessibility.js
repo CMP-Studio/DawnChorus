@@ -1,6 +1,3 @@
-import {
-  Component,
-} from 'react';
 
 import {
   NativeModules,
@@ -9,9 +6,8 @@ import {
 
 import { updateScreenReaderStatus } from '../actions/accessibility';
 
-export default class AccessibilityActor extends Component {
+export default class AccessibilityActor {
   constructor(store) {
-    super();
     this.dispatch = store.dispatch;
 
     this.AccessibilityManager = NativeModules.CMSAccessibilityManager;
