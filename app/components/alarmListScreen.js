@@ -152,7 +152,7 @@ const AlarmListScreen = (props) => {
           </TouchableOpacity>
         </View>
       );
-      messageHeight = 230;
+      messageHeight = 235;
     } else if (Platform.OS === 'android') {
       messageHeight = 180;
     }

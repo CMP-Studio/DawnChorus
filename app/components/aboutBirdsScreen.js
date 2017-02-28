@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     backgroundColor: 'transparent',
     textAlign: 'center',
-    marginBottom: 25,
+    marginBottom: 30,
   },
   loadingIndicator: {
     position: 'absolute',
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   link: {
-    marginBottom: 20,
+    marginBottom: 30,
   },
 });
 
@@ -178,7 +178,11 @@ const AboutBirdsScreen = (props) => {
           ]}
         >
           <View style={{ flex: 1, justifyContent: 'flex-start' }}>
-            <Text style={styles.navTitleText} accessible={true} accessibilityTraits={'header'}>
+            <Text
+              style={[styles.navTitleText, height <= 568 ? { marginBottom: 10 } : {}]}
+              accessible={true}
+              accessibilityTraits={'header'}
+            >
               Credits
             </Text>
             { /** Link **/ }
@@ -193,7 +197,7 @@ const AboutBirdsScreen = (props) => {
                   return null;
                 }).catch(err => console.error('An error occurred', err));
               }}
-              style={styles.link}
+              style={[styles.link, height <= 568 ? { marginBottom: 5 } : {}]}
             >
               <Text style={[globalStyles.bodyText]}>
                 Dawn Chorus is a collaboration between Carnegie Museum of Natural History, BirdSafe Pittsburgh, and the Innovation Studio at Carnegie Museums of Pittsburgh.
@@ -222,7 +226,7 @@ const AboutBirdsScreen = (props) => {
                   return null;
                 }).catch(err => console.error('An error occurred', err));
               }}
-              style={styles.link}
+              style={[styles.link, height <= 568 ? { marginBottom: 5 } : {}]}
             >
               <Text style={[globalStyles.bodyText]}>
                 Bird photographs courtesy of Steve Gosser.
@@ -251,7 +255,7 @@ const AboutBirdsScreen = (props) => {
                   return null;
                 }).catch(err => console.error('An error occurred', err));
               }}
-              style={styles.link}
+              style={[styles.link, height <= 568 ? { marginBottom: 5 } : {}]}
             >
               <Text style={[globalStyles.bodyText]}>
                 Sounds sourced from Macaulay Library, Cornell University.
@@ -280,6 +284,7 @@ const AboutBirdsScreen = (props) => {
                   return null;
                 }).catch(err => console.error('An error occurred', err));
               }}
+              style={[styles.link, height <= 568 ? { marginBottom: 5 } : {}]}
             >
               <Text style={[globalStyles.bodyText]}>
                 Flower illustrations by Ashley Cecil, artist-in-residence at Carnegie Museum of Natural History.
