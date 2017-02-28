@@ -65,7 +65,6 @@ const styles = StyleSheet.create({
     }),
   },
   messageText: {
-    flex: 0.6,
     flexDirection: 'column',
   },
   arrow: {
@@ -108,28 +107,19 @@ const AlarmListScreen = (props) => {
   let messageButtonLabel;
   let messageButtonPress;
 
-  let toBirdsMessage;
+  let toSettingsMessage;
 
   let messageHeight;
 
   if (props.notificationPermission === NOTIFICATION_PERMISSIONS_STATUS_DENIED) {
-    message = 'Oops! In order for your alarms to work please allow Dawn Chorus to send you notifications.';
-    messageButtonLabel = 'Go to settings';
-    messageButtonAccessibility = 'Go to settings';
-    if (Platform.OS === 'ios') {
-      messageButtonPress = () => {
-        Linking.canOpenURL('app-settings:').then((supported) => {
-          if (!supported) { return null; }
-          return Linking.openURL('app-settings:');
-        });
-      };
-    } else if (Platform.OS === 'android') {
+    message = 'Please leave your phone unlocked and open to Dawn Chorus. Don\'t forget to connect to power!';
+    if (Platform.OS === 'android') {
       messageButtonPress = () => {
         NativeModules.NotificationsPermissions.goToSettings();
       };
     }
     if (Platform.OS === 'ios') {
-      toBirdsMessage = (
+      toSettingsMessage = (
         <View style={styles.messageText}>
           <Text
             style={[
@@ -137,27 +127,32 @@ const AlarmListScreen = (props) => {
               { marginBottom: 10 },
             ]}
           >
-            Regardless, you can learn about birds.
+            To hear alarms even when your phone is locked, allow Dawn Chorus to send you notifications.
           </Text>
           <TouchableOpacity
             activeOpacity={0.7}
-            style={[styles.messageButton, { justifyContent: 'flex-start' }]}
-            onPress={() => { props.actions.navigatorPop(); }}
-            accessibilityLabel={'Go to Birds screen'}
+            style={styles.messageButton}
+            onPress={() => {
+              Linking.canOpenURL('app-settings:').then((supported) => {
+                if (!supported) { return null; }
+                return Linking.openURL('app-settings:');
+              });
+            }}
+            accessibilityLabel={'Go to notification settings'}
           >
+            <Text style={[globalStyles.bodyTextLight, styles.urlButtonText]}>
+              Notification settings
+            </Text>
             <View style={styles.arrow}>
               <Image
-                style={{ width: 10, height: 10, resizeMode: 'contain', tintColor: OFFBLACK, marginRight: 10 }}
-                source={require('../assets/LeftFacingArrow.png')}
+                style={{ width: 10, height: 10, resizeMode: 'contain', tintColor: OFFBLACK }}
+                source={require('../assets/RightFacingArrow.png')}
               />
             </View>
-            <Text style={[globalStyles.bodyTextLight, styles.urlButtonText]}>
-              Birds
-            </Text>
           </TouchableOpacity>
         </View>
       );
-      messageHeight = 250;
+      messageHeight = 220;
     } else if (Platform.OS === 'android') {
       messageHeight = 180;
     }
@@ -265,8 +260,8 @@ const AlarmListScreen = (props) => {
           </TouchableOpacity>
           }
         </View>
-        {toBirdsMessage !== undefined &&
-          toBirdsMessage
+        {toSettingsMessage !== undefined &&
+          toSettingsMessage
         }
         <Image
           resizeMode={'stretch'}
