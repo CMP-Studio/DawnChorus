@@ -17,9 +17,13 @@ import {
 
 import { soundAlarm, snoozeAlarm, stopAlarm, cancelAllAlarms } from '../actions/alarm';
 
+import TimeWatcherActor from './timeWatcher';
+
 export default class NotificationActor {
   constructor(store) {
+    this.store = store;
     this.dispatch = store.dispatch;
+    this.timeWatcherActor = null;
 
     // Everytime app is opened, check if notifications are still on
     AppState.addEventListener('change', () => {
@@ -80,10 +84,15 @@ export default class NotificationActor {
   killActor() {
     AppState.removeEventListener('change');
     SilentSwitch.removeEventListener();
+
     NotificationsIOS.removeEventListener('notificationReceivedForeground', this.onNotificationReceivedForeground.bind(this));
     NotificationsIOS.removeEventListener('notificationReceivedBackground', this.onNotificationReceivedForeground.bind(this));
     NotificationsIOS.removeEventListener('notificationOpened', this.onNotificationOpened.bind(this));
     NotificationsIOS.resetCategories();
+
+    if (this.TimeWatcherActor) {
+      this.TimeWatcherActor.killActor();
+    }
   }
 
   onNotificationReceivedForeground(notification) {
@@ -101,6 +110,17 @@ export default class NotificationActor {
   async checkStatus() {
     try {
       const permissions = await NativeModules.CMSiOSNotificationPermissionsManager.checkPermissions();
+
+      if (permissions !== NOTIFICATION_PERMISSIONS_STATUS_AUTHORIZED) {
+        // If we cannot get push notification permissions then watch
+        // the time to sound alarms
+        this.TimeWatcherActor = new TimeWatcherActor(this.store);
+      } else {
+        if (this.TimeWatcherActor) {
+          this.TimeWatcherActor.killActor();
+        }
+      }
+      
       this.dispatch(updateNotificationPermissions(permissions));
     } catch (e) {
       console.log(e);
