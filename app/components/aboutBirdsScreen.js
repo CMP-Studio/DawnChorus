@@ -28,9 +28,8 @@ const styles = StyleSheet.create({
   credits: {
     position: 'absolute',
     justifyContent: 'space-between',
-    paddingLeft: 40,
-    paddingRight: 40,
-    paddingBottom: 50,
+    paddingLeft: 30,
+    paddingRight: 30,
   },
   navTitleText: {
     color: OFFBLACK,
@@ -39,7 +38,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     backgroundColor: 'transparent',
     textAlign: 'center',
-    marginBottom: 35,
+    marginBottom: 25,
   },
   loadingIndicator: {
     position: 'absolute',
@@ -73,7 +72,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   link: {
-    marginBottom: 25,
+    marginBottom: 20,
   },
 });
 
