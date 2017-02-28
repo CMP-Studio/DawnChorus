@@ -4,6 +4,8 @@ const MINUTE = 60 * 1000;
 const TIMER_TYPE_TIMEOUT = 'TIMER_TYPE_TIMEOUT';
 const TIMER_TYPE_INTERVAL = 'TIMER_TYPE_INTERVAL';
 
+import { checkAlarms } from '../actions/alarm';
+
 export default class TimeWatcherActor {
   constructor(store) {
     this.dispatch = store.dispatch;
@@ -31,12 +33,7 @@ export default class TimeWatcherActor {
 
   watchTime() {
     // Check if it's this minute then check every minute after
-    this.checkAlarms();
-    this.repeatEvery(this.checkAlarms, MINUTE);
-  }
-
-  checkAlarms() {
-    console.log('on the minute');
+    this.repeatEvery(() => { checkAlarms(this.dispatch) }, MINUTE);
   }
 
   killActor() {
