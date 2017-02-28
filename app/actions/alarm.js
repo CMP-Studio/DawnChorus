@@ -61,9 +61,9 @@ export function checkAlarms(dispatch) {
   if (foundAlarm) return;
 
   // Sound snoozed alarm if needed
-  if (activeAlarmObject !== undefined && activeAlarmObject.snoozed) {
-    if (activeAlarmObject.time.hour === hour &&
-        activeAlarmObject.time.minute === minute) {
+  if (activeAlarmObject !== null && activeAlarmObject.snoozed) {
+    if (activeAlarmObject.snoozeTime.hour === hour &&
+        activeAlarmObject.snoozeTime.minute === minute) {
           dispatch(soundAlarm(activeAlarm));
     }
   }
@@ -72,8 +72,12 @@ export function checkAlarms(dispatch) {
 export function loadAlarms() {
   return async (dispatch) => {
     const alarmList = await AsyncStorage.getItem('alarms');
+    const activeAlarmUUID = await AsyncStorage.getItem('activeAlarm');
     if (alarmList !== null) {
       alarms = JSON.parse(alarmList);
+      if (activeAlarmUUID !== null) {
+        activeAlarm = JSON.parse(activeAlarmUUID);
+      }
       return dispatch(
         loadAlarmsSuccess(JSON.parse(alarmList))
       );
@@ -159,6 +163,7 @@ export function replaceAlarm(uuid, snoozed = false) {
   alarms = alarmsToSave;
   try {
     AsyncStorage.setItem('alarms', JSON.stringify(alarmsToSave));
+    AsyncStorage.setItem('activeAlarm', JSON.stringify(uuid));
     return {
       type: SOUND_ALARM,
       uuid: alarmToSound.uuid,
@@ -204,6 +209,7 @@ export function soundAlarm(uuid) {
   alarms = alarmsToSave;
   try {
     AsyncStorage.setItem('alarms', JSON.stringify(alarmsToSave));
+    AsyncStorage.setItem('activeAlarm', JSON.stringify(uuid));
     return {
       type: SOUND_ALARM,
       uuid: alarmToSound.uuid,
@@ -243,6 +249,7 @@ export function stopAlarm(uuid) {
   activeAlarm = null;
   try {
     AsyncStorage.setItem('alarms', JSON.stringify(alarmsToSave));
+    AsyncStorage.setItem('activeAlarm', JSON.stringify(null));
     return {
       type: STOP_ALARM,
       alarmList: alarmsToSave,
@@ -270,6 +277,7 @@ export function cancelAllAlarms() {
   alarms = alarmsToSave;
   try {
     AsyncStorage.setItem('alarms', JSON.stringify(alarmsToSave));
+    AsyncStorage.setItem('activeAlarm', JSON.stringify(null));
     return {
       type: UPDATE_ALARMS_LIST,
       alarmList: alarmsToSave,
@@ -315,6 +323,7 @@ export function snoozeAlarm(uuid) {
   alarms = alarmsToSave;
   try {
     AsyncStorage.setItem('alarms', JSON.stringify(alarmsToSave));
+    AsyncStorage.setItem('activeAlarm', JSON.stringify(uuid));
     return {
       type: SNOOZE_ALARM,
       alarmList: alarmsToSave,
