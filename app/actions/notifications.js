@@ -101,7 +101,7 @@ export function scheduleSnoozedAlarm(alarm) {
   const date = moment();
   date.set('second', 0);
   date.set('millisecond', 0);
-  date.add(10, 'minutes');
+  date.add(9, 'minutes');
 
   alarm.chorus.map((bird, index) => {
     if (bird !== null) {
