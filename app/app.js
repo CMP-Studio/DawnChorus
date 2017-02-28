@@ -34,6 +34,13 @@ class App extends Component {
     loader();
   }
 
+  componentWillUnmount() {
+    this.notificationActor.killActor();
+    if (this.accessibilityActor) {
+      this.accessibilityActor.killActor();
+    }
+  }
+
   render() {
     return (
       <Provider store={store}>
