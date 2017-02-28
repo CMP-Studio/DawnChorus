@@ -152,8 +152,10 @@ class AlarmScreen extends Component {
       const snoozeDate = moment(this.props.alarm.snoozeTime.actual);
       const minutesUntil = snoozeDate.diff(this.date, 'minutes');
 
-      if (minutesUntil > 0) {
+      if (minutesUntil > 1) {
         snoozeMessage = `Snoozed. ${minutesUntil} minutes remaining.`;
+      } else if (minutesUntil === 1) {
+        snoozeMessage = `Snoozed. 1 minute remaining.`;
       } else {
         snoozeMessage = 'Snoozed.';
       }
