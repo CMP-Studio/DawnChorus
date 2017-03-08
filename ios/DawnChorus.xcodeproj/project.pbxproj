@@ -24,6 +24,8 @@
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		1C625B35FF61432EA98E6C6C /* libRNSound.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 64233CD375D1449AA2574B25 /* libRNSound.a */; };
+		3238ADA31E709E1500586B8D /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3238ADA21E709E1500586B8D /* Stickers.xcassets */; };
+		3238ADA71E709E1500586B8D /* Sticker Pack.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3238ADA01E709E1500586B8D /* Sticker Pack.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3241C8161DDB634000A7700F /* libRNNotifications.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3241C8151DDB626000A7700F /* libRNNotifications.a */; };
 		32511D2D1E3A622C0029E644 /* CMSAccessibilityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32511D2B1E3A622C0029E644 /* CMSAccessibilityManager.swift */; };
 		32511D2E1E3A622C0029E644 /* CMSAccessibilityManagerBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 32511D2C1E3A622C0029E644 /* CMSAccessibilityManagerBridge.m */; };
@@ -160,6 +162,13 @@
 			remoteGlobalIDString = 01D7495A1CC96385007E93FA;
 			remoteInfo = RNIdleTimer;
 		};
+		3238ADA51E709E1500586B8D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3238AD9F1E709E1500586B8D;
+			remoteInfo = "Sticker Pack";
+		};
 		3241C8141DDB626000A7700F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3241C8101DDB626000A7700F /* RNNotifications.xcodeproj */;
@@ -274,6 +283,20 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		3238ADC51E709E1500586B8D /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				3238ADA71E709E1500586B8D /* Sticker Pack.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTActionSheet.xcodeproj; path = "../node_modules/react-native/Libraries/ActionSheetIOS/RCTActionSheet.xcodeproj"; sourceTree = "<group>"; };
@@ -299,6 +322,9 @@
 		225ED7A73CAD4438953A2F8B /* libRCTSilentSwitch.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTSilentSwitch.a; sourceTree = "<group>"; };
 		2E9B73ADE76642AFBA1E6183 /* libRNIdleTimer.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNIdleTimer.a; sourceTree = "<group>"; };
 		30B0AFF4331D4EE2AF5ACCF8 /* RNIdleTimer.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNIdleTimer.xcodeproj; path = "../node_modules/react-native-idle-timer/ios/RNIdleTimer.xcodeproj"; sourceTree = "<group>"; };
+		3238ADA01E709E1500586B8D /* Sticker Pack.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Sticker Pack.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3238ADA21E709E1500586B8D /* Stickers.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Stickers.xcassets; sourceTree = "<group>"; };
+		3238ADA41E709E1500586B8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3241C8101DDB626000A7700F /* RNNotifications.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNNotifications.xcodeproj; path = "../node_modules/react-native-notifications/RNNotifications/RNNotifications.xcodeproj"; sourceTree = "<group>"; };
 		32511D2B1E3A622C0029E644 /* CMSAccessibilityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CMSAccessibilityManager.swift; sourceTree = "<group>"; };
 		32511D2C1E3A622C0029E644 /* CMSAccessibilityManagerBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMSAccessibilityManagerBridge.m; sourceTree = "<group>"; };
@@ -526,6 +552,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		3238ADA11E709E1500586B8D /* Sticker Pack */ = {
+			isa = PBXGroup;
+			children = (
+				3238ADA21E709E1500586B8D /* Stickers.xcassets */,
+				3238ADA41E709E1500586B8D /* Info.plist */,
+			);
+			path = "Sticker Pack";
+			sourceTree = "<group>";
+		};
 		3241C8111DDB626000A7700F /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -675,6 +710,7 @@
 				13B07FAE1A68108700A75B9A /* DawnChorus */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* DawnChorusTests */,
+				3238ADA11E709E1500586B8D /* Sticker Pack */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				1E92461F4D2A439391A23ECF /* Frameworks */,
 			);
@@ -687,6 +723,7 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* DawnChorus.app */,
 				00E356EE1AD99517003FC87E /* DawnChorusTests.xctest */,
+				3238ADA01E709E1500586B8D /* Sticker Pack.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -746,15 +783,32 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				3238ADC51E709E1500586B8D /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				3238ADA61E709E1500586B8D /* PBXTargetDependency */,
 			);
 			name = DawnChorus;
 			productName = "Hello World";
 			productReference = 13B07F961A680F5B00A75B9A /* DawnChorus.app */;
 			productType = "com.apple.product-type.application";
+		};
+		3238AD9F1E709E1500586B8D /* Sticker Pack */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3238ADC41E709E1500586B8D /* Build configuration list for PBXNativeTarget "Sticker Pack" */;
+			buildPhases = (
+				3238AD9E1E709E1500586B8D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Sticker Pack";
+			productName = "Sticker Pack";
+			productReference = 3238ADA01E709E1500586B8D /* Sticker Pack.appex */;
+			productType = "com.apple.product-type.app-extension.messages-sticker-pack";
 		};
 /* End PBXNativeTarget section */
 
@@ -777,6 +831,10 @@
 								enabled = 1;
 							};
 						};
+					};
+					3238AD9F1E709E1500586B8D = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -865,6 +923,7 @@
 			targets = (
 				13B07F861A680F5B00A75B9A /* DawnChorus */,
 				00E356ED1AD99517003FC87E /* DawnChorusTests */,
+				3238AD9F1E709E1500586B8D /* Sticker Pack */,
 			);
 		};
 /* End PBXProject section */
@@ -1117,6 +1176,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3238AD9E1E709E1500586B8D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3238ADA31E709E1500586B8D /* Stickers.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -1165,6 +1232,11 @@
 			isa = PBXTargetDependency;
 			target = 13B07F861A680F5B00A75B9A /* DawnChorus */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
+		};
+		3238ADA61E709E1500586B8D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3238AD9F1E709E1500586B8D /* Sticker Pack */;
+			targetProxy = 3238ADA51E709E1500586B8D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1303,6 +1375,40 @@
 			};
 			name = Release;
 		};
+		3238ADA81E709E1500586B8D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				INFOPLIST_FILE = "Sticker Pack/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.innovationstudio.dawnchorus.Sticker-Pack";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		3238ADA91E709E1500586B8D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				INFOPLIST_FILE = "Sticker Pack/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.innovationstudio.dawnchorus.Sticker-Pack";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 		83CBBA201A601CBA00E9B192 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1431,6 +1537,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		3238ADC41E709E1500586B8D /* Build configuration list for PBXNativeTarget "Sticker Pack" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3238ADA81E709E1500586B8D /* Debug */,
+				3238ADA91E709E1500586B8D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "DawnChorus" */ = {
 			isa = XCConfigurationList;
