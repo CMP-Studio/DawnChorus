@@ -15,6 +15,8 @@
 		00E356F31AD99517003FC87E /* DawnChorusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* DawnChorusTests.m */; };
 		075B8EC31E57480F005953F2 /* mute.caf in Resources */ = {isa = PBXBuildFile; fileRef = 075B8EC21E5746EE005953F2 /* mute.caf */; };
 		075B8F1A1E5CD586005953F2 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 075B8F191E5CD586005953F2 /* LICENSE */; };
+		07FB0E4D1E732E9400771976 /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3238ADA21E709E1500586B8D /* Stickers.xcassets */; };
+		07FB0E4E1E73318D00771976 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3238ADA41E709E1500586B8D /* Info.plist */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
 		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
@@ -834,6 +836,7 @@
 					};
 					3238AD9F1E709E1500586B8D = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = SZY22WCGL8;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1156,6 +1159,7 @@
 				326DD15C1DA7D89C00273922 /* SourceSerifPro-ExtraLight.otf in Resources */,
 				E95AB1FA1E1D82B0001A4E2C /* yellow_bellied_sapsucker_notification.aif in Resources */,
 				E9B9BC691DEF4B9C00E83F5F /* american_redstart_loop.mp3 in Resources */,
+				07FB0E4D1E732E9400771976 /* Stickers.xcassets in Resources */,
 				E9B9BC7E1DF0892F00E83F5F /* Branches.png in Resources */,
 				E9B9BC781DEF4B9C00E83F5F /* tennessee_warbler_loop.mp3 in Resources */,
 				E9B9BC721DEF4B9C00E83F5F /* pine_siskin_loop.mp3 in Resources */,
@@ -1172,6 +1176,7 @@
 				E95AB1F91E1D82B0001A4E2C /* wood_thrush_notification.aif in Resources */,
 				E95AB1ED1E1D82B0001A4E2C /* louisiana_waterthrush_notification.aif in Resources */,
 				E9B9BC771DEF4B9C00E83F5F /* swainson_s_thrush_loop.mp3 in Resources */,
+				07FB0E4E1E73318D00771976 /* Info.plist in Resources */,
 				E9B9BC6C1DEF4B9C00E83F5F /* blue_jay_loop.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1383,9 +1388,10 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = SZY22WCGL8;
 				INFOPLIST_FILE = "Sticker Pack/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.innovationstudio.dawnchorus.Sticker-Pack";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.innovationstudio.dawnchorus.chorusbirdstickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -1401,9 +1407,10 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = SZY22WCGL8;
 				INFOPLIST_FILE = "Sticker Pack/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.innovationstudio.dawnchorus.Sticker-Pack";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.innovationstudio.dawnchorus.chorusbirdstickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -1545,6 +1552,7 @@
 				3238ADA91E709E1500586B8D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "DawnChorus" */ = {
 			isa = XCConfigurationList;
