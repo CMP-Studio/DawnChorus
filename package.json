@@ -14,7 +14,7 @@
     "react-native-animatable": "^0.6.1",
     "react-native-flip-view": "https://github.com/CMP-Studio/react-native-flip-view",
     "react-native-idle-timer": "^2.1.3",
-    "react-native-notifications": "git://github.com/sticknor/react-native-notifications.git#passInID",
+    "react-native-notifications": "git://github.com/CMP-Studio/react-native-notifications.git#passInID",
     "react-native-push-notification": "https://github.com/CMP-Studio/react-native-push-notification",
     "react-native-root-modal": "^1.0.7",
     "react-native-scrollable-tab-view": "^0.7.0",
