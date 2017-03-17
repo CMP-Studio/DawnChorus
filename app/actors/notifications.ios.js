@@ -104,7 +104,7 @@ export default class NotificationActor {
   }
 
   onNotificationOpened(notification) {
-    this.dispatch(snoozeAlarm(notification.getData().alarmUUID));
+    this.dispatch(soundAlarm(notification.getData().alarmUUID));
   }
 
   async checkStatus() {
