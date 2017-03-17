@@ -94,7 +94,7 @@ export function scheduleAlarm(alarm) {
   let notificationCount = 0;
   let chorusIndex = 0;
 
-  while (secondsSum <= 300) {
+  while (secondsSum <= 280) {
     const bird = alarm.chorus[chorusIndex];
 
     if (bird !== null) {
@@ -137,7 +137,7 @@ export function scheduleSnoozedAlarm(alarm) {
   let notificationCount = 0;
   let chorusIndex = 0;
 
-  while (secondsSum <= 300) {
+  while (secondsSum <= 280) {
     const bird = alarm.chorus[chorusIndex];
 
     if (bird !== null) {
