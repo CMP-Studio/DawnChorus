@@ -90,11 +90,10 @@ export function scheduleAlarm(alarm) {
     date.add(1, 'days');
   }
 
-  let secondsSum = 0;
   let notificationCount = 0;
   let chorusIndex = 0;
 
-  while (secondsSum <= 280) {
+  while (notificationCount < 15) {
     const bird = alarm.chorus[chorusIndex];
 
     if (bird !== null) {
@@ -107,7 +106,6 @@ export function scheduleAlarm(alarm) {
 
     // Add 20 seconds to the next alarm to stagger alarms
     date.add(20, 'seconds');
-    secondsSum += 20;
 
     // Increase notification count
     notificationCount += 1;
@@ -133,11 +131,10 @@ export function scheduleSnoozedAlarm(alarm) {
   date.set('second', 0);
   date.set('millisecond', 0);
 
-  let secondsSum = 0;
   let notificationCount = 0;
   let chorusIndex = 0;
 
-  while (secondsSum <= 280) {
+  while (notificationCount < 15) {
     const bird = alarm.chorus[chorusIndex];
 
     if (bird !== null) {
@@ -150,7 +147,6 @@ export function scheduleSnoozedAlarm(alarm) {
 
     // Add 20 seconds to the next alarm to stagger alarms
     date.add(20, 'seconds');
-    secondsSum += 20;
 
     // Increase notification count
     notificationCount += 1;
