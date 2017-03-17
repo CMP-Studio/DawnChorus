@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "RCTPushNotificationManager.h"
 #import "RNNotifications.h"
+#import <UserNotifications/UserNotifications.h>
 
 #import "RCTBundleURLProvider.h"
 #import "RCTRootView.h"
@@ -27,6 +28,9 @@
                                                initialProperties:nil
                                                    launchOptions:launchOptions];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
+    
+  UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
+  [center removeAllDeliveredNotifications];
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
@@ -59,6 +63,8 @@
 // Required for the localNotification event.
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
+  UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
+  [center removeAllDeliveredNotifications];
   [RNNotifications didReceiveLocalNotification:notification];
 }
 
@@ -66,11 +72,15 @@
 // Required for the notification actions.
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void (^)())completionHandler
 {
+  UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
+  [center removeAllDeliveredNotifications];
   [RNNotifications handleActionWithIdentifier:identifier forLocalNotification:notification withResponseInfo:responseInfo completionHandler:completionHandler];
 }
 
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void (^)())completionHandler
 {
+  UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
+  [center removeAllDeliveredNotifications];
   [RNNotifications handleActionWithIdentifier:identifier forRemoteNotification:userInfo withResponseInfo:responseInfo completionHandler:completionHandler];
 }
 
