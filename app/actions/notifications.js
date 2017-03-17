@@ -21,6 +21,16 @@ const tweetyStrings = [
   'joins the chorus',
   'joins the chorus',
   'joins the chorus',
+  'is singing, wake up!',
+  'is singing, wake up!',
+  'is singing, wake up!',
+  'is singing its heart out',
+  'is singing its heart out',
+  'is wondering if you\'ll ever wake up!',
+  'is wondering if you\'ll ever wake up!',
+  'is wondering if you\'ll ever wake up!',
+  'is wondering if you\'ll ever wake up!',
+  'is wondering if you\'ll ever wake up!',
 ];
 
 export function clearNotifications(alarm) {
@@ -37,8 +47,8 @@ function createiOSNotification(bird, index, date, alarm) {
   NotificationsIOS.localNotification({
     alertTitle: 'Dawn Chorus Alarm',
     category: 'ALARM',
-    alertBody: `The ${bird.name} ${tweetyStrings[index]}!`,
-    alertAction: 'Tap to snooze alarm.',
+    alertBody: `A ${bird.name} ${tweetyStrings[index]}!`,
+    alertAction: 'Tap to hear chorus.',
     soundName: bird.sound.iosNotification,
     fireDate: date.toDate().toISOString(),
     userInfo: { alarmUUID: alarm.uuid },
@@ -54,7 +64,7 @@ function createAndroidNotification(bird, index, date, alarm) {
     title: 'Dawn Chorus Alarm',
     alarmUUID: alarm.uuid,
     userInfo: { alarmUUID: alarm.uuid },
-    message: `The ${bird.name} ${tweetyStrings[index]}!`,
+    message: `A ${bird.name} ${tweetyStrings[index]}!`,
     subText: 'Tap to hear chorus',
     date: date.toDate(),
     soundName: bird.sound.androidNotification,
@@ -80,19 +90,34 @@ export function scheduleAlarm(alarm) {
     date.add(1, 'days');
   }
 
-  alarm.chorus.map((bird, index) => {
+  let secondsSum = 0;
+  let notificationCount = 0;
+  let chorusIndex = 0;
+
+  while (secondsSum <= 300) {
+    const bird = alarm.chorus[chorusIndex];
+
     if (bird !== null) {
       if (Platform.OS === 'ios') {
-        createiOSNotification(bird, index, date, alarm);
+        createiOSNotification(bird, notificationCount, date, alarm);
       } else if (Platform.OS === 'android') {
-        createAndroidNotification(bird, index, date, alarm);
+        createAndroidNotification(bird, notificationCount, date, alarm);
       }
     }
 
     // Add 20 seconds to the next alarm to stagger alarms
     date.add(20, 'seconds');
-    return bird;
-  });
+    secondsSum += 20;
+
+    // Increase notification count
+    notificationCount += 1;
+
+    // Increase chorus index, or wrap around and repeat birds.
+    chorusIndex += 1;
+    if (chorusIndex >= alarm.chorus.length || alarm.chorus[chorusIndex] === null) {
+      chorusIndex = 0;
+    }
+  }
 
   return;
 }
@@ -108,19 +133,34 @@ export function scheduleSnoozedAlarm(alarm) {
   date.set('second', 0);
   date.set('millisecond', 0);
 
-  alarm.chorus.map((bird, index) => {
+  let secondsSum = 0;
+  let notificationCount = 0;
+  let chorusIndex = 0;
+
+  while (secondsSum <= 300) {
+    const bird = alarm.chorus[chorusIndex];
+
     if (bird !== null) {
       if (Platform.OS === 'ios') {
-        createiOSNotification(bird, index, date, alarm);
+        createiOSNotification(bird, notificationCount, date, alarm);
       } else if (Platform.OS === 'android') {
-        createAndroidNotification(bird, index, date, alarm);
+        createAndroidNotification(bird, notificationCount, date, alarm);
       }
     }
 
     // Add 20 seconds to the next alarm to stagger alarms
     date.add(20, 'seconds');
-    return bird;
-  });
+    secondsSum += 20;
+
+    // Increase notification count
+    notificationCount += 1;
+
+    // Increase chorus index, or wrap around and repeat birds.
+    chorusIndex += 1;
+    if (chorusIndex >= alarm.chorus.length || alarm.chorus[chorusIndex] === null) {
+      chorusIndex = 0;
+    }
+  }
 
   return {
     time: {
