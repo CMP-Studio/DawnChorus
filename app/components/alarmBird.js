@@ -61,12 +61,11 @@ class AlarmBird extends Component {
     style: PropTypes.object,
   }
 
-  static soundObject;
   static birdRef;
 
   constructor(props) {
     super();
-
+    this.soundObject = null;
     this.state = {
       singing: false,
       audible: false,
@@ -131,11 +130,13 @@ class AlarmBird extends Component {
     }
   }
 
-  async unloadSong() {
-    if (this.soundObject !== undefined) {
+  unloadSong() {
+    if (this.soundObject) {
       this.stopSong();
+
       try {
         this.soundObject.release();
+        this.soundObject = null;
       } catch (e) {
         console.log(e);
       }
@@ -143,7 +144,7 @@ class AlarmBird extends Component {
   }
 
   playSong() {
-    if (this.soundObject.isLoaded()) {
+    if (this.soundObject && this.soundObject.isLoaded()) {
       this.soundObject.play((success) => {
         if (success) {
           // Loop Singing
@@ -198,7 +199,7 @@ class AlarmBird extends Component {
   }
 
   stopSong() {
-    if (this.soundObject !== undefined) {
+    if (this.soundObject) {
       this.soundObject.stop();
       if (this.state.timeoutID) {
         clearTimeout(this.state.timeoutID);
