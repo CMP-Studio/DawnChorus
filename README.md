@@ -4,7 +4,9 @@ Targets:
 - iOS 10.0 or greater  
 - Android 4.1 or greater
 
-### App Description
+### Description
+
+![Dawn Chorus Screenshots](./appOverview.jpeg)
 
 Wake up to nature’s chorus with a bird alarm clock developed by Carnegie Museum of Natural History and Innovation Studio. This artfully designed app is a calming, nature-inspired alternative to your usual blaring alarm. When the alarm goes off, birds begin to appear in trees to create a chorus of song. Hear randomly selected birds each morning, or choose from 20 birds to create a custom alarm. All of the birds are native to the northeastern United States, and users can hear their calls and learn more about them on bird cards developed with museum scientists.
 
