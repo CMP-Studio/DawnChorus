@@ -15,6 +15,7 @@ const mapStateToProps = (state) => {
     chorus: state.alarms.editAlarm.chorus,
     navigatorKey: state.navigator.routes[state.navigator.index].key,
     screenReader: state.accessibility.screenReader,
+    sampleChorus: state.audio.sampleChorus,
   };
 };
 

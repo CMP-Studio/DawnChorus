@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row',
   },
 });
 
@@ -147,6 +148,23 @@ const EditAlarmScreen = (props) => {
                 margin={15}
               />
             </Animatable.View>
+            <TouchableOpacity
+              activeOpacity={props.alarm.chorus.length > 0 ? 0.7 : 1}
+              onPress={() => {
+                if (props.alarm.chorus.length) {
+                  props.actions.toggleSampleChorus(!props.sampleChorus);
+                }
+              }}
+            >
+              <Image
+                style={[
+                  { width: 40, height: 40, position: 'relative', top: -3 },
+                  props.alarm.chorus.length > 0 ? { opacity: 1 } : { opacity: 0.3 },
+                ]}
+                resizeMode={'contain'}
+                source={props.sampleChorus ? require('../assets/StopButton.png') : require('../assets/PlayButton.png')}
+              />
+            </TouchableOpacity>
           </View>
           { Platform.OS === 'ios' &&
             <Image
@@ -217,10 +235,12 @@ const EditAlarmScreen = (props) => {
 EditAlarmScreen.propTypes = {
   alarm: PropTypes.object,
   screenReader: PropTypes.bool.isRequired,
+  sampleChorus: PropTypes.bool.isRequired,
   actions: PropTypes.shape({
     editAlarmTime: PropTypes.func.isRequired,
     editAlarmChorus: PropTypes.func.isRequired,
     saveAlarm: PropTypes.func.isRequired,
+    toggleSampleChorus: PropTypes.func.isRequired,
   }).isRequired,
 };
 

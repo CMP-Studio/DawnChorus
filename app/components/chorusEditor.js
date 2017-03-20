@@ -77,6 +77,8 @@ const ChorusEditor = (props) => {
             return (
               <Bird
                 screenReader={props.screenReader}
+                sampleChorus={props.sampleChorus}
+                sampling={isInChorus && props.sampleChorus}
                 key={bird.uuid}
                 navKey={props.navigatorKey}
                 bird={bird}
@@ -118,6 +120,7 @@ ChorusEditor.propTypes = {
   birds: PropTypes.arrayOf(PropTypes.object),
   chorus: PropTypes.arrayOf(PropTypes.object),
   limitReached: PropTypes.func.isRequired,
+  sampleChorus: PropTypes.bool.isRequired,
   actions: PropTypes.shape({
     editAlarmChorus: PropTypes.func.isRequired,
   }).isRequired,

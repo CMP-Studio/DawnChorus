@@ -55,6 +55,8 @@ class Bird extends Component {
     mirror: PropTypes.bool.isRequired,
     label: PropTypes.bool,
     songButton: PropTypes.bool,
+    sampleChorus: PropTypes.bool,
+    sampling: PropTypes.bool,
     selected: PropTypes.bool,
     selectable: PropTypes.bool,
     image: PropTypes.object.isRequired,
@@ -75,6 +77,7 @@ class Bird extends Component {
       singing: false,
       audible: false,
       timeoutID: null,
+      sampleTimeoutID: null,
     };
   }
 
@@ -90,6 +93,20 @@ class Bird extends Component {
   componentWillReceiveProps(nextProps) {
     // If we switch screens, bird should stop singing
     if (nextProps.navKey !== this.props.navKey) {
+      this.stopSong();
+    }
+    if (nextProps.sampling !== this.props.sampling) {
+      if (nextProps.sampling) {
+        this.stopSong();
+        this.playSong();
+      } else {
+        this.stopSong();
+      }
+    } else if (nextProps.sampleChorus !== this.props.sampleChorus) {
+      this.stopSong();
+    }
+    if (nextProps.selected !== this.props.selected &&
+        !nextProps.selected) {
       this.stopSong();
     }
   }
@@ -110,6 +127,9 @@ class Bird extends Component {
 
   async unloadSong() {
     this.stopSong();
+    if (this.state.sampleTimeoutID !== null) {
+      clearTimeout(this.state.sampleTimeoutID);
+    }
     if (this.state.soundObject !== null &&
         this.state.soundObject.isLoaded()) {
       try {
@@ -125,13 +145,27 @@ class Bird extends Component {
 
   playSong() {
     if (this.state.soundObject !== null &&
-        this.state.soundObject.isLoaded()) {
+        this.state.soundObject.isLoaded()
+      ) {
       this.state.soundObject.play((success) => {
         if (success) {
           this.setState({
             timeoutID: null,
           });
-          this.stopSong();
+          if (this.props.sampling) {
+            // Slight delay, then play song :)
+            const sampleTimeoutID = setTimeout(() => {
+              this.playSong();
+              this.setState({
+                sampleTimeoutID: null,
+              });
+            }, 500);
+            this.setState({
+              sampleTimeoutID,
+            });
+          } else {
+            this.stopSong();
+          }
         } else {
           this.setState({
             singing: false,
@@ -147,7 +181,14 @@ class Bird extends Component {
       const timerFunc = () => {
         if (this.state.songSectionIndex >=
             this.props.bird.sound.soundSections.length) {
-          this.stopSong();
+          if (!this.props.sampling) {
+            this.stopSong();
+          } else {
+            this.setState({
+              songSectionIndex: 0,
+              audible: false,
+            });
+          }
           return;
         }
 
@@ -182,6 +223,12 @@ class Bird extends Component {
   }
 
   stopSong() {
+    if (this.state.sampleTimeoutID) {
+      clearTimeout(this.state.sampleTimeoutID);
+      this.setState({
+        sampleTimeoutID: null,
+      });
+    }
     if (this.state.soundObject !== null &&
         this.state.soundObject.isLoaded()) {
       this.state.soundObject.stop();
@@ -280,7 +327,7 @@ class Bird extends Component {
           onPress={() => {
             this.props.onPress();
             this.stopSong();
-            if (this.props.selectable && !this.props.selected) {
+            if (this.props.selectable && !this.props.selected && !this.props.sampling) {
               this.playSong();
             }
           }}
