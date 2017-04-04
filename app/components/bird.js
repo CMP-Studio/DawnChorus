@@ -171,10 +171,10 @@ class Bird extends Component {
   }
 
   playSong() {
-    if (this.state.soundObject !== null &&
-        this.state.soundObject.isLoaded()
+    if (this.soundObject !== null &&
+        this.soundObject.isLoaded()
       ) {
-      this.state.soundObject.play((success) => {
+      this.soundObject.play((success) => {
         this.onSongEnd(success);
       });
 
