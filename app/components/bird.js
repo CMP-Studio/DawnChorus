@@ -71,9 +71,8 @@ class Bird extends Component {
 
   constructor(props) {
     super();
-
+    this.soundObject = null;
     this.state = {
-      soundObject: null,
       singing: false,
       audible: false,
       timeoutID: null,
@@ -122,27 +121,26 @@ class Bird extends Component {
 
   async loadSong() {
     try {
-      this.state.soundObject = await loadSoundPromise(this.props.bird.sound.filename);
+      this.soundObject = await loadSoundPromise(this.props.bird.sound.filename);
       this.playSong();
     } catch (e) {
       console.log(`Could not load sound file ${this.props.bird.sound.filename}`);
     }
   }
 
-  async unloadSong() {
-    this.stopSong();
+  unloadSong() {
     if (this.state.sampleTimeoutID !== null) {
       clearTimeout(this.state.sampleTimeoutID);
     }
-    if (this.state.soundObject !== null &&
-        this.state.soundObject.isLoaded()) {
+
+    if (this.soundObject) {
+      this.stopSong();
+
       try {
-        this.state.soundObject.release();
-        this.setState({
-          soundObject: null,
-        });
+        this.soundObject.release();
+        this.soundObject = null;
       } catch (e) {
-        this.stopSong();
+        console.log(e);
       }
     }
   }
@@ -234,12 +232,14 @@ class Bird extends Component {
         sampleTimeoutID: null,
       });
     }
-    if (this.state.soundObject !== null &&
-        this.state.soundObject.isLoaded()) {
-      this.state.soundObject.stop();
+
+    if (this.soundObject) {
+      this.soundObject.stop();
+
       if (this.state.timeoutID) {
         clearTimeout(this.state.timeoutID);
       }
+
       this.setState({
         singing: false,
         audible: false,

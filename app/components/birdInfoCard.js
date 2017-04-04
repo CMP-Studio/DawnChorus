@@ -94,6 +94,7 @@ class BirdInfoCard extends Component {
 
   constructor() {
     super();
+    this.soundObject = null;
     this.state = {
       singing: false,
       flip: true,
@@ -114,11 +115,13 @@ class BirdInfoCard extends Component {
     }
   }
 
-  async unloadSong() {
-    if (this.soundObject !== undefined) {
+  unloadSong() {
+    if (this.soundObject) {
       this.stopSong();
+
       try {
         this.soundObject.release();
+        this.soundObject = null;
       } catch (e) {
         console.log(e);
       }
@@ -126,7 +129,7 @@ class BirdInfoCard extends Component {
   }
 
   playSong() {
-    if (this.soundObject.isLoaded()) {
+    if (this.soundObject && this.soundObject.isLoaded()) {
       this.soundObject.play((success) => {
         if (success) {
           this.stopSong();
@@ -152,7 +155,7 @@ class BirdInfoCard extends Component {
   }
 
   stopSong() {
-    if (this.soundObject !== undefined) {
+    if (this.soundObject) {
       this.soundObject.stop();
       clearTimeout(this.state.timeout);
       this.setState({
