@@ -55,13 +55,13 @@ class Bird extends Component {
     mirror: PropTypes.bool.isRequired,
     label: PropTypes.bool,
     songButton: PropTypes.bool,
-    sampleChorus: PropTypes.bool,
     sampling: PropTypes.bool,
     selected: PropTypes.bool,
     selectable: PropTypes.bool,
     image: PropTypes.object.isRequired,
     position: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
+    toggleSampleChorus: PropTypes.func,
     onPress: PropTypes.func.isRequired,
     style: PropTypes.object,
     topOffset: PropTypes.number.isRequired,
@@ -83,9 +83,12 @@ class Bird extends Component {
 
   componentWillMount() {
     RNShakeEventIOS.addEventListener('shake', () => {
-      if (this.state.singing) {
-        this.stopSong();
+      if (this.props.sampling) {
         this.birdRef.shake(500);
+        this.props.toggleSampleChorus(false);
+      } else if (this.state.singing) {
+        this.birdRef.shake(500);
+        this.stopSong();
       }
     });
   }
@@ -95,19 +98,20 @@ class Bird extends Component {
     if (nextProps.navKey !== this.props.navKey) {
       this.stopSong();
     }
-    if (nextProps.sampling !== this.props.sampling) {
-      if (nextProps.sampling) {
-        this.stopSong();
-        this.playSong();
-      } else {
-        this.stopSong();
-      }
-    } else if (nextProps.sampleChorus !== this.props.sampleChorus) {
-      this.stopSong();
-    }
+    // If the bird is removed from chorus, then it should stop singing
     if (nextProps.selected !== this.props.selected &&
         !nextProps.selected) {
       this.stopSong();
+    }
+    if (nextProps.sampling !== this.props.sampling) {
+      this.stopSong();
+      if (nextProps.sampling && this.props.selected) {
+        this.playSong();
+      }
+    }
+    if (this.stoppedSample) {
+      this.playSong();
+      this.stoppedSample = false;
     }
   }
 
@@ -143,36 +147,37 @@ class Bird extends Component {
     }
   }
 
+  onSongEnd(success) {
+    if (success) {
+      this.setState({
+        timeoutID: null,
+      });
+      if (this.props.sampling) {
+        // Slight delay, then play song again
+        const sampleTimeoutID = setTimeout(() => {
+          this.playSong();
+          this.setState({ sampleTimeoutID: null });
+        }, 500);
+        this.setState({ sampleTimeoutID });
+      } else {
+        this.stopSong();
+      }
+    } else {
+      this.setState({
+        singing: false,
+        audible: false,
+        timeoutID: null,
+        sampleTimeoutID: null,
+      });
+    }
+  }
+
   playSong() {
     if (this.state.soundObject !== null &&
         this.state.soundObject.isLoaded()
       ) {
       this.state.soundObject.play((success) => {
-        if (success) {
-          this.setState({
-            timeoutID: null,
-          });
-          if (this.props.sampling) {
-            // Slight delay, then play song :)
-            const sampleTimeoutID = setTimeout(() => {
-              this.playSong();
-              this.setState({
-                sampleTimeoutID: null,
-              });
-            }, 500);
-            this.setState({
-              sampleTimeoutID,
-            });
-          } else {
-            this.stopSong();
-          }
-        } else {
-          this.setState({
-            singing: false,
-            audible: false,
-            timeoutID: null,
-          });
-        }
+        this.onSongEnd(success);
       });
 
       // start the recursive timer function
@@ -242,6 +247,8 @@ class Bird extends Component {
       });
     }
   }
+
+  stoppedSample = false;
 
   render() {
     const { width, height } = Dimensions.get('window');
@@ -327,7 +334,7 @@ class Bird extends Component {
           onPress={() => {
             this.props.onPress();
             this.stopSong();
-            if (this.props.selectable && !this.props.selected && !this.props.sampling) {
+            if (this.props.selectable && !this.props.selected) {
               this.playSong();
             }
           }}
@@ -390,22 +397,26 @@ class Bird extends Component {
                 importantForAccessibility="no"
                 accessible={false}
                 onPress={() => {
-                  if (!this.state.singing) this.playSong();
-                  else this.stopSong();
+                  if (this.props.sampling) {
+                    this.stoppedSample = true;
+                    this.props.toggleSampleChorus(false);
+                  }
+                  else if (!this.state.singing) this.playSong();
+                  else if (this.state.singing) this.stopSong();
                 }}
                 style={{ padding: 3 }}
               >
                 <View
                   style={[
                     { elevation: 2, borderRadius: 20 },
-                    this.state.singing ? { backgroundColor: OFFBLACK } :
-                                         { backgroundColor: OFFWHITE },
+                    this.state.singing && !this.props.sampling ? { backgroundColor: OFFBLACK } :
+                                                                 { backgroundColor: OFFWHITE },
                   ]}
                 >
                   <Image
                     style={{ width: 40, height: 40 }}
                     resizeMode={'contain'}
-                    source={this.state.singing ? require('../assets/StopButton.png') : require('../assets/PlayButton.png')}
+                    source={this.state.singing && !this.props.sampling ? require('../assets/StopButton.png') : require('../assets/PlayButton.png')}
                   />
                 </View>
               </TouchableOpacity>

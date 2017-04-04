@@ -6,6 +6,10 @@ import birds from '../data/birds';
 import ChorusEditor from '../components/chorusEditor';
 
 import {
+  toggleSampleChorus,
+} from '../actions/audio';
+
+import {
   editAlarmChorus,
 } from '../actions/alarm';
 
@@ -24,6 +28,7 @@ const mapDispatchToProps = (dispatch) => {
     actions:
       bindActionCreators({
         editAlarmChorus,
+        toggleSampleChorus,
       }, dispatch),
   };
 };

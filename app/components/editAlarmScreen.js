@@ -132,6 +132,33 @@ const EditAlarmScreen = (props) => {
             style={styles.chorusListing}
             importantForAccessibility="no"
           >
+            <TouchableOpacity
+              style={[
+                { marginRight: width <= 320 ? 10 : 15, position: 'relative', top: -3 },
+                props.alarm.chorus.length > 0 ? {
+                  elevation: 2,
+                  backgroundColor: OFFWHITE,
+                  width: width <= 320 ? 36 : 40,
+                  height: width <= 320 ? 36 : 40,
+                  borderRadius: width <= 320 ? 18 : 20,
+                } : {},
+              ]}
+              activeOpacity={props.alarm.chorus.length > 0 ? 0.7 : 1}
+              onPress={() => {
+                if (props.alarm.chorus.length) {
+                  props.actions.toggleSampleChorus(!props.sampleChorus);
+                }
+              }}
+            >
+              <Image
+                style={[
+                  width <= 320 ? { width: 36, height: 36 } : { width: 40, height: 40 },
+                  props.alarm.chorus.length > 0 ? { opacity: 1 } : { opacity: 0.3 },
+                ]}
+                resizeMode={'contain'}
+                source={props.sampleChorus ? require('../assets/StopButton.png') : require('../assets/PlayButton.png')}
+              />
+            </TouchableOpacity>
             <Animatable.View
               style={{ position: 'relative', top: -3, left: -3 }}
               ref={(ref) => { this.listingRef = ref; }}
@@ -144,27 +171,10 @@ const EditAlarmScreen = (props) => {
                   });
                   props.actions.editAlarmChorus(updatedChorus);
                 }}
-                birdSize={40}
-                margin={15}
+                birdSize={width <= 320 ? 36 : 40}
+                margin={width <= 320 ? 10 : 15}
               />
             </Animatable.View>
-            <TouchableOpacity
-              activeOpacity={props.alarm.chorus.length > 0 ? 0.7 : 1}
-              onPress={() => {
-                if (props.alarm.chorus.length) {
-                  props.actions.toggleSampleChorus(!props.sampleChorus);
-                }
-              }}
-            >
-              <Image
-                style={[
-                  { width: 40, height: 40, position: 'relative', top: -3 },
-                  props.alarm.chorus.length > 0 ? { opacity: 1 } : { opacity: 0.3 },
-                ]}
-                resizeMode={'contain'}
-                source={props.sampleChorus ? require('../assets/StopButton.png') : require('../assets/PlayButton.png')}
-              />
-            </TouchableOpacity>
           </View>
           { Platform.OS === 'ios' &&
             <Image

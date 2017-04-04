@@ -63,6 +63,12 @@ const ChorusEditor = (props) => {
         <Image
           resizeMode={'stretch'}
           style={{ position: 'absolute', top: (height * 4), height, width, opacity: 0.5 }}
+          source={require('../assets/Branches.png')}
+          overflow={'visible'}
+        />
+        <Image
+          resizeMode={'stretch'}
+          style={{ position: 'absolute', top: (height * 5), height, width, opacity: 0.5 }}
           source={require('../assets/ScrollEdges.png')}
           overflow={'visible'}
         />
@@ -77,8 +83,7 @@ const ChorusEditor = (props) => {
             return (
               <Bird
                 screenReader={props.screenReader}
-                sampleChorus={props.sampleChorus}
-                sampling={isInChorus && props.sampleChorus}
+                sampling={props.sampleChorus}
                 key={bird.uuid}
                 navKey={props.navigatorKey}
                 bird={bird}
@@ -91,6 +96,7 @@ const ChorusEditor = (props) => {
                 position={bird.aboutScreenConstants.iconPosition}
                 mirror={bird.aboutScreenConstants.mirrored}
                 index={index}
+                toggleSampleChorus={props.actions.toggleSampleChorus}
                 onPress={() => {
                   let updatedChorus = [];
                   if (props.chorus.length < 5 && !isInChorus) {
@@ -123,6 +129,7 @@ ChorusEditor.propTypes = {
   sampleChorus: PropTypes.bool.isRequired,
   actions: PropTypes.shape({
     editAlarmChorus: PropTypes.func.isRequired,
+    toggleSampleChorus: PropTypes.func.isRequired,
   }).isRequired,
 };
 
