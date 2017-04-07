@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { Platform } from 'react-native';
 
-import Sound from 'react-native-sound';
-
 import Root from './containers/root';
 import configureStore from './store';
 
@@ -20,7 +18,6 @@ async function loader() {
   if (Platform.OS === 'ios') {
     this.accessibilityActor = new AccessibilityActor(store);
   }
-  Sound.enableInSilenceMode(true);
   return;
 }
 
