@@ -9,6 +9,7 @@ export const LOAD_NOTIFICATIONS = 'LOAD_NOTIFICATIONS';
 export const CLEAR_NOTIFICATIONS = 'CLEAR_NOTIFICATIONS';
 export const UPDATE_NOTIFICATION_PERMISSIONS = 'UPDATE_NOTIFICATION_PERMISSIONS';
 export const UPDATE_SILENT_SWITCH_STATE = 'UPDATE_SILENT_SWITCH_STATE';
+export const TOGGLE_INSTRUCTION_MODAL = 'TOGGLE_INSTRUCTION_MODAL';
 
 // *** Status Types ***
 export const NOTIFICATION_PERMISSIONS_STATUS_AUTHORIZED = 'NOTIFICATION_PERMISSIONS_STATUS_AUTHORIZED';
@@ -178,5 +179,12 @@ export function updateSilentSwitchState(silent) {
   return {
     type: UPDATE_SILENT_SWITCH_STATE,
     silent,
+  };
+}
+
+export function toggleInstructionModal(modal) {
+  return {
+    type: TOGGLE_INSTRUCTION_MODAL,
+    modal,
   };
 }

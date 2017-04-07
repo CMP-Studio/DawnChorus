@@ -5,6 +5,8 @@ import {
   AppState,
 } from 'react-native';
 
+import IdleTimerManager from 'react-native-idle-timer';
+
 import NotificationsIOS, { NotificationAction, NotificationCategory } from 'react-native-notifications';
 
 import SilentSwitch from 'react-native-silent-switch';
@@ -13,9 +15,11 @@ import {
   updateNotificationPermissions,
   updateSilentSwitchState,
   NOTIFICATION_PERMISSIONS_STATUS_AUTHORIZED,
+  NOTIFICATION_PERMISSIONS_STATUS_DENIED,
+  NOTIFICATION_PERMISSIONS_STATUS_NOTDETERMINED,
 } from '../actions/notifications';
 
-import { soundAlarm, snoozeAlarm, stopAlarm, cancelAllAlarms } from '../actions/alarm';
+import { soundAlarm, snoozeAlarm, stopAlarm } from '../actions/alarm';
 
 import TimeWatcherActor from './timeWatcher';
 
@@ -24,6 +28,8 @@ export default class NotificationActor {
     this.store = store;
     this.dispatch = store.dispatch;
     this.timeWatcherActor = null;
+    this.silent = false;
+    this.permissions = NOTIFICATION_PERMISSIONS_STATUS_NOTDETERMINED;
 
     // Everytime app is opened, check if notifications are still on
     AppState.addEventListener('change', () => {
@@ -32,7 +38,13 @@ export default class NotificationActor {
 
     // Listen for silent switch toggle events
     SilentSwitch.addEventListener((silent) => {
+      this.silent = silent;
       if (AppState.currentState === 'active') {
+        if (silent) {
+          IdleTimerManager.setIdleTimerDisabled(true);
+        } else if (!silent && this.permissions !== NOTIFICATION_PERMISSIONS_STATUS_DENIED) {
+          IdleTimerManager.setIdleTimerDisabled(false);
+        }
         this.dispatch(updateSilentSwitchState(silent));
       }
     });
@@ -91,7 +103,7 @@ export default class NotificationActor {
     NotificationsIOS.resetCategories();
 
     if (this.TimeWatcherActor) {
-      this.TimeWatcherActor.killActor();
+      this.TimeWatcherActor.killActor(this.silent);
     }
   }
 
@@ -109,9 +121,9 @@ export default class NotificationActor {
 
   async checkStatus() {
     try {
-      const permissions = await NativeModules.CMSiOSNotificationPermissionsManager.checkPermissions();
+      this.permissions = await NativeModules.CMSiOSNotificationPermissionsManager.checkPermissions();
 
-      if (permissions !== NOTIFICATION_PERMISSIONS_STATUS_AUTHORIZED) {
+      if (this.permissions !== NOTIFICATION_PERMISSIONS_STATUS_AUTHORIZED) {
         // If we cannot get push notification permissions then watch
         // the time to sound alarms
         if (this.TimeWatcherActor == null) {
@@ -119,12 +131,12 @@ export default class NotificationActor {
         }
       } else {
         if (this.TimeWatcherActor) {
-          this.TimeWatcherActor.killActor();
+          this.TimeWatcherActor.killActor(this.silent);
           this.TimeWatcherActor = null;
         }
       }
 
-      this.dispatch(updateNotificationPermissions(permissions));
+      this.dispatch(updateNotificationPermissions(this.permissions));
     } catch (e) {
       console.log(e);
     }
