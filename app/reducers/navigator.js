@@ -27,6 +27,7 @@ import {
   STOP_ALARM,
   SOUND_ALARM,
   SNOOZE_ALARM,
+  LOAD_ALARMS,
 } from '../actions/alarm';
 
 let initialState = {};
@@ -50,6 +51,12 @@ if (Platform.OS === 'ios') {
 
 export default function navigator(state = initialState, action) {
   switch (action.type) {
+    case LOAD_ALARMS: {
+      console.log(action);
+      if (action.activeAlarm !== null) return NavigationStateUtils.push(state, { key: ALARM_SCREEN });
+      return state;
+    }
+
     case PUSH:
       if (state.routes[state.index].key === action.state.key) return state;
       return NavigationStateUtils.push(state, action.state);

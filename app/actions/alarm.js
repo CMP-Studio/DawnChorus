@@ -7,6 +7,10 @@ import {
   clearNotifications,
 } from './notifications.js';
 
+import {
+  navigatorPush,
+} from './navigator.js';
+
 import { getRandomBirds } from '../utilities.js';
 
 import birds from './../data/birds';
@@ -29,60 +33,80 @@ export const SAVE_ALARM = 'SAVE_ALARM';
 let alarms;
 let activeAlarm = null;
 
-function loadAlarmsSuccess(alarmList) {
+function loadAlarmsSuccess(alarmList, active) {
   return {
     type: LOAD_ALARMS,
     alarmList,
+    activeAlarm: active,
   };
 }
 
-export function checkAlarms(dispatch) {
+function checkForLingeringAlarms(alarmList) {
   const now = moment();
-  const hour = now.hour();
-  const minute = now.minute();
-  let activeAlarmObject = null;
-  let foundAlarm = false;
-
-  // See if any alarms should sound
-  alarms.map((alarm) => {
-    if (alarm.uuid === activeAlarm) {
-      activeAlarmObject = alarm;
-      return alarm;
-    } else {
-      if (alarm.on && alarm.time.hour === hour && alarm.time.minute === minute) {
-        dispatch(soundAlarm(alarm.uuid));
-        foundAlarm = true;
+  return alarmList.map((alarm) => {
+    if (alarm.notificationTime !== null) {
+      const alarmTimeDiff = now.diff(alarm.notificationTime, 'minutes');
+      if (alarmTimeDiff > 5) {
+        clearNotifications(alarm);
+        return (Object.assign({}, alarm, {
+          on: false,
+          snoozeTime: null,
+          snoozed: false,
+          sounding: false,
+          notificationTime: null,
+        }));
       }
-      return alarm;
+    } else if (alarm.snoozeTime !== null) {
+      const snoozeTimeDiff = now.diff(alarm.snoozeTime.actual, 'minutes');
+      if (snoozeTimeDiff > 5) {
+        clearNotifications(alarm);
+        return (Object.assign({}, alarm, {
+          on: false,
+          snoozeTime: null,
+          snoozed: false,
+          sounding: false,
+          notificationTime: null,
+        }));
+      }
     }
+    return alarm;
   });
-
-  if (foundAlarm) return;
-
-  // Sound snoozed alarm if needed
-  if (activeAlarmObject !== null && activeAlarmObject.snoozed) {
-    if (activeAlarmObject.snoozeTime.hour === hour &&
-        activeAlarmObject.snoozeTime.minute === minute) {
-          dispatch(soundAlarm(activeAlarm));
-    }
-  }
 }
 
 export function loadAlarms() {
   return async (dispatch) => {
     const alarmList = await AsyncStorage.getItem('alarms');
     const activeAlarmUUID = await AsyncStorage.getItem('activeAlarm');
+
     if (alarmList !== null) {
-      alarms = JSON.parse(alarmList);
-      if (activeAlarmUUID !== null) {
-        activeAlarm = JSON.parse(activeAlarmUUID);
+      // check for alarms that have gone off without being turned 'off'
+      // if found, turn those alarms off
+      console.log(JSON.parse(alarmList));
+      const verifiedAlarmList = checkForLingeringAlarms(JSON.parse(alarmList));
+      console.log(verifiedAlarmList);
+      // set local alarm list
+      alarms = verifiedAlarmList;
+
+      // double check that active alarm is in list otherwise set it to null
+      const activeAlarmListing = verifiedAlarmList.filter((alarm) => {
+        return alarm.uuid === JSON.parse(activeAlarmUUID);
+      });
+
+      // set locally active alarm
+      if (activeAlarmListing.length > 0) {
+        activeAlarm = activeAlarmListing[0].uuid;
       }
+
+      // send to reducer
       return dispatch(
-        loadAlarmsSuccess(JSON.parse(alarmList))
+        loadAlarmsSuccess(
+          verifiedAlarmList,
+          activeAlarmListing.length > 0 ? activeAlarmListing[0] : null
+        ),
       );
     }
     alarms = [];
-    return dispatch(loadAlarmsSuccess([]));
+    return dispatch(loadAlarmsSuccess([], null));
   };
 }
 
@@ -134,6 +158,7 @@ export function replaceAlarm(uuid, snoozed = false) {
     snoozed,
     sounding: !snoozed,
     snoozeTime: snoozed ? scheduleSnoozedAlarm(alarmToSound).time : null,
+    notificationTime: null,
   }));
 
   // Old Alarm: Any remaining notifications should be canceled, turn alarm off
@@ -143,6 +168,7 @@ export function replaceAlarm(uuid, snoozed = false) {
     snoozed: false,
     sounding: false,
     on: false,
+    notificationTime: null,
   }));
 
   // Replace both alarms in alarms list
@@ -190,6 +216,7 @@ export function soundAlarm(uuid) {
     sounding: true,
     snoozed: false,
     snoozeTime: null,
+    notificationTime: null,
   }));
 
   // This alarm already exsisted, so overwrite previous version
@@ -234,6 +261,7 @@ export function stopAlarm(uuid) {
     snoozed: false,
     sounding: false,
     on: false,
+    notificationTime: null,
   }));
 
   // This alarm already exsisted, so overwrite previous version
@@ -266,6 +294,7 @@ export function cancelAllAlarms() {
       sounding: false,
       snoozed: false,
       snoozeTime: null,
+      notificationTime: null,
     }));
     return stoppedAlarm;
   });
@@ -304,6 +333,7 @@ export function snoozeAlarm(uuid) {
     snoozeTime: time,
     snoozed: true,
     sounding: false,
+    notificationTime: null,
   }));
 
   // This alarm already exsisted, so overwrite previous version
@@ -369,7 +399,9 @@ export function saveAlarm(alarm, changes) {
   clearNotifications(alarmToSave);
 
   if (alarmToSave.on) {
-    scheduleAlarm(alarmToSave);
+    const notificationTime = scheduleAlarm(alarmToSave);
+    alarmToSave.notificationTime = notificationTime;
+    console.log(alarmToSave);
   }
 
   // ***** Alarm List ***** //
@@ -425,5 +457,37 @@ export function deleteAlarm(deleteUUID) {
     };
   } catch (error) {
     return null;
+  }
+}
+
+// This function is only used if notifications are dissallowed
+export function checkAlarms(dispatch) {
+  const now = moment();
+  const hour = now.hour();
+  const minute = now.minute();
+  let activeAlarmObject = null;
+  let foundAlarm = false;
+
+  // See if any alarms should sound
+  alarms.map((alarm) => {
+    if (alarm.uuid === activeAlarm) {
+      activeAlarmObject = alarm;
+      return alarm;
+    }
+    if (alarm.on && alarm.time.hour === hour && alarm.time.minute === minute) {
+      dispatch(soundAlarm(alarm.uuid));
+      foundAlarm = true;
+    }
+    return alarm;
+  });
+
+  if (foundAlarm) return;
+
+  // Sound snoozed alarm if needed
+  if (activeAlarmObject !== null && activeAlarmObject.snoozed) {
+    if (activeAlarmObject.snoozeTime.hour === hour &&
+        activeAlarmObject.snoozeTime.minute === minute) {
+      dispatch(soundAlarm(activeAlarm));
+    }
   }
 }

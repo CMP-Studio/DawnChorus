@@ -149,6 +149,7 @@ class AlarmListing extends Component {
                   sounding: false,
                   snoozed: false,
                   snoozeTime: null,
+                  notificationTime: null,
                 });
               } else {
                 this.props.actions.saveAlarm(this.props.alarm, { on: true });

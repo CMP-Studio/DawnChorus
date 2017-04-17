@@ -77,6 +77,16 @@ function createAndroidNotification(bird, index, date, alarm) {
 }
 
 export function scheduleAlarm(alarm) {
+  // Keep track of time alarm will go off
+  const alarmTime = moment();
+  alarmTime.set('year', moment().year());
+  alarmTime.set('month', moment().month());
+  alarmTime.set('date', moment().date());
+  alarmTime.set('hour', alarm.time.hour);
+  alarmTime.set('minute', alarm.time.minute);
+  alarmTime.set('second', 0);
+  alarmTime.set('millisecond', 0);
+
   // This function will be called when an alarm is saved, or turned on
   const date = moment();
   date.set('year', moment().year());
@@ -89,6 +99,7 @@ export function scheduleAlarm(alarm) {
 
   if (date.isAfter(moment()) === false) {
     date.add(1, 'days');
+    alarmTime.add(1, 'days');
   }
 
   let notificationCount = 0;
@@ -118,7 +129,7 @@ export function scheduleAlarm(alarm) {
     }
   }
 
-  return;
+  return alarmTime;
 }
 
 export function scheduleSnoozedAlarm(alarm) {

@@ -21,6 +21,7 @@ const initialState = {
       hour: 8,
       minute: 30,
     },
+    notificationTime: null,
     chorus: [],
     snoozed: false,
     snoozeTime: null,
@@ -39,6 +40,7 @@ export default function alarms(state = initialState, action) {
           {
             loaded: true,
             alarmList: action.alarmList,
+            activeAlarm: action.activeAlarm,
           }
         )
       );
