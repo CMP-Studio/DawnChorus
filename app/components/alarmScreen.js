@@ -149,16 +149,14 @@ class AlarmScreen extends Component {
     let snoozeMessage = '';
 
     if (this.props.alarm.snoozed) {
-      const snoozeDate = moment(this.props.alarm.snoozeTime.actual);
-      const minutesUntil = snoozeDate.diff(this.date, 'minutes') + 1;
+      const snoozeTime = this.props.alarm.snoozeTime;
+      const snoozeString = getTimeStrings({
+        hour: snoozeTime.hour,
+        minute: snoozeTime.minute,
+      });
 
-      if (minutesUntil > 1) {
-        snoozeMessage = `Snoozed. ${minutesUntil} minutes remaining.`;
-      } else if (minutesUntil === 1) {
-        snoozeMessage = 'Snoozed. 1 minute remaining.';
-      } else {
-        snoozeMessage = 'Snoozed.';
-      }
+      const snoozeTimeString = `${snoozeString.hourString}:${snoozeString.minuteString}`;
+      snoozeMessage = `Snoozed until ${snoozeTimeString} ${snoozeString.periodString}`;
     }
 
     /** Bird Positions **/

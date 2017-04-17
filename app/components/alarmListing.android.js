@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     backgroundColor: RED,
   },
   arrow: {
-    flex: 0.2,
+    flex: 0.1,
     alignItems: 'center',
     justifyContent: 'flex-end',
     paddingRight: 20,
@@ -232,14 +232,14 @@ class AlarmListing extends Component {
             {this.props.alarm.snoozed &&
               <View style={{ position: 'relative', top: -3, left: -1 }}>
                 <Text style={[styles.time, styles.snoozed]}>
-                  {`Snoozed until ${snoozeTime.hourString}:${snoozeTime.minuteString}`}
+                  {`Snoozed until ${snoozeTime.hourString}:${snoozeTime.minuteString} ${snoozeTime.periodString}`}
                 </Text>
               </View>
             }
             {this.props.alarm.sounding &&
               <View style={{ position: 'relative', top: -3, left: -1 }}>
                 <Text style={[styles.time, styles.now]}>
-                  Now! Tap to hear chorus.
+                  Singing! Tap to hear chorus.
                 </Text>
               </View>
             }
