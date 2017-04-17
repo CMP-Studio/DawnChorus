@@ -81,9 +81,7 @@ export function loadAlarms() {
     if (alarmList !== null) {
       // check for alarms that have gone off without being turned 'off'
       // if found, turn those alarms off
-      console.log(JSON.parse(alarmList));
       const verifiedAlarmList = checkForLingeringAlarms(JSON.parse(alarmList));
-      console.log(verifiedAlarmList);
       // set local alarm list
       alarms = verifiedAlarmList;
 
@@ -401,7 +399,6 @@ export function saveAlarm(alarm, changes) {
   if (alarmToSave.on) {
     const notificationTime = scheduleAlarm(alarmToSave);
     alarmToSave.notificationTime = notificationTime;
-    console.log(alarmToSave);
   }
 
   // ***** Alarm List ***** //

@@ -14,6 +14,7 @@ import {
   TouchableOpacity,
   Platform,
   NativeModules,
+  Modal,
 } from 'react-native';
 
 import * as Animatable from 'react-native-animatable';
@@ -25,7 +26,7 @@ import {
   NOTIFICATION_PERMISSIONS_STATUS_DENIED,
 } from '../actions/notifications';
 
-import { OFFWHITE, OFFBLACK, LIGHTGRAY, globalStyles } from './../styles';
+import { GREEN, RED, OFFWHITE, OFFBLACK, LIGHTGRAY, globalStyles } from './../styles';
 
 const styles = StyleSheet.create({
   container: {
@@ -96,6 +97,48 @@ const styles = StyleSheet.create({
     color: OFFBLACK,
     flex: 0.9,
   },
+  instructionModal: {
+    position: 'absolute',
+    top: 25,
+    bottom: 10,
+    left: 10,
+    right: 10,
+    elevation: 1,
+    backgroundColor: LIGHTGRAY,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowOpacity: 0.3,
+    shadowOffset: { x: 0, y: 1 },
+    borderRadius: 3,
+  },
+  numberCircle: {
+  },
+  instruction: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  instructionGraphic: {
+    resizeMode: 'contain',
+    marginRight: 10,
+    width: 150,
+  },
+  instructionTextContainer: {
+    width: 170,
+    marginRight: 10,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    flexDirection: 'column',
+  },
+  instructionText: {
+    fontFamily: 'SourceSerifPro-Regular',
+    fontSize: 16,
+    color: OFFBLACK,
+    flexWrap: 'wrap',
+    flexDirection: 'column',
+    textAlign: 'left',
+    backgroundColor: 'transparent',
+  },
 });
 
 const AlarmListScreen = (props) => {
@@ -121,16 +164,26 @@ const AlarmListScreen = (props) => {
       };
     }
     if (Platform.OS === 'ios') {
-      message = 'Please leave your volume up, phone unlocked and open to Dawn Chorus. Don\'t forget to connect to power!';
+      message = 'You have not allowed Dawn Chorus to send you notifications! There are additional steps you must take in order to hear your alarms.';
       toSettingsMessage = (
         <View style={styles.messageText}>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={[styles.messageButton, { marginBottom: 15 }]}
+            onPress={() => { props.actions.toggleInstructionModal(true); }}
+            accessibilityLabel={'Learn more.'}
+          >
+            <Text style={[globalStyles.bodyTextLight, styles.urlButtonText]}>
+              Learn more
+            </Text>
+          </TouchableOpacity>
           <Text
             style={[
               globalStyles.bodyText,
-              { marginBottom: 10 },
+              { marginBottom: 5 },
             ]}
           >
-            To hear alarms outside of the app, please allow Dawn Chorus to send you notifications.
+            Or, allow notifications.
           </Text>
           <TouchableOpacity
             activeOpacity={0.7}
@@ -156,7 +209,7 @@ const AlarmListScreen = (props) => {
         </View>
       );
 
-      messageHeight = 240;
+      messageHeight = 280;
     } else if (Platform.OS === 'android') {
       messageHeight = 180;
     }
@@ -170,9 +223,11 @@ const AlarmListScreen = (props) => {
     messageButtonPress = () => { props.actions.newAlarm(); };
     messageHeight = 130;
   } else if (props.silentSwitchOn) {
-    message = 'Hey! Your phone is set to silent. You will not hear any of your alarms.';
-    messageButtonAccessibility = 'Your phone is set to silent. You will not hear any of your alarms.';
-    messageHeight = 110;
+    message = 'Your silent switch is on. There are additional steps you must take in order to hear your alarms.';
+    messageButtonAccessibility = 'Learn more';
+    messageButtonLabel = 'Learn more';
+    messageButtonPress = () => { props.actions.toggleInstructionModal(true); };
+    messageHeight = 180;
   }
 
   return (
@@ -236,15 +291,18 @@ const AlarmListScreen = (props) => {
         ref={(ref) => { messageRef = ref; }}
         style={[styles.message, { height: messageHeight }]}
       >
-        <View style={styles.messageText} accessible={message !== ''}>
-          <Text
-            style={[
-              globalStyles.bodyText,
-              message !== '' ? { marginTop: 10, marginBottom: 10 } : {},
-            ]}
-          >
-            {message}
-          </Text>
+        <View
+          style={[
+            styles.messageText,
+            message !== '' ? { marginTop: 10, marginBottom: 10 } : {},
+          ]}
+          accessible={message !== ''}
+        >
+          <View style={message !== '' ? { borderLeftWidth: 5, borderColor: RED, paddingLeft: 10, marginBottom: 5 } : {}}>
+            <Text style={globalStyles.bodyText}>
+              {message}
+            </Text>
+          </View>
           {messageButtonPress !== undefined &&
           <TouchableOpacity
             activeOpacity={0.7}
@@ -335,6 +393,105 @@ const AlarmListScreen = (props) => {
       </Animatable.View>
       }
 
+      { /** Extra steps modal **/ }
+      <Modal
+        animationType={'slide'}
+        transparent={true}
+        visible={props.instructionModal && Platform.OS === 'ios'}
+        onRequestClose={() => { props.actions.toggleInstructionModal(false); }}
+      >
+        <View
+          style={{
+            backgroundColor: OFFBLACK,
+            opacity: 0.4,
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+          }}
+        />
+        <View style={styles.instructionModal}>
+          <Image
+            source={require('../assets/InstructionModalBackground.png')}
+            style={[
+              { resizeMode: 'cover', flex: 1, width: width - 20, borderRadius: 3 },
+              height >= 667 ? { paddingBottom: 260, paddingTop: 60 } :
+                              { paddingBottom: 200, paddingTop: 50 },
+            ]}
+          >
+            <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
+              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={[styles.instructionText, { fontSize: 36, textAlign: 'right', color: GREEN, marginRight: 20, width: 50 }]}>
+                 1.
+                </Text>
+              </View>
+              <View style={styles.instructionTextContainer}>
+                <Text style={styles.instructionText}>
+                  {props.silentSwitchOn ?
+                  'Turn volume up (notifications will still be silenced)' :
+                  'Turn volume up'
+                   }
+                </Text>
+              </View>
+            </View>
+            <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
+              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <Text style={[styles.instructionText, { fontSize: 36, textAlign: 'right', fontSize: 36, color: GREEN, marginRight: 20, width: 50 }]}>
+                 2.
+                </Text>
+              </View>
+              <View style={styles.instructionTextContainer}>
+                <Text style={styles.instructionText}>
+                 Connect to power
+                </Text>
+              </View>
+            </View>
+            <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
+              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <Text style={[styles.instructionText, { fontSize: 36, textAlign: 'right', fontSize: 36, color: GREEN, marginRight: 20, width: 50 }]}>
+                 3.
+                </Text>
+              </View>
+              <View style={styles.instructionTextContainer}>
+                <Text style={styles.instructionText}>
+                 Leave your phone unlocked and open to Dawn Chorus
+                </Text>
+              </View>
+            </View>
+          </Image>
+          <View
+            style={{
+              position: 'absolute',
+              bottom: 30,
+              left: 0,
+              right: 0,
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: 56,
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                height: 56,
+                width: 56,
+                borderRadius: 28,
+                paddingLeft: 15,
+                paddingRight: 15,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: GREEN,
+              }}
+              onPress={() => { props.actions.toggleInstructionModal(false); }}
+            >
+              <Image
+                source={require('../assets/SaveButton.png')}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
       { /** Activity Indicator **/}
       {!props.loaded &&
         <View style={styles.loadingIndicator}>
@@ -353,6 +510,7 @@ AlarmListScreen.propTypes = {
   loaded: PropTypes.bool.isRequired,
   notificationPermission: PropTypes.string.isRequired,
   silentSwitchOn: PropTypes.bool.isRequired,
+  instructionModal: PropTypes.bool.isRequired,
   actions: PropTypes.shape({
     navigatorPop: PropTypes.func.isRequired,
     navigatorPush: PropTypes.func.isRequired,
@@ -361,6 +519,7 @@ AlarmListScreen.propTypes = {
     deleteAlarm: PropTypes.func.isRequired,
     setEditAlarm: PropTypes.func.isRequired,
     setActiveAlarm: PropTypes.func.isRequired,
+    toggleInstructionModal: PropTypes.func.isRequired,
   }).isRequired,
 };
 

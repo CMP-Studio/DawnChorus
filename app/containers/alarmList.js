@@ -16,6 +16,10 @@ import {
   navigatorPop,
 } from '../actions/navigator';
 
+import {
+  toggleInstructionModal,
+} from '../actions/notifications';
+
 const mapStateToProps = (state) => {
   return {
     screenReader: state.accessibility.screenReader,
@@ -23,6 +27,7 @@ const mapStateToProps = (state) => {
     loaded: state.alarms.loaded,
     notificationPermission: state.notificationSettings.notificationPermission,
     silentSwitchOn: state.notificationSettings.silentSwitchOn,
+    instructionModal: state.notificationSettings.instructionModal,
   };
 };
 
@@ -37,6 +42,7 @@ const mapDispatchToProps = (dispatch) => {
         setActiveAlarm,
         navigatorPush,
         navigatorPop,
+        toggleInstructionModal,
       }, dispatch),
   };
 };
