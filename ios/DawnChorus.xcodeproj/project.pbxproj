@@ -15,6 +15,7 @@
 		00E356F31AD99517003FC87E /* DawnChorusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* DawnChorusTests.m */; };
 		075B8EC31E57480F005953F2 /* mute.caf in Resources */ = {isa = PBXBuildFile; fileRef = 075B8EC21E5746EE005953F2 /* mute.caf */; };
 		075B8F1A1E5CD586005953F2 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 075B8F191E5CD586005953F2 /* LICENSE */; };
+		07AF1A421EA6FCFE00BF861E /* ChorusBirdStickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3238ADA01E709E1500586B8D /* ChorusBirdStickers.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		07FB0E4D1E732E9400771976 /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3238ADA21E709E1500586B8D /* Stickers.xcassets */; };
 		07FB0E4E1E73318D00771976 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3238ADA41E709E1500586B8D /* Info.plist */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
@@ -27,7 +28,6 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		1C625B35FF61432EA98E6C6C /* libRNSound.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 64233CD375D1449AA2574B25 /* libRNSound.a */; };
 		3238ADA31E709E1500586B8D /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3238ADA21E709E1500586B8D /* Stickers.xcassets */; };
-		3238ADA71E709E1500586B8D /* Sticker Pack.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3238ADA01E709E1500586B8D /* Sticker Pack.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3241C8161DDB634000A7700F /* libRNNotifications.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3241C8151DDB626000A7700F /* libRNNotifications.a */; };
 		32511D2D1E3A622C0029E644 /* CMSAccessibilityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32511D2B1E3A622C0029E644 /* CMSAccessibilityManager.swift */; };
 		32511D2E1E3A622C0029E644 /* CMSAccessibilityManagerBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 32511D2C1E3A622C0029E644 /* CMSAccessibilityManagerBridge.m */; };
@@ -164,13 +164,6 @@
 			remoteGlobalIDString = 01D7495A1CC96385007E93FA;
 			remoteInfo = RNIdleTimer;
 		};
-		3238ADA51E709E1500586B8D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 3238AD9F1E709E1500586B8D;
-			remoteInfo = "Sticker Pack";
-		};
 		3241C8141DDB626000A7700F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3241C8101DDB626000A7700F /* RNNotifications.xcodeproj */;
@@ -286,13 +279,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		3238ADC51E709E1500586B8D /* Embed App Extensions */ = {
+		07AF1A451EA6FCFE00BF861E /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 12;
+			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				3238ADA71E709E1500586B8D /* Sticker Pack.appex in Embed App Extensions */,
+				07AF1A421EA6FCFE00BF861E /* ChorusBirdStickers.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -324,7 +317,7 @@
 		225ED7A73CAD4438953A2F8B /* libRCTSilentSwitch.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTSilentSwitch.a; sourceTree = "<group>"; };
 		2E9B73ADE76642AFBA1E6183 /* libRNIdleTimer.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNIdleTimer.a; sourceTree = "<group>"; };
 		30B0AFF4331D4EE2AF5ACCF8 /* RNIdleTimer.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNIdleTimer.xcodeproj; path = "../node_modules/react-native-idle-timer/ios/RNIdleTimer.xcodeproj"; sourceTree = "<group>"; };
-		3238ADA01E709E1500586B8D /* Sticker Pack.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Sticker Pack.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3238ADA01E709E1500586B8D /* ChorusBirdStickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ChorusBirdStickers.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		3238ADA21E709E1500586B8D /* Stickers.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Stickers.xcassets; sourceTree = "<group>"; };
 		3238ADA41E709E1500586B8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3241C8101DDB626000A7700F /* RNNotifications.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNNotifications.xcodeproj; path = "../node_modules/react-native-notifications/RNNotifications/RNNotifications.xcodeproj"; sourceTree = "<group>"; };
@@ -554,12 +547,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		3238ADA11E709E1500586B8D /* Sticker Pack */ = {
+		3238ADA11E709E1500586B8D /* Chorus Bird Stickers */ = {
 			isa = PBXGroup;
 			children = (
 				3238ADA21E709E1500586B8D /* Stickers.xcassets */,
 				3238ADA41E709E1500586B8D /* Info.plist */,
 			);
+			name = "Chorus Bird Stickers";
 			path = "Sticker Pack";
 			sourceTree = "<group>";
 		};
@@ -712,7 +706,7 @@
 				13B07FAE1A68108700A75B9A /* DawnChorus */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* DawnChorusTests */,
-				3238ADA11E709E1500586B8D /* Sticker Pack */,
+				3238ADA11E709E1500586B8D /* Chorus Bird Stickers */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				1E92461F4D2A439391A23ECF /* Frameworks */,
 			);
@@ -725,7 +719,7 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* DawnChorus.app */,
 				00E356EE1AD99517003FC87E /* DawnChorusTests.xctest */,
-				3238ADA01E709E1500586B8D /* Sticker Pack.appex */,
+				3238ADA01E709E1500586B8D /* ChorusBirdStickers.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -785,21 +779,20 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				3238ADC51E709E1500586B8D /* Embed App Extensions */,
+				07AF1A451EA6FCFE00BF861E /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				3238ADA61E709E1500586B8D /* PBXTargetDependency */,
 			);
 			name = DawnChorus;
 			productName = "Hello World";
 			productReference = 13B07F961A680F5B00A75B9A /* DawnChorus.app */;
 			productType = "com.apple.product-type.application";
 		};
-		3238AD9F1E709E1500586B8D /* Sticker Pack */ = {
+		3238AD9F1E709E1500586B8D /* ChorusBirdStickers */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3238ADC41E709E1500586B8D /* Build configuration list for PBXNativeTarget "Sticker Pack" */;
+			buildConfigurationList = 3238ADC41E709E1500586B8D /* Build configuration list for PBXNativeTarget "ChorusBirdStickers" */;
 			buildPhases = (
 				3238AD9E1E709E1500586B8D /* Resources */,
 			);
@@ -807,9 +800,9 @@
 			);
 			dependencies = (
 			);
-			name = "Sticker Pack";
+			name = ChorusBirdStickers;
 			productName = "Sticker Pack";
-			productReference = 3238ADA01E709E1500586B8D /* Sticker Pack.appex */;
+			productReference = 3238ADA01E709E1500586B8D /* ChorusBirdStickers.appex */;
 			productType = "com.apple.product-type.app-extension.messages-sticker-pack";
 		};
 /* End PBXNativeTarget section */
@@ -926,7 +919,7 @@
 			targets = (
 				13B07F861A680F5B00A75B9A /* DawnChorus */,
 				00E356ED1AD99517003FC87E /* DawnChorusTests */,
-				3238AD9F1E709E1500586B8D /* Sticker Pack */,
+				3238AD9F1E709E1500586B8D /* ChorusBirdStickers */,
 			);
 		};
 /* End PBXProject section */
@@ -1238,11 +1231,6 @@
 			target = 13B07F861A680F5B00A75B9A /* DawnChorus */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
-		3238ADA61E709E1500586B8D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 3238AD9F1E709E1500586B8D /* Sticker Pack */;
-			targetProxy = 3238ADA51E709E1500586B8D /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -1388,7 +1376,6 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = SZY22WCGL8;
 				INFOPLIST_FILE = "Sticker Pack/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.innovationstudio.dawnchorus.chorusbirdstickers;
@@ -1407,7 +1394,6 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = SZY22WCGL8;
 				INFOPLIST_FILE = "Sticker Pack/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.innovationstudio.dawnchorus.chorusbirdstickers;
@@ -1545,7 +1531,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3238ADC41E709E1500586B8D /* Build configuration list for PBXNativeTarget "Sticker Pack" */ = {
+		3238ADC41E709E1500586B8D /* Build configuration list for PBXNativeTarget "ChorusBirdStickers" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3238ADA81E709E1500586B8D /* Debug */,
