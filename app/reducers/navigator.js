@@ -52,7 +52,11 @@ if (Platform.OS === 'ios') {
 export default function navigator(state = initialState, action) {
   switch (action.type) {
     case LOAD_ALARMS: {
-      if (action.activeAlarm !== null) return NavigationStateUtils.push(state, { key: ALARM_SCREEN });
+      if (action.activeAlarm !== null && state.routes[state.index].key !== ALARM_SCREEN) {
+        return NavigationStateUtils.push(state, { key: ALARM_SCREEN });
+      } else if (action.activeAlarm === null && state.routes[state.index].key === ALARM_SCREEN) {
+        return NavigationStateUtils.pop(state);
+      }
       return state;
     }
 
