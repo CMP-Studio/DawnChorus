@@ -502,7 +502,6 @@ const AlarmListScreen = (props) => {
               }}
               onPress={() => { props.actions.toggleInstructionModal(false); }}
               accessibilityLabel={'Got it! Tap to exit.'}
-              accessibilityTraits={'Button'}
             >
               <Image
                 source={require('../assets/SaveButton.png')}
