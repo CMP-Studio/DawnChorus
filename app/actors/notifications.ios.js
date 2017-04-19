@@ -15,7 +15,6 @@ import {
   updateNotificationPermissions,
   updateSilentSwitchState,
   NOTIFICATION_PERMISSIONS_STATUS_AUTHORIZED,
-  NOTIFICATION_PERMISSIONS_STATUS_DENIED,
   NOTIFICATION_PERMISSIONS_STATUS_NOTDETERMINED,
 } from '../actions/notifications';
 
@@ -40,9 +39,15 @@ export default class NotificationActor {
     SilentSwitch.addEventListener((silent) => {
       this.silent = silent;
       if (AppState.currentState === 'active') {
-        if (silent) {
+        if (silent || this.permissions !== NOTIFICATION_PERMISSIONS_STATUS_AUTHORIZED) {
+          // console.log('timer is off')
+          // console.log('screen will not dim')
+          // console.log('setting idle timer disabled to true, notifications.ios.js line 49');
           IdleTimerManager.setIdleTimerDisabled(true);
-        } else if (!silent && this.permissions !== NOTIFICATION_PERMISSIONS_STATUS_DENIED) {
+        } else {
+          // console.log('timer is on');
+          // console.log('screen will dim');
+          // console.log('setting idle timer disabled to false, notifications.ios.js line 43');
           IdleTimerManager.setIdleTimerDisabled(false);
         }
         this.dispatch(updateSilentSwitchState(silent));

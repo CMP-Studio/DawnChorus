@@ -13,6 +13,9 @@ export default class TimeWatcherActor {
     this.timerID = null;
     this.timerType = null;
 
+    // console.log('timer is off')
+    // console.log('screen will not dim')
+    // console.log('setting idle timer disabled to true, notifications.ios.js line 49');
     IdleTimerManager.setIdleTimerDisabled(true);
     this.watchTime();
   }
@@ -40,6 +43,9 @@ export default class TimeWatcherActor {
 
   killActor(silent) {
     if (!silent) {
+      // console.log('timer is on');
+      // console.log('screen will dim');
+      // console.log('setting idle timer disabled to false, notifications.ios.js line 43');
       IdleTimerManager.setIdleTimerDisabled(false);
     }
 

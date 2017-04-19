@@ -437,8 +437,8 @@ const AlarmListScreen = (props) => {
             </View>
             <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
               <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={[styles.instructionText, { fontSize: 36, textAlign: 'right', fontSize: 36, color: GREEN, marginRight: 20, width: 50 }]}>
-                 2.
+                <Text style={[styles.instructionText, { fontSize: 36, textAlign: 'right', color: GREEN, marginRight: 20, width: 50 }]}>
+                  2.
                 </Text>
               </View>
               <View style={styles.instructionTextContainer}>
@@ -449,7 +449,7 @@ const AlarmListScreen = (props) => {
             </View>
             <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
               <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={[styles.instructionText, { fontSize: 36, textAlign: 'right', fontSize: 36, color: GREEN, marginRight: 20, width: 50 }]}>
+                <Text style={[styles.instructionText, { fontSize: 36, textAlign: 'right', color: GREEN, marginRight: 20, width: 50 }]}>
                  3.
                 </Text>
               </View>
