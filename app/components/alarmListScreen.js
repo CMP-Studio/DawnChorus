@@ -171,7 +171,7 @@ const AlarmListScreen = (props) => {
             activeOpacity={0.7}
             style={[styles.messageButton, { marginBottom: 15 }]}
             onPress={() => { props.actions.toggleInstructionModal(true); }}
-            accessibilityLabel={'Learn more.'}
+            accessibilityLabel={'Tap to Learn more.'}
           >
             <Text style={[globalStyles.bodyTextLight, styles.urlButtonText]}>
               Learn more
@@ -224,7 +224,7 @@ const AlarmListScreen = (props) => {
     messageHeight = 130;
   } else if (props.silentSwitchOn) {
     message = 'Your silent switch is on. There are additional steps you must take in order to hear your alarms.';
-    messageButtonAccessibility = 'Learn more';
+    messageButtonAccessibility = 'Tap to learn more.';
     messageButtonLabel = 'Learn more';
     messageButtonPress = () => { props.actions.toggleInstructionModal(true); };
     messageHeight = 180;
@@ -296,9 +296,11 @@ const AlarmListScreen = (props) => {
             styles.messageText,
             message !== '' ? { marginTop: 10, marginBottom: 10 } : {},
           ]}
-          accessible={message !== ''}
         >
-          <View style={message !== '' ? { borderLeftWidth: 5, borderColor: RED, paddingLeft: 10, marginBottom: 5 } : {}}>
+          <View
+            style={message !== '' ? { borderLeftWidth: 5, borderColor: RED, paddingLeft: 10, marginBottom: 5 } : {}}
+            accessible={message !== ''}
+          >
             <Text style={globalStyles.bodyText}>
               {message}
             </Text>
@@ -309,6 +311,7 @@ const AlarmListScreen = (props) => {
             style={styles.messageButton}
             onPress={messageButtonPress}
             accessibilityLabel={messageButtonAccessibility}
+            accessible={messageButtonPress !== undefined}
           >
             <Text style={[globalStyles.bodyTextLight, styles.urlButtonText]}>
               {messageButtonLabel}
@@ -420,7 +423,14 @@ const AlarmListScreen = (props) => {
                               { paddingBottom: 200, paddingTop: 50 },
             ]}
           >
-            <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
+            <View
+              style={{ flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}
+              accessible={true}
+              accessibilityLabel={props.silentSwitchOn ?
+              '1. Turn volume up (notifications will still be silenced)' :
+              '1. Turn volume up'
+               }
+            >
               <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={[styles.instructionText, { fontSize: 36, textAlign: 'right', color: GREEN, marginRight: 20, width: 50 }]}>
                  1.
@@ -435,7 +445,11 @@ const AlarmListScreen = (props) => {
                 </Text>
               </View>
             </View>
-            <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
+            <View
+              style={{ flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}
+              accessible={true}
+              accessibilityLabel={'2. Connect to power.'}
+            >
               <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={[styles.instructionText, { fontSize: 36, textAlign: 'right', color: GREEN, marginRight: 20, width: 50 }]}>
                   2.
@@ -447,7 +461,11 @@ const AlarmListScreen = (props) => {
                 </Text>
               </View>
             </View>
-            <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
+            <View
+              style={{ flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}
+              accessible={true}
+              accessibilityLabel={'3. Leave your phone unlocked and open to Dawn Chorus.'}
+            >
               <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={[styles.instructionText, { fontSize: 36, textAlign: 'right', color: GREEN, marginRight: 20, width: 50 }]}>
                  3.
@@ -483,6 +501,8 @@ const AlarmListScreen = (props) => {
                 backgroundColor: GREEN,
               }}
               onPress={() => { props.actions.toggleInstructionModal(false); }}
+              accessibilityLabel={'Got it! Tap to exit.'}
+              accessibilityTraits={'Button'}
             >
               <Image
                 source={require('../assets/SaveButton.png')}

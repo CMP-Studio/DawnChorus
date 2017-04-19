@@ -143,6 +143,9 @@ const EditAlarmScreen = (props) => {
                   borderRadius: width <= 320 ? 18 : 20,
                 } : {},
               ]}
+              accessible={true}
+              accessibilityLabel={props.sampleChorus ? 'Tap to stop sampling chorus.' : 'Tap to sample chorus.'}
+              accessibilityTraits={['button', 'startsMedia']}
               activeOpacity={props.alarm.chorus.length > 0 ? 0.7 : 1}
               onPress={() => {
                 if (props.alarm.chorus.length) {
