@@ -7,10 +7,6 @@ import {
   clearNotifications,
 } from './notifications.js';
 
-import {
-  navigatorPush,
-} from './navigator.js';
-
 import { getRandomBirds } from '../utilities.js';
 
 import birds from './../data/birds';
@@ -46,7 +42,7 @@ function checkForLingeringAlarms(alarmList) {
   return alarmList.map((alarm) => {
     if (alarm.notificationTime !== null) {
       const alarmTimeDiff = now.diff(alarm.notificationTime, 'minutes');
-      if (alarmTimeDiff > 5) {
+      if (alarmTimeDiff >= 5) {
         clearNotifications(alarm);
         return (Object.assign({}, alarm, {
           on: false,
@@ -58,7 +54,7 @@ function checkForLingeringAlarms(alarmList) {
       }
     } else if (alarm.snoozeTime !== null) {
       const snoozeTimeDiff = now.diff(alarm.snoozeTime.actual, 'minutes');
-      if (snoozeTimeDiff > 5) {
+      if (snoozeTimeDiff >= 5) {
         clearNotifications(alarm);
         return (Object.assign({}, alarm, {
           on: false,
@@ -85,9 +81,9 @@ export function loadAlarms() {
       // set local alarm list
       alarms = verifiedAlarmList;
 
-      // double check that active alarm is in list otherwise set it to null
+      // double check that active alarm is in list (and on) otherwise set it to null
       const activeAlarmListing = verifiedAlarmList.filter((alarm) => {
-        return alarm.uuid === JSON.parse(activeAlarmUUID);
+        return (alarm.uuid === JSON.parse(activeAlarmUUID) && alarm.on);
       });
 
       // set locally active alarm
