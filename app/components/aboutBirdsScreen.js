@@ -173,7 +173,7 @@ const AboutBirdsScreen = (props) => {
         <View
           style={[
             styles.credits,
-            Platform.OS === 'ios' ? { height: height * 0.9, top: (height * 4.2) } :
+            Platform.OS === 'ios' ? { height: height * 0.9, top: (height * 4.18) } :
                                     { height: height - 94, top: (height * 4.1) },
           ]}
         >
@@ -301,6 +301,15 @@ const AboutBirdsScreen = (props) => {
                 </View>
               </View>
             </TouchableOpacity>
+            { /** Link **/ }
+            <View
+              accessibilityLabel={'Bird illustrations by Sam Ticknor.'}
+              style={[styles.link, height <= 568 ? { marginBottom: 5 } : {}]}
+            >
+              <Text style={[globalStyles.bodyText]}>
+                Bird illustrations by Sam Ticknor.
+              </Text>
+            </View>
           </View>
         </View>
       </ScrollView>
