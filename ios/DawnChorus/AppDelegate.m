@@ -58,13 +58,16 @@
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
+  NSLog(@"XCODE PUSH REGISTERED");
   [RNNotifications didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
 }
 
 
 // Required for the notification event.
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:fetchCompletionHandler:(NSDictionary *)notification {
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)notification fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+  NSLog(@"XCODE PUSH REGISTERED");
   [RNNotifications didReceiveRemoteNotification:notification];
+  completionHandler();
 }
 
 // Required for the localNotification event.

@@ -92,8 +92,11 @@ export function scheduleAlarm(alarm) {
   alarmTime.set('millisecond', 0);
 
   // Calling postNotification
-  let data = { alarmUUID: alarm.uuid } 
-  let contents = { 'en': 'Dawn Chorus Alarm' }
+  let data = { 
+    alarmUUID: alarm.uuid,
+    content_available: 1,
+  } 
+  let contents = {};
   console.log("" + alarm.time.hour + ":" + alarm.time.minute);
   OneSignal.postNotification(
     contents, 
@@ -103,8 +106,7 @@ export function scheduleAlarm(alarm) {
       priority: 10,
       delivery_time_of_day: alarm.time.hour + ":" + alarm.time.minute,
       delayed_option: "timezone",
-      content_available: true,
-      contentAvailable: true,
+      content_available: 1,
     }
   );
 
@@ -131,7 +133,7 @@ export function scheduleAlarm(alarm) {
 
     if (bird !== null) {
       if (Platform.OS === 'ios') {
-        createiOSNotification(bird, notificationCount, date, alarm);
+       // createiOSNotification(bird, notificationCount, date, alarm);
       } else if (Platform.OS === 'android') {
         createAndroidNotification(bird, notificationCount, date, alarm);
       }

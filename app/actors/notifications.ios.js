@@ -14,6 +14,7 @@ import Sound from 'react-native-sound';
 import SilentSwitch from 'react-native-silent-switch';
 
 import OneSignal from 'react-native-onesignal';
+import { loadSoundPromise } from '../utilities';
 
 import {
   updateNotificationPermissions,
@@ -29,10 +30,6 @@ import TimeWatcherActor from './timeWatcher';
 
 export default class NotificationActor {
   constructor(store) {
-    this.soundObject = new Sound('forest.wav', Sound.MAIN_BUNDLE, (error) => {
-    if (error) { console.log('failed to load the sound', error); return; }});
-    this.soundObject.setNumberOfLoops(-1);
-
     this.store = store;
     this.dispatch = store.dispatch;
     this.timeWatcherActor = null;
@@ -149,11 +146,33 @@ export default class NotificationActor {
     updatePushNotificationID(device.userId);
   }
 
+
   onPushNotificationReceived(notification) {
-    //if (this.soundObject && this.soundObject.isLoaded()) {
-    //  this.soundObject.play();
-    //}
+    // Load the sound file 'whoosh.mp3' from the app bundle
+    // See notes below about preloading sounds within initialization code below.
+    console.log('playn song');
+    var whoosh = new Sound('forest.wav', Sound.MAIN_BUNDLE, (error) => {
+      if (error) {
+        console.log('failed to load the sound', error);
+        return;
+      }
+      // loaded successfully
+
+      console.log('duration in seconds: ' + whoosh.getDuration() + 'number of channels: ' + whoosh.getNumberOfChannels());
+        // Play the sound with an onEnd callback
+         whoosh.play((success) => {
+        if (success) {
+          console.log('successfully finished playing');
+        } else {
+          console.log('playback failed due to audio decoding errors');
+          // reset the player to its uninitialized state (android only)
+          // this is the only option to recover after an error occured and use the player again
+          whoosh.reset();
+        }
+      });
+    });
     console.log(notification);
+    console.log('yes the push was gotten');
     this.dispatch(soundAlarm(notification.payload.additionalData.p2p_notification.alarmUUID));
   }
 
