@@ -1,6 +1,7 @@
 import { Platform } from 'react-native';
 import NotificationsIOS from 'react-native-notifications';
 import PushNotification from 'react-native-push-notification';
+import OneSignal from 'react-native-onesignal';
 
 import moment from 'moment';
 
@@ -9,6 +10,7 @@ export const LOAD_NOTIFICATIONS = 'LOAD_NOTIFICATIONS';
 export const CLEAR_NOTIFICATIONS = 'CLEAR_NOTIFICATIONS';
 export const UPDATE_NOTIFICATION_PERMISSIONS = 'UPDATE_NOTIFICATION_PERMISSIONS';
 export const UPDATE_SILENT_SWITCH_STATE = 'UPDATE_SILENT_SWITCH_STATE';
+export const UPDATE_PUSH_NOTIFICATION_ID = 'UPDATE_PUSH_NOTIFICATION_ID';
 export const TOGGLE_INSTRUCTION_MODAL = 'TOGGLE_INSTRUCTION_MODAL';
 
 // *** Status Types ***
@@ -33,6 +35,8 @@ const tweetyStrings = [
   'is wondering if you\'ll ever wake up!',
   'is wondering if you\'ll ever wake up!',
 ];
+
+let playerId = null;
 
 export function clearNotifications(alarm) {
   if (Platform.OS === 'ios') {
@@ -86,6 +90,23 @@ export function scheduleAlarm(alarm) {
   alarmTime.set('minute', alarm.time.minute);
   alarmTime.set('second', 0);
   alarmTime.set('millisecond', 0);
+
+  // Calling postNotification
+  let data = { alarmUUID: alarm.uuid } 
+  let contents = { 'en': 'Dawn Chorus Alarm' }
+  console.log("" + alarm.time.hour + ":" + alarm.time.minute);
+  OneSignal.postNotification(
+    contents, 
+    data, 
+    playerId, 
+    {
+      priority: 10,
+      delivery_time_of_day: alarm.time.hour + ":" + alarm.time.minute,
+      delayed_option: "timezone",
+      content_available: true,
+      contentAvailable: true,
+    }
+  );
 
   // This function will be called when an alarm is saved, or turned on
   const date = moment();
@@ -177,6 +198,14 @@ export function scheduleSnoozedAlarm(alarm) {
       minute: snoozeTime.minute(),
     },
   };
+}
+
+export function updatePushNotificationID(id) {
+  playerId = id;
+  return {
+    type: UPDATE_PUSH_NOTIFICATION_ID,
+    id,
+  }
 }
 
 export function updateNotificationPermissions(update) {

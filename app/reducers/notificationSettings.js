@@ -1,6 +1,7 @@
 import {
   UPDATE_NOTIFICATION_PERMISSIONS,
   UPDATE_SILENT_SWITCH_STATE,
+  UPDATE_PUSH_NOTIFICATION_ID,
   TOGGLE_INSTRUCTION_MODAL,
   NOTIFICATION_PERMISSIONS_STATUS_NOTDETERMINED,
 } from '../actions/notifications';
@@ -9,6 +10,7 @@ const initialState = {
   notificationPermission: NOTIFICATION_PERMISSIONS_STATUS_NOTDETERMINED,
   silentSwitchOn: false,
   instructionModal: false,
+  pushNotificationId: null,
 };
 
 export default function notificationSettings(state = initialState, action) {
@@ -24,6 +26,12 @@ export default function notificationSettings(state = initialState, action) {
       return (Object.assign({}, state, {
         silentSwitchOn: action.silent,
         instructionModal: !action.silent ? false : state.instructionModal,
+      }));
+    }
+
+    case UPDATE_PUSH_NOTIFICATION_ID: {
+      return (Object.assign({}, state, {
+        pushNotificationId: action.id,
       }));
     }
 

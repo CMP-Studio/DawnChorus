@@ -12,6 +12,7 @@ import AccessibilityActor from './actors/accessibility';
 
 const store = configureStore();
 
+
 async function loader() {
   await (store.dispatch(loadAlarms()));
   this.notificationActor = new NotificationActor(store);

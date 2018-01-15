@@ -9,11 +9,16 @@ import IdleTimerManager from 'react-native-idle-timer';
 
 import NotificationsIOS, { NotificationAction, NotificationCategory } from 'react-native-notifications';
 
+import Sound from 'react-native-sound';
+
 import SilentSwitch from 'react-native-silent-switch';
+
+import OneSignal from 'react-native-onesignal';
 
 import {
   updateNotificationPermissions,
   updateSilentSwitchState,
+  updatePushNotificationID,
   NOTIFICATION_PERMISSIONS_STATUS_AUTHORIZED,
   NOTIFICATION_PERMISSIONS_STATUS_NOTDETERMINED,
 } from '../actions/notifications';
@@ -24,6 +29,10 @@ import TimeWatcherActor from './timeWatcher';
 
 export default class NotificationActor {
   constructor(store) {
+    this.soundObject = new Sound('forest.wav', Sound.MAIN_BUNDLE, (error) => {
+    if (error) { console.log('failed to load the sound', error); return; }});
+    this.soundObject.setNumberOfLoops(-1);
+
     this.store = store;
     this.dispatch = store.dispatch;
     this.timeWatcherActor = null;
@@ -54,6 +63,12 @@ export default class NotificationActor {
       }
     });
 
+    // Push Notifications Configure
+    OneSignal.addEventListener('ids', this.onIds.bind(this));
+    OneSignal.addEventListener('received', this.onPushNotificationReceived.bind(this));
+    OneSignal.configure();
+
+    // Local Notifications Configure
     NotificationsIOS.addEventListener('notificationReceivedForeground', this.onNotificationReceivedForeground.bind(this));
     NotificationsIOS.addEventListener('notificationReceivedBackground', this.onNotificationReceivedBackground.bind(this));
     NotificationsIOS.addEventListener('notificationOpened', this.onNotificationOpened.bind(this));
@@ -102,6 +117,9 @@ export default class NotificationActor {
     AppState.removeEventListener('change');
     SilentSwitch.removeEventListener();
 
+    OneSignal.removeEventListener('ids', this.onIds.bind(this));
+    OneSignal.removeEventListener('received', this.onReceived.bind(this));
+
     NotificationsIOS.removeEventListener('notificationReceivedForeground', this.onNotificationReceivedForeground.bind(this));
     NotificationsIOS.removeEventListener('notificationReceivedBackground', this.onNotificationReceivedForeground.bind(this));
     NotificationsIOS.removeEventListener('notificationOpened', this.onNotificationOpened.bind(this));
@@ -111,6 +129,8 @@ export default class NotificationActor {
       this.TimeWatcherActor.killActor(this.silent);
     }
   }
+
+  // Local Nofitication call backs
 
   onNotificationReceivedForeground(notification) {
     this.dispatch(soundAlarm(notification.getData().alarmUUID));
@@ -122,6 +142,19 @@ export default class NotificationActor {
 
   onNotificationOpened(notification) {
     this.dispatch(soundAlarm(notification.getData().alarmUUID));
+  }
+
+  // One Signal call backs
+  onIds(device) {
+    updatePushNotificationID(device.userId);
+  }
+
+  onPushNotificationReceived(notification) {
+    //if (this.soundObject && this.soundObject.isLoaded()) {
+    //  this.soundObject.play();
+    //}
+    console.log(notification);
+    this.dispatch(soundAlarm(notification.payload.additionalData.p2p_notification.alarmUUID));
   }
 
   async checkStatus() {

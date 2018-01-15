@@ -42,6 +42,11 @@
       "scale" : "2x"
     },
     {
+      "idiom" : "ios-marketing",
+      "size" : "1024x1024",
+      "scale" : "1x"
+    },
+    {
       "size" : "27x20",
       "idiom" : "universal",
       "filename" : "Icon-Messages-App-27x20@2x.png",

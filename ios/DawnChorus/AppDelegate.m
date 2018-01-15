@@ -16,6 +16,7 @@
 #import "RCTRootView.h"
 
 @implementation AppDelegate
+@synthesize oneSignal = _oneSignal;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -31,7 +32,7 @@
     
   UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
   [center removeAllDeliveredNotifications];
-
+  
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = rootView;
@@ -40,6 +41,12 @@
   UIView* launchScreenView = [[[NSBundle mainBundle] loadNibNamed:@"LaunchScreen" owner:self options:nil] objectAtIndex:0];
   launchScreenView.frame = self.window.bounds;
   rootView.loadingView = launchScreenView;
+  
+  // For requiring push notification permissions manually.
+  self.oneSignal = [[RCTOneSignal alloc] initWithLaunchOptions:launchOptions
+                                                         appId:@"Appid"
+                                                         settings:@{kOSSettingsKeyAutoPrompt: @false}];
+
   return YES;
 }
 
@@ -56,7 +63,7 @@
 
 
 // Required for the notification event.
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)notification {
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:fetchCompletionHandler:(NSDictionary *)notification {
   [RNNotifications didReceiveRemoteNotification:notification];
 }
 

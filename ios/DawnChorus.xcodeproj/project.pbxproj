@@ -16,6 +16,7 @@
 		075B8EC31E57480F005953F2 /* mute.caf in Resources */ = {isa = PBXBuildFile; fileRef = 075B8EC21E5746EE005953F2 /* mute.caf */; };
 		075B8F1A1E5CD586005953F2 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 075B8F191E5CD586005953F2 /* LICENSE */; };
 		07AF1A421EA6FCFE00BF861E /* ChorusBirdStickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3238ADA01E709E1500586B8D /* ChorusBirdStickers.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		07B2756A200BFA110008BB36 /* forest.wav in Resources */ = {isa = PBXBuildFile; fileRef = 07B27569200BFA110008BB36 /* forest.wav */; };
 		07FB0E4D1E732E9400771976 /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3238ADA21E709E1500586B8D /* Stickers.xcassets */; };
 		07FB0E4E1E73318D00771976 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3238ADA41E709E1500586B8D /* Info.plist */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
@@ -40,6 +41,7 @@
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		836C9067E24241BB9E93A1E9 /* libRCTSilentSwitch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 225ED7A73CAD4438953A2F8B /* libRCTSilentSwitch.a */; };
 		8667F0011B0846468A453211 /* libRNIdleTimer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E9B73ADE76642AFBA1E6183 /* libRNIdleTimer.a */; };
+		DE6944ADD53E40DFB3FC6BCD /* libRCTOneSignal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE97CD7BF32646A6AD99A0E7 /* libRCTOneSignal.a */; };
 		E95AB1E71E1D82B0001A4E2C /* american_redstart_notification.aif in Resources */ = {isa = PBXBuildFile; fileRef = E95AB1D31E1D82B0001A4E2C /* american_redstart_notification.aif */; };
 		E95AB1E81E1D82B0001A4E2C /* baltimore_oriole_notification.aif in Resources */ = {isa = PBXBuildFile; fileRef = E95AB1D41E1D82B0001A4E2C /* baltimore_oriole_notification.aif */; };
 		E95AB1E91E1D82B0001A4E2C /* black_capped_chickadee_notification.aif in Resources */ = {isa = PBXBuildFile; fileRef = E95AB1D51E1D82B0001A4E2C /* black_capped_chickadee_notification.aif */; };
@@ -83,7 +85,6 @@
 		E9B9BC7B1DEF4B9C00E83F5F /* wood_thrush_loop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E9B9BC671DEF4B9C00E83F5F /* wood_thrush_loop.mp3 */; };
 		E9B9BC7C1DEF4B9C00E83F5F /* yellow_bellied_sapsucker_loop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E9B9BC681DEF4B9C00E83F5F /* yellow_bellied_sapsucker_loop.mp3 */; };
 		E9B9BC7E1DF0892F00E83F5F /* Branches.png in Resources */ = {isa = PBXBuildFile; fileRef = E9B9BC7D1DF0892F00E83F5F /* Branches.png */; };
-		E9EDA6CD1E01CAA200702DC9 /* libRNShakeEvent.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E9EDA6CC1E01CA9D00702DC9 /* libRNShakeEvent.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -135,6 +136,20 @@
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RCTSilentSwitch;
+		};
+		07B275672007E9620008BB36 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 07B275632007E9620008BB36 /* RNShakeEvent.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNShakeEvent;
+		};
+		07D350D32007E5CF0076BFB0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D8F64A5743BC4986B5672EEF /* RCTOneSignal.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3245CDED1BFEE35C00EABF68;
+			remoteInfo = RCTOneSignal;
 		};
 		139105C01AF99BAD00B5F7CC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -269,13 +284,6 @@
 			remoteGlobalIDString = 2DD0EFE61DA8533A00B0C975;
 			remoteInfo = "RCTPushNotification-tvOS";
 		};
-		E9EDA6CB1E01CA9D00702DC9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E9EDA6C71E01CA9D00702DC9 /* RNShakeEvent.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = RNShakeEvent;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -304,6 +312,8 @@
 		00E356F21AD99517003FC87E /* DawnChorusTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DawnChorusTests.m; sourceTree = "<group>"; };
 		075B8EC21E5746EE005953F2 /* mute.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = mute.caf; sourceTree = "<group>"; };
 		075B8F191E5CD586005953F2 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		07B275632007E9620008BB36 /* RNShakeEvent.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNShakeEvent.xcodeproj; path = "../node_modules/react-native-shake-event/ios/RNShakeEvent.xcodeproj"; sourceTree = "<group>"; };
+		07B27569200BFA110008BB36 /* forest.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = forest.wav; path = ../../forest.wav; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* DawnChorus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DawnChorus.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -334,6 +344,7 @@
 		64233CD375D1449AA2574B25 /* libRNSound.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSound.a; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		D8F64A5743BC4986B5672EEF /* RCTOneSignal.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTOneSignal.xcodeproj; path = "../node_modules/react-native-onesignal/ios/RCTOneSignal.xcodeproj"; sourceTree = "<group>"; };
 		E95AB1D31E1D82B0001A4E2C /* american_redstart_notification.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = american_redstart_notification.aif; sourceTree = "<group>"; };
 		E95AB1D41E1D82B0001A4E2C /* baltimore_oriole_notification.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = baltimore_oriole_notification.aif; sourceTree = "<group>"; };
 		E95AB1D51E1D82B0001A4E2C /* black_capped_chickadee_notification.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = black_capped_chickadee_notification.aif; sourceTree = "<group>"; };
@@ -378,7 +389,7 @@
 		E9B9BC681DEF4B9C00E83F5F /* yellow_bellied_sapsucker_loop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = yellow_bellied_sapsucker_loop.mp3; path = ../sounds/yellow_bellied_sapsucker_loop.mp3; sourceTree = "<group>"; };
 		E9B9BC7D1DF0892F00E83F5F /* Branches.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Branches.png; sourceTree = "<group>"; };
 		E9E1A92E1DD0E1390069EC9A /* DawnChorus.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = DawnChorus.entitlements; path = DawnChorus/DawnChorus.entitlements; sourceTree = "<group>"; };
-		E9EDA6C71E01CA9D00702DC9 /* RNShakeEvent.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNShakeEvent.xcodeproj; path = "../node_modules/react-native-shake-event/RNShakeEvent.xcodeproj"; sourceTree = "<group>"; };
+		EE97CD7BF32646A6AD99A0E7 /* libRCTOneSignal.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTOneSignal.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -407,10 +418,10 @@
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
-				E9EDA6CD1E01CAA200702DC9 /* libRNShakeEvent.a in Frameworks */,
 				1C625B35FF61432EA98E6C6C /* libRNSound.a in Frameworks */,
 				836C9067E24241BB9E93A1E9 /* libRCTSilentSwitch.a in Frameworks */,
 				8667F0011B0846468A453211 /* libRNIdleTimer.a in Frameworks */,
+				DE6944ADD53E40DFB3FC6BCD /* libRCTOneSignal.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -480,6 +491,33 @@
 			isa = PBXGroup;
 			children = (
 				077E4A2B1E3FA28100EAACD7 /* libRCTSilentSwitch.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		079A44D22007E270008E54D0 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				64233CD375D1449AA2574B25 /* libRNSound.a */,
+				225ED7A73CAD4438953A2F8B /* libRCTSilentSwitch.a */,
+				2E9B73ADE76642AFBA1E6183 /* libRNIdleTimer.a */,
+				EE97CD7BF32646A6AD99A0E7 /* libRCTOneSignal.a */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		07B275642007E9620008BB36 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				07B275682007E9620008BB36 /* libRNShakeEvent.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		07D350D02007E5CF0076BFB0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				07D350D42007E5CF0076BFB0 /* libRCTOneSignal.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -587,6 +625,7 @@
 			isa = PBXGroup;
 			children = (
 				075B8EC21E5746EE005953F2 /* mute.caf */,
+				07B27569200BFA110008BB36 /* forest.wav */,
 				E95AB1D31E1D82B0001A4E2C /* american_redstart_notification.aif */,
 				E95AB1D41E1D82B0001A4E2C /* baltimore_oriole_notification.aif */,
 				E95AB1D51E1D82B0001A4E2C /* black_capped_chickadee_notification.aif */,
@@ -670,8 +709,8 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				07B275632007E9620008BB36 /* RNShakeEvent.xcodeproj */,
 				E9B582841E142AA200A953A6 /* RCTPushNotification.xcodeproj */,
-				E9EDA6C71E01CA9D00702DC9 /* RNShakeEvent.xcodeproj */,
 				E96C011A1DF88DD700DFEEFC /* RCTAnimation.xcodeproj */,
 				3241C8101DDB626000A7700F /* RNNotifications.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
@@ -687,6 +726,7 @@
 				4DBEFE8CA3BD463C8D8D0D7D /* RNSound.xcodeproj */,
 				17EFC3D0A2404DF1B7603314 /* RCTSilentSwitch.xcodeproj */,
 				30B0AFF4331D4EE2AF5ACCF8 /* RNIdleTimer.xcodeproj */,
+				D8F64A5743BC4986B5672EEF /* RCTOneSignal.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -709,6 +749,7 @@
 				3238ADA11E709E1500586B8D /* Chorus Bird Stickers */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				1E92461F4D2A439391A23ECF /* Frameworks */,
+				079A44D22007E270008E54D0 /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -738,14 +779,6 @@
 			children = (
 				E9B582AC1E142AA700A953A6 /* libRCTPushNotification.a */,
 				E9B582AE1E142AA700A953A6 /* libRCTPushNotification-tvOS.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		E9EDA6C81E01CA9D00702DC9 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				E9EDA6CC1E01CA9D00702DC9 /* libRNShakeEvent.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -822,6 +855,9 @@
 						DevelopmentTeam = SZY22WCGL8;
 						LastSwiftMigration = 810;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.Push = {
 								enabled = 1;
 							};
@@ -871,6 +907,10 @@
 					ProjectRef = 00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */;
 				},
 				{
+					ProductGroup = 07D350D02007E5CF0076BFB0 /* Products */;
+					ProjectRef = D8F64A5743BC4986B5672EEF /* RCTOneSignal.xcodeproj */;
+				},
+				{
 					ProductGroup = E9B582A71E142AA700A953A6 /* Products */;
 					ProjectRef = E9B582841E142AA200A953A6 /* RCTPushNotification.xcodeproj */;
 				},
@@ -907,8 +947,8 @@
 					ProjectRef = 3241C8101DDB626000A7700F /* RNNotifications.xcodeproj */;
 				},
 				{
-					ProductGroup = E9EDA6C81E01CA9D00702DC9 /* Products */;
-					ProjectRef = E9EDA6C71E01CA9D00702DC9 /* RNShakeEvent.xcodeproj */;
+					ProductGroup = 07B275642007E9620008BB36 /* Products */;
+					ProjectRef = 07B275632007E9620008BB36 /* RNShakeEvent.xcodeproj */;
 				},
 				{
 					ProductGroup = 326DD16E1DA7D91800273922 /* Products */;
@@ -965,6 +1005,20 @@
 			fileType = archive.ar;
 			path = libRCTSilentSwitch.a;
 			remoteRef = 077E4A2A1E3FA28100EAACD7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		07B275682007E9620008BB36 /* libRNShakeEvent.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNShakeEvent.a;
+			remoteRef = 07B275672007E9620008BB36 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		07D350D42007E5CF0076BFB0 /* libRCTOneSignal.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTOneSignal.a;
+			remoteRef = 07D350D32007E5CF0076BFB0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		139105C11AF99BAD00B5F7CC /* libRCTSettings.a */ = {
@@ -1100,13 +1154,6 @@
 			remoteRef = E9B582AD1E142AA700A953A6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		E9EDA6CC1E01CA9D00702DC9 /* libRNShakeEvent.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNShakeEvent.a;
-			remoteRef = E9EDA6CB1E01CA9D00702DC9 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1129,6 +1176,7 @@
 				E9B9BC7B1DEF4B9C00E83F5F /* wood_thrush_loop.mp3 in Resources */,
 				E95AB1F11E1D82B0001A4E2C /* red_eyed_vireo_notification.aif in Resources */,
 				E9B9BC711DEF4B9C00E83F5F /* ovenbird_loop.mp3 in Resources */,
+				07B2756A200BFA110008BB36 /* forest.wav in Resources */,
 				326DD15E1DA7D89C00273922 /* SourceSerifPro-Regular.otf in Resources */,
 				E95AB1EC1E1D82B0001A4E2C /* bw_warbler_notification.aif in Resources */,
 				E9B9BC6A1DEF4B9C00E83F5F /* baltimore_oriole_loop.mp3 in Resources */,
@@ -1266,6 +1314,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1290,6 +1339,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1305,6 +1355,7 @@
 				CODE_SIGN_ENTITLEMENTS = DawnChorus/DawnChorus.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -1316,6 +1367,8 @@
 					"$(SRCROOT)/../node_modules/react-native-silent-switch",
 					"$(SRCROOT)/../node_modules/bugsnag-react-native/cocoa/**",
 					"$(SRCROOT)/../node_modules/react-native-idle-timer/ios/RNIdleTimer",
+					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/RCTOneSignal/**",
 				);
 				INFOPLIST_FILE = DawnChorus/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -1341,6 +1394,7 @@
 				CODE_SIGN_ENTITLEMENTS = DawnChorus/DawnChorus.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = "";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -1352,6 +1406,8 @@
 					"$(SRCROOT)/../node_modules/react-native-silent-switch",
 					"$(SRCROOT)/../node_modules/bugsnag-react-native/cocoa/**",
 					"$(SRCROOT)/../node_modules/react-native-idle-timer/ios/RNIdleTimer",
+					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/RCTOneSignal/**",
 				);
 				INFOPLIST_FILE = DawnChorus/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -1378,6 +1434,10 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				INFOPLIST_FILE = "Sticker Pack/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.innovationstudio.dawnchorus.chorusbirdstickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1396,6 +1456,10 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = "Sticker Pack/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.innovationstudio.dawnchorus.chorusbirdstickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1425,6 +1489,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1451,6 +1516,7 @@
 					"$(SRCROOT)/../node_modules/bugsnag-react-native/cocoa/**",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS/**",
 					"$(SRCROOT)/../node_modules/react-native-idle-timer/ios/RNIdleTimer",
+					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/RCTOneSignal/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1482,6 +1548,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1501,6 +1568,7 @@
 					"$(SRCROOT)/../node_modules/bugsnag-react-native/cocoa/**",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS/**",
 					"$(SRCROOT)/../node_modules/react-native-idle-timer/ios/RNIdleTimer",
+					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/RCTOneSignal/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;

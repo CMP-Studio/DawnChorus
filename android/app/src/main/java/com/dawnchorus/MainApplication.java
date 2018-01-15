@@ -4,6 +4,8 @@ import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
+import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
+import com.marcshilling.idletimer.IdleTimerPackage;
 import com.jadsonlourenco.RNShakeEvent.RNShakeEventPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
@@ -28,6 +30,8 @@ public class MainApplication extends Application implements ReactApplication {
 protected List<ReactPackage> getPackages() {
 return Arrays.<ReactPackage>asList(
   new MainReactPackage(),
+            new ReactNativeOneSignalPackage(),
+            new IdleTimerPackage(),
   new RNShakeEventPackage(),
   new RNSoundPackage(),
   new ReactNativePushNotificationPackage(),
