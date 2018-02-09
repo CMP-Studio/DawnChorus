@@ -83,7 +83,7 @@ const ChorusListing = (props) => {
         }}
         accessibilityLabel={
           emptySpaces !== 0 ?
-          `You can select up to ${emptySpaces} more ${emptySpaces === 1 ? 'bird' : 'birds'} for this chorus.` :
+          `You can select up to ${emptySpaces} more ${emptySpaces === 1 ? 'bird' : 'birds'} for this chorus. Swipe past the save button to select birds.` :
           'You have no room to add birds to this chorus.'
         }
       >

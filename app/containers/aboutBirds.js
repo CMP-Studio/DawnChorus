@@ -9,7 +9,6 @@ import AboutBirdsScreen from '../components/aboutBirdsScreen';
 
 const mapStateToProps = (state) => {
   return {
-    screenReader: state.accessibility.screenReader,
     birds,
     navigatorKey: state.navigator.routes[state.navigator.index].key,
     infoCards: (state.infoCards.currentCard !== null),

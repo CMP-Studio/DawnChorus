@@ -10,13 +10,14 @@ import {
 import {
   editAlarmTime,
   editAlarmChorus,
+  editAlarmLabel,
+  editAlarmRepeat,
   saveAlarm,
 } from '../actions/alarm';
 
 const mapStateToProps = (state) => {
   return {
     alarm: state.alarms.editAlarm,
-    screenReader: state.accessibility.screenReader,
     sampleChorus: state.audio.sampleChorus,
   };
 };
@@ -28,6 +29,8 @@ const mapDispatchToProps = (dispatch) => {
         toggleSampleChorus,
         editAlarmTime,
         editAlarmChorus,
+        editAlarmLabel,
+        editAlarmRepeat,
         saveAlarm,
       }, dispatch),
   };

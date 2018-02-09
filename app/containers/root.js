@@ -17,6 +17,10 @@ import {
   closeInfoCards,
 } from '../actions/infoCards';
 
+import {
+  stopAlarm
+} from '../actions/alarm';
+
 import RootScreen from '../components/rootScreen';
 
 const mapStateToProps = (state) => {
@@ -27,7 +31,6 @@ const mapStateToProps = (state) => {
     editAlarm: state.alarms.editAlarm,
     activeAlarm: state.alarms.activeAlarm,
     infoCards: (state.infoCards.currentCard !== null),
-    notificationPermission: state.notificationSettings.notificationPermission,
   };
 };
 
@@ -40,6 +43,7 @@ const mapDispatchToProps = (dispatch) => {
         navigatorJumpToKey,
         newAlarm,
         saveAlarm,
+        stopAlarm,
         deleteAlarm,
         closeInfoCards,
       }, dispatch),

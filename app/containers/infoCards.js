@@ -11,8 +11,6 @@ const mapStateToProps = (state) => {
   return {
     birds,
     currentCard: state.infoCards.currentCard,
-    alarmChorus: state.alarms.activeAlarm === null ? null : state.alarms.activeAlarm.chorus,
-    screenReader: state.accessibility.screenReader,
   };
 };
 
