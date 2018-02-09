@@ -82,7 +82,6 @@ const ChorusEditor = (props) => {
             }
             return (
               <Bird
-                screenReader={props.screenReader}
                 sampling={props.sampleChorus}
                 key={bird.uuid}
                 navKey={props.navigatorKey}
@@ -98,6 +97,7 @@ const ChorusEditor = (props) => {
                 index={index}
                 toggleSampleChorus={props.actions.toggleSampleChorus}
                 onPress={() => {
+                  props.onPress();
                   let updatedChorus = [];
                   if (props.chorus.length < 5 && !isInChorus) {
                     updatedChorus = [...props.chorus].concat([bird]);
@@ -122,11 +122,11 @@ const ChorusEditor = (props) => {
 
 ChorusEditor.propTypes = {
   navigatorKey: PropTypes.string.isRequired,
-  screenReader: PropTypes.bool.isRequired,
   birds: PropTypes.arrayOf(PropTypes.object),
   chorus: PropTypes.arrayOf(PropTypes.object),
   limitReached: PropTypes.func.isRequired,
   sampleChorus: PropTypes.bool.isRequired,
+  onPress: PropTypes.func.isRequired,
   actions: PropTypes.shape({
     editAlarmChorus: PropTypes.func.isRequired,
     toggleSampleChorus: PropTypes.func.isRequired,

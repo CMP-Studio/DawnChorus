@@ -9,43 +9,53 @@ import {
   Text,
   Image,
   Dimensions,
-  Modal,
   TouchableOpacity,
-  Platform,
 } from 'react-native';
 
 import moment from 'moment';
-import RNShakeEventIOS from 'react-native-shake-event';
+import RNShakeEventIOS from 'react-native-shake-event'; // Despite name, includes android module
+import SplashScreen from 'react-native-splash-screen'
+
+
+import { getVolume, setVolume, getMaxVolume, onVolumeChange } from 'react-native-volume';
 
 import AlarmBird from './alarmBird';
-import InfoCards from '../containers/infoCards';
 import Fab from './fab';
 
-import { getTimeStrings } from '../utilities';
+import { getTimeStrings, formatLabelLong } from '../utilities';
 
 import { OFFBLACK, GREEN, GRAY, OFFWHITE } from '../styles';
 
 const styles = StyleSheet.create({
   time: {
     color: OFFBLACK,
-    fontSize: 70,
+    fontSize: 48,
     fontFamily: 'SourceSerifPro-Regular',
     backgroundColor: 'transparent',
-    lineHeight: 75,
+    lineHeight: 55,
   },
   ampm: {
     color: OFFBLACK,
-    fontSize: 36,
+    fontSize: 28,
     backgroundColor: 'transparent',
   },
   timeDisplay: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: 100,
     position: 'absolute',
-    bottom: 125,
-    left: 0,
-    right: 0,
+    bottom: 100,
+    left: 20,
+    right: 20,
+  },
+  labelDisplay: {
+    color: OFFBLACK,
+    fontSize: 20,
+    fontFamily: 'SourceSerifPro-Light',
+    backgroundColor: 'transparent',
+    lineHeight: 26,
+    paddingBottom: 10,
+    borderBottomWidth: 2,
+    borderBottomColor: GREEN,
   },
   messageDisplay: {
     color: OFFBLACK,
@@ -68,11 +78,8 @@ const styles = StyleSheet.create({
 class AlarmScreen extends Component {
   static propTypes = {
     navigatorKey: PropTypes.string.isRequired,
-    infoCards: PropTypes.bool.isRequired,
-    screenReader: PropTypes.bool.isRequired,
-    alarm: PropTypes.object,
+    alarm: PropTypes.object.isRequired,
     actions: PropTypes.shape({
-      showInfoCards: PropTypes.func.isRequired,
       snoozeAlarm: PropTypes.func.isRequired,
       stopAlarm: PropTypes.func.isRequired,
     }).isRequired,
@@ -80,9 +87,11 @@ class AlarmScreen extends Component {
 
   static clockTimeoutID;
   static date;
+  static originalVolume;
 
   constructor() {
     super();
+    // Shake to snooze
     this.handleShake = this.handleShake.bind(this);
   }
 
@@ -92,29 +101,42 @@ class AlarmScreen extends Component {
     });
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.alarm.snoozed) {
+      clearInterval(this.clockTimeoutID);
+      setVolume(1);
+    }
+  }
+
+  componentDidMount() {
+    // Set volume
+    getVolume().then((volume) => this.originalVolume = volume);
+    // We want to start quiet and ramp it up!
+    setVolume(1);
+    SplashScreen.hide();
+  }
+
+  handleShake() {
+    if (this.props.alarm !== null && !this.props.alarm.snoozed) {
+      this.props.actions.snoozeAlarm(this.props.alarm);
+    }
+  }
+
   componentWillUnmount() {
     clearInterval(this.clockTimeoutID);
     RNShakeEventIOS.removeEventListener('shake');
   }
 
-  handleShake() {
-    if (this.props.alarm !== null && !this.props.alarm.snoozed) {
-      this.props.actions.snoozeAlarm(this.props.alarm.uuid);
-    }
-  }
 
   render() {
     const { width, height } = Dimensions.get('window');
+    if (this.props.alarm === null) { return null; }
 
-    if (this.props.alarm === null) {
-      return null;
-    }
-
-    /** Time Text **/
+    // Get current time for display
     this.date = moment();
+    // Get the actual time to display
     const displayHour = this.date.get('hour');
     const displayMinute = this.date.get('minute');
-
     const {
       hourString,
       minuteString,
@@ -123,15 +145,6 @@ class AlarmScreen extends Component {
       hour: displayHour,
       minute: displayMinute,
     });
-
-    clearInterval(this.clockTimeoutID);
-    this.clockTimeoutID = setInterval(() => {
-      const checkDate = moment();
-      if (checkDate.get('minute') !== this.date.get('minute')) {
-        this.forceUpdate();
-      }
-    }, 1000);
-
     const time = (
       <View>
         <Text style={styles.time}>
@@ -145,6 +158,19 @@ class AlarmScreen extends Component {
       </View>
     );
 
+    if (this.clockTimeoutID !== null) { clearInterval(this.clockTimeoutID); }
+    this.clockTimeoutID = setInterval(() => {
+      const checkDate = moment();
+      // Every 10 seconds, see if we should increase volume
+      if (checkDate.get('second') % 5 === 0) {
+        getVolume().then((volume) => { if (volume < (getMaxVolume() - 2)) { setVolume(volume + 1); }});
+      }
+      // If the minute has changed, re render display
+      if (checkDate.get('minute') !== this.date.get('minute')) {
+        this.forceUpdate();
+      }
+    }, 1000);
+
     /** Snooze Text **/
     let snoozeMessage = '';
 
@@ -156,12 +182,25 @@ class AlarmScreen extends Component {
       });
 
       const snoozeTimeString = `${snoozeString.hourString}:${snoozeString.minuteString}`;
-      snoozeMessage = `Snoozed until ${snoozeTimeString} ${snoozeString.periodString}`;
+      snoozeMessage = `Snoozed until ${snoozeTimeString} ${snoozeString.periodString}.`;
     }
 
     /** Bird Positions **/
     const leftPositions = [0.73, 0.27, 0.55, 0.3, 0.73];
     const topPositions = [0.18, 0.21, 0.38, 0.52, 0.625];
+
+
+    let a11yLabel = `The current time is ${hourString}:${minuteString} ${periodString}. `
+
+    if (this.props.alarm.label) {
+      a11yLabel += `Alarm is labeled: ${this.props.alarm.label}. `;
+    }
+
+    if (this.props.alarm.snoozed) {
+      a11yLabel += snoozeMessage;
+    } else {
+      a11yLabel += "Shake to snooze."
+    }
 
     return (
       <View style={{ flex: 1 }}>
@@ -172,8 +211,6 @@ class AlarmScreen extends Component {
           source={require('../assets/AlarmBackground.png')}
           style={{ position: 'absolute', height, width, opacity: 1 }}
         />
-        {!this.props.infoCards &&
-         !this.props.screenReader &&
          <View
            style={{
              position: 'absolute',
@@ -187,17 +224,14 @@ class AlarmScreen extends Component {
              position={{ position: 'absolute', top: 2, left: 2 }}
              color={OFFBLACK}
              onPress={() => {
-               this.props.actions.snoozeAlarm(this.props.alarm.uuid);
+               this.props.actions.snoozeAlarm(this.props.alarm);
              }}
              image={require('../assets/SnoozeButton.png')}
-             accessibilityLabel={'Snooze Alarm. Button.'}
+             accessibilityLabel={'Tap to Snooze Alarm.'}
              enabled={!this.props.alarm.snoozed}
              disabledImage={require('../assets/DisabledSnooze.png')}
            />
          </View>
-        }
-        {!this.props.infoCards &&
-         !this.props.screenReader &&
          <View
            style={{
              position: 'absolute',
@@ -211,33 +245,35 @@ class AlarmScreen extends Component {
              position={{ position: 'absolute', top: 2, left: 2 }}
              color={OFFBLACK}
              onPress={() => {
-               this.props.actions.stopAlarm(this.props.alarm.uuid);
+                this.props.actions.stopAlarm(this.props.alarm);
              }}
              image={require('../assets/StopAlarmButton.png')}
-             accessibilityLabel={'Stop Alarm. Button.'}
+             accessibilityLabel={'Tap to Stop Alarm.'}
              enabled={true}
            />
          </View>
-        }
         <View
           style={styles.timeDisplay}
           importantForAccessibility="yes"
           accessible={true}
           accessibilityLiveRegion="polite"
-          accessibilityLabel={this.props.alarm.snoozed ?
-            `The current time is ${hourString}:${minuteString} ${periodString}. ${snoozeMessage}` :
-            `The current time is ${hourString}:${minuteString} ${periodString}. Shake to snooze.`
-          }
+          accessibilityLabel={a11yLabel}
         >
           { time }
-          <Text style={styles.messageDisplay}>
+          { this.props.alarm.label != "" &&
+            <Text style={[styles.labelDisplay, { marginBottom: 0 } ]}>
+              {formatLabelLong(this.props.alarm.label)}
+            </Text>
+          }
+          <Text style={[
+            styles.messageDisplay,
+            this.props.alarm.label ? { paddingTop: 10} : {}
+            ]}>
             {this.props.alarm.snoozed ? snoozeMessage : 'Shake to snooze'}
           </Text>
         </View>
         <View
-          style={
-            !this.props.screenReader ? { position: 'absolute', top: 0 } : { paddingTop: 40 }
-          }
+          style={{ position: 'absolute', top: 0 }}
         >
           {this.props.alarm.chorus.map((bird, index) => {
             const birdPosition = {
@@ -249,7 +285,6 @@ class AlarmScreen extends Component {
               <AlarmBird
                 key={bird.uuid}
                 bird={bird}
-                screenReader={this.props.screenReader}
                 mirror={index % 2 === 0}
                 navKey={this.props.navigatorKey}
                 label={false}
@@ -259,93 +294,16 @@ class AlarmScreen extends Component {
                 image={bird.images}
                 position={birdPosition}
                 index={index}
+                importantForAccessibility="no"
                 onPress={() => {
                   if (!this.props.alarm.snoozed) {
-                    this.props.actions.snoozeAlarm(this.props.alarm.uuid);
+                    this.props.actions.snoozeAlarm(this.props.alarm);
                   }
-
-                  this.props.actions.showInfoCards(bird, index);
                 }}
               />
             );
           })}
         </View>
-        {this.props.screenReader &&
-          <View style={{ position: 'absolute', bottom: 0 }}>
-            {!this.props.alarm.snoozed &&
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={[
-                  {
-                    height: 50,
-                    marginBottom: 5,
-                    width,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  },
-                  this.props.alarm.snoozed ? { backgroundColor: GRAY } : { backgroundColor: GREEN },
-                ]}
-                onPress={() => {
-                  if (!this.props.alarm.snoozed) {
-                    this.props.actions.snoozeAlarm(this.props.alarm.uuid);
-                  }
-                }}
-                accessible={!this.props.alarm.snoozed}
-                accessibilityLabel={'Snooze Alarm. Button.'}
-                accessibilityTraits={'header'}
-              >
-                <Text
-                  style={{
-                    color: OFFWHITE,
-                    fontFamily: 'SourceSerifPro-Regular',
-                    fontSize: 20,
-                    backgroundColor: 'transparent',
-                  }}
-                >
-                  Snooze
-                </Text>
-              </TouchableOpacity>
-            }
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={[
-                { height: 50,
-                  width,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: OFFBLACK,
-                },
-              ]}
-              onPress={() => { this.props.actions.stopAlarm(this.props.alarm.uuid); }}
-              accessibilityLabel={'Stop Alarm. Button.'}
-              accessibilityTraits={'header'}
-            >
-              <Text
-                style={{
-                  color: OFFWHITE,
-                  fontFamily: 'SourceSerifPro-Regular',
-                  fontSize: 20,
-                  backgroundColor: 'transparent',
-                }}
-              >
-                Stop
-              </Text>
-            </TouchableOpacity>
-          </View>
-        }
-
-        { /** Info Cards **/}
-        {Platform.OS === 'ios' &&
-          <Modal
-            supportedOrientations={['portrait']}
-            animationType={'slide'}
-            transparent={true}
-            visible={this.props.infoCards}
-            onRequestClose={() => { console.log('Modal has been closed.'); }}
-          >
-            <InfoCards />
-          </Modal>
-        }
       </View>
     );
   }

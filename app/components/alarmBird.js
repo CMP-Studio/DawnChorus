@@ -52,7 +52,6 @@ class AlarmBird extends Component {
     mirror: PropTypes.bool.isRequired,
     selected: PropTypes.bool,
     snoozed: PropTypes.bool.isRequired,
-    screenReader: PropTypes.bool.isRequired,
     selectable: PropTypes.bool,
     image: PropTypes.object.isRequired,
     position: PropTypes.object.isRequired,
@@ -74,11 +73,11 @@ class AlarmBird extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (!this.props.snoozed) {
       const alarmTimeoutId = setTimeout(() => {
         this.loadSong();
-      }, (this.props.index * 2500));
+      }, (this.props.index * 10000));
       this.setState({
         alarmTimeoutId,
       });
@@ -234,20 +233,8 @@ class AlarmBird extends Component {
     const haloTop = birdTop + (this.props.bird.aboutScreenConstants.haloPosition.top * birdHeight);
 
     return (
-      <View
-        style={[
-          this.props.screenReader ? {
-            width,
-            paddingLeft: 40,
-            paddingRight: 40,
-            justifyContent: 'flex-start',
-          } : {},
-          (this.props.screenReader && this.props.index % 2 === 1) ? { alignItems: 'flex-start' } : {},
-          (this.props.screenReader && this.props.index % 2 === 0) ? { alignItems: 'flex-end' } : {},
-        ]}
-      >
+      <View>
         {this.state.audible &&
-         !this.props.screenReader &&
          <Image
            accessible={false}
            resizeMode={'contain'}
@@ -264,9 +251,9 @@ class AlarmBird extends Component {
         }
         <TouchableOpacity
           accessible={true}
-          accessibilityLabel={`${this.props.bird.name}. Chorus bird. Tap for more info.`}
-          importantForAccessibility="yes"
-          activeOpacity={0.8}
+          accessibilityLabel={`${this.props.bird.name}. Alarm chorus bird.`}
+          importantForAccessibility="no"
+          activeOpacity={1}
           onPress={() => {
             this.props.onPress();
             this.stopSong();
@@ -275,10 +262,6 @@ class AlarmBird extends Component {
             }
           }}
           style={[
-            this.props.screenReader ?
-            {
-              height: (height - 250) / 5,
-            } :
             {
               position: 'absolute',
               alignItems: 'flex-start',
@@ -287,8 +270,8 @@ class AlarmBird extends Component {
               height: birdHeight,
               width: birdWidth,
             },
-            !this.props.screenReader && this.props.mirror ? { left: birdLeft } : {},
-            !this.props.screenReader && !this.props.mirror ? { left: birdRight } : {},
+            this.props.mirror ? { left: birdLeft } : {},
+            !this.props.mirror ? { left: birdRight } : {},
           ]}
         >
           <Animatable.View
@@ -300,12 +283,7 @@ class AlarmBird extends Component {
           >
             <Image
               resizeMode={'contain'}
-              style={[
-                {
-                  height: birdHeight,
-                  width: birdWidth,
-                },
-              ]}
+              style={{ height: birdHeight, width: birdWidth }}
               source={this.props.mirror ?
                 { uri: (this.props.image).iconMirrored } :
                 { uri: (this.props.image).icon }}
@@ -313,7 +291,6 @@ class AlarmBird extends Component {
           </Animatable.View>
         </TouchableOpacity>
         {this.props.snoozed &&
-        !this.props.screenReader &&
           <Animatable.Text
             accessible={false}
             importantForAccessibility="no-hide-descendants"

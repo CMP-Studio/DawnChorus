@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   navButtonText: {
     color: DARKGREEN,
     fontFamily: 'SourceSerifPro-Regular',
-    fontSize: 17,
+    fontSize: 20,
     lineHeight: 20,
   },
   navButtonImage: {
@@ -67,7 +67,7 @@ const NavBar = (props) => {
         <TouchableOpacity
           onPress={props.leftPress}
           style={styles.navLeftButton}
-          accessibilityLabel={'Cancel. Button.'}
+          accessibilityLabel={'Tap to cancel edits to this alarm.'}
         >
           {props.leftButton}
         </TouchableOpacity>
@@ -84,7 +84,7 @@ const NavBar = (props) => {
         <TouchableOpacity
           onPress={props.rightPress}
           style={styles.navRightButton}
-          accessibilityLabel={'Delete this alarm. Button.'}
+          accessibilityLabel={'Tap to delete this alarm.'}
         >
           {props.rightButton}
         </TouchableOpacity>

@@ -6,6 +6,7 @@ import {
   View,
   Text,
   TouchableOpacity,
+  AppState,
 } from 'react-native';
 
 import {
@@ -18,26 +19,17 @@ const styles = StyleSheet.create({
   pickerStyle: {
     flexDirection: 'row',
     alignItems: 'flex-end',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
-  pickerTextLarge: {
-    fontSize: 60,
-    height: 65,
-    marginRight: 5,
-    fontFamily: 'SourceSerifPro-Regular',
+  time: {
     color: OFFBLACK,
-    textAlign: 'center',
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
+    fontSize: 46,
+    lineHeight: 50,
+    fontFamily: 'SourceSerifPro-Regular',
   },
-  pickerText: {
-    height: 45,
-    fontSize: 36,
-    fontFamily: 'SourceSerifPro-Regular',
+  ampm: {
     color: OFFBLACK,
-    textAlign: 'center',
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
+    fontSize: 24,
   },
   valueScroller: {
     height: 135,
@@ -68,36 +60,29 @@ const TimePicker = (props) => {
   }
 
   return (
-    <View
-      style={{ flex: 1 }}
-      accessibilityLabel={`Alarm set for ${hourString}:${minuteString} ${periodString}.`}
-      accessibilityLiveRegion={'polite'}
+    <TouchableOpacity
+      style={styles.pickerStyle}
+      onPress={() => { 
+          props.onPress();
+          showPicker(); 
+        }}
+      importantForAccessibility="yes"
+      accessibilityLabel={`Alarm set for ${hourString}:${minuteString} ${periodString}. Tap to set time.`}
     >
-      <TouchableOpacity
-        style={styles.pickerStyle}
-        onPress={() => { showPicker(); }}
-        accessibilityLabel={'Tap to set time.'}
-      >
-        <Text style={styles.pickerTextLarge}>
-          {hourString}
-        </Text>
-        <Text style={[styles.pickerTextLarge, { fontSize: 42, height: 55, marginRight: 3 }]}>
-          :
-        </Text>
-        <Text style={styles.pickerTextLarge}>
-          {minuteString}
-        </Text>
-        <Text style={styles.pickerText}>
-          {periodString}
-        </Text>
-      </TouchableOpacity>
-    </View>
+    <Text style={styles.time} importantForAccessibility="no">
+      {`${hourString}:${minuteString}`}
+      <Text style={styles.ampm} importantForAccessibility="no">
+        {` ${periodString}`}
+      </Text>
+    </Text>
+  </TouchableOpacity>
   );
 };
 
 TimePicker.propTypes = {
   time: PropTypes.object.isRequired,
   onTimeChange: PropTypes.func.isRequired,
+  onPress: PropTypes.func.isRequired,
   editAlarmTime: PropTypes.func.isRequired,
 };
 

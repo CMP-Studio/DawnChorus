@@ -9,7 +9,6 @@ import {
   Dimensions,
   Text,
   Linking,
-  Platform,
   ActivityIndicator,
 } from 'react-native';
 
@@ -22,14 +21,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: OFFWHITE,
   },
-  scrollContainer: {
-    paddingBottom: 100,
-  },
   credits: {
     position: 'absolute',
     justifyContent: 'space-between',
-    paddingLeft: 30,
-    paddingRight: 30,
+    paddingLeft: 40,
+    paddingRight: 40,
   },
   navTitleText: {
     color: OFFBLACK,
@@ -72,7 +68,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   link: {
-    marginBottom: 30,
+    marginBottom: 20,
   },
 });
 
@@ -80,16 +76,11 @@ const AboutBirdsScreen = (props) => {
   const { width, height } = Dimensions.get('window');
 
   return (
-    <View
-      style={[
-        styles.container,
-        props.screenReader ? { marginTop: 64 } : {},
-      ]}
-    >
+    <View style={ styles.container }>
       <ScrollView
         contentContainerStyle={[
           styles.scrollContainer,
-          Platform.OS === 'ios' ? { height: (height * 5.2) - 64 } : { height: (height * 5.1) - 94 },
+          { height: height * 4.7 - 45, minHeight: (height * 4) + 800 },
         ]}
         showsVerticalScrollIndicator={false}
       >
@@ -101,57 +92,37 @@ const AboutBirdsScreen = (props) => {
         />
         <Image
           resizeMode={'stretch'}
-          style={[
-            { position: 'absolute', top: 0, height, width },
-            Platform.OS === 'android' ? { top: -45 } : {},
-          ]}
+          style={{ position: 'absolute', top: 0, height, width, top: -45 }}
           source={require('../assets/Branches.png')}
         />
         <Image
           resizeMode={'stretch'}
-          style={[
-            { position: 'absolute', top: height, height, width },
-            Platform.OS === 'android' ? { top: height - 45 } : {},
-          ]}
+          style={{ position: 'absolute', top: height, height, width, top: height - 45 }}
           source={require('../assets/Branches.png')}
         />
         <Image
           resizeMode={'stretch'}
-          style={[
-            { position: 'absolute', top: height * 2, height, width },
-            Platform.OS === 'android' ? { top: (height * 2) - 45 } : {},
-          ]}
+          style={{ position: 'absolute', top: height * 2, height, width, top: (height * 2) - 45 }}
           source={require('../assets/Branches.png')}
         />
         <Image
           resizeMode={'stretch'}
-          style={[
-            { position: 'absolute', top: height * 3, height, width },
-            Platform.OS === 'android' ? { top: (height * 3) - 45 } : {},
-          ]}
+          style={{ position: 'absolute', top: height * 3, height, width, top: (height * 3) - 45 }}
           source={require('../assets/Branches.png')}
         />
         <Image
           resizeMode={'stretch'}
-          style={[
-            { position: 'absolute', top: height * 4, height, width },
-            Platform.OS === 'android' ? { top: (height * 4) - 45 } : {},
-          ]}
+          style={{ position: 'absolute', top: height * 4, height, width, top: (height * 4) - 45 }}
           source={require('../assets/BranchesBottom.png')}
         />
 
         { /** Birds **/}
-        <View
-          style={
-            props.screenReader ? { paddingTop: 75 } : {}
-          }
-        >
+        <View>
           {props.birds.map((bird, index) => {
             return (
               <Bird
                 key={bird.uuid}
                 bird={bird}
-                screenReader={props.screenReader}
                 mirror={bird.aboutScreenConstants.mirrored}
                 navKey={props.navigatorKey}
                 label={true}
@@ -159,7 +130,7 @@ const AboutBirdsScreen = (props) => {
                 selected={true}
                 image={bird.images}
                 position={bird.aboutScreenConstants.iconPosition}
-                topOffset={Platform.OS === 'ios' ? 0 : -45}
+                topOffset={-45}
                 index={index}
                 onPress={() => {
                   props.actions.showInfoCards(bird, index);
@@ -173,22 +144,14 @@ const AboutBirdsScreen = (props) => {
         <View
           style={[
             styles.credits,
-            Platform.OS === 'ios' ? { height: height * 0.9, top: (height * 4.18) } :
-                                    { height: height - 94, top: (height * 4.1) },
+            { height: height * 0.7, minHeight: 800, top: height * 4, paddingTop: 115 },
           ]}
         >
-          <View style={{ flex: 1, justifyContent: 'flex-start' }}>
-            <Text
-              style={[styles.navTitleText, height <= 568 ? { marginBottom: 10 } : {}]}
-              accessible={true}
-              accessibilityTraits={'header'}
-            >
-              Credits
-            </Text>
+          <View style={{ flex: 1, justifyContent: 'space-around' }}>
             { /** Link **/ }
             <TouchableOpacity
               accessibilityTraits={'link'}
-              accessibilityLabel={'Dawn Chorus is a collaboration between Carnegie Museum of Natural History, BirdSafe Pittsburgh, and the Innovation Studio at Carnegie Museums of Pittsburgh. Tap to visit carnegiemnh.org/.'}
+              accessibilityLabel={'Dawn Chorus is a collaboration between Carnegie Museum of Natural History, BirdSafe Pittsburgh, and the Innovation Studio at Carnegie Museums of Pittsburgh. Tap to visit carnegiemnh.org.'}
               activeOpacity={0.7}
               onPress={() => {
                 const url = 'http://www.carnegiemnh.org/';
@@ -275,6 +238,35 @@ const AboutBirdsScreen = (props) => {
             { /** Link **/ }
             <TouchableOpacity
               accessibilityTraits={'link'}
+              accessibilityLabel={'Bird illustrations by Sam Ticknor. Tap to visit samt.xyz'}
+              activeOpacity={0.7}
+              onPress={() => {
+                const url = 'https://www.samt.xyz';
+                Linking.canOpenURL(url).then((supported) => {
+                  if (supported) { return Linking.openURL(url); }
+                  return null;
+                }).catch(err => console.error('An error occurred', err));
+              }}
+              style={[styles.link, height <= 568 ? { marginBottom: 5 } : {}]}
+            >
+              <Text style={[globalStyles.bodyText]}>
+                Bird illustrations by Sam Ticknor.
+              </Text>
+              <View style={styles.urlButton}>
+                <Text style={[globalStyles.bodyTextLight, styles.urlButtonText]}>
+                  samt.xyz
+                </Text>
+                <View style={styles.arrow}>
+                  <Image
+                    style={{ width: 10, height: 10, resizeMode: 'contain', tintColor: OFFBLACK }}
+                    source={require('../assets/RightFacingArrow.png')}
+                  />
+                </View>
+              </View>
+            </TouchableOpacity>
+            { /** Link **/ }
+            <TouchableOpacity
+              accessibilityTraits={'link'}
               accessibilityLabel={'Flower illustrations by Ashley Cecil, artist-in-residence at Carnegie Museum of Natural History. Tap to visit ashleycecil.com.'}
               activeOpacity={0.7}
               onPress={() => {
@@ -301,15 +293,6 @@ const AboutBirdsScreen = (props) => {
                 </View>
               </View>
             </TouchableOpacity>
-            { /** Link **/ }
-            <View
-              accessibilityLabel={'Bird illustrations by Sam Ticknor.'}
-              style={[styles.link, height <= 568 ? { marginBottom: 5 } : {}]}
-            >
-              <Text style={[globalStyles.bodyText]}>
-                Bird illustrations by Sam Ticknor.
-              </Text>
-            </View>
           </View>
         </View>
       </ScrollView>
@@ -324,7 +307,7 @@ const AboutBirdsScreen = (props) => {
             left: 0,
             width: 35,
           },
-          Platform.OS === 'ios' ? { top: 64, height: height - 64 } : { top: 0, height },
+          { top: 0, height },
         ]}
         source={require('../assets/BranchesOverlayLeft.png')}
       />
@@ -337,17 +320,10 @@ const AboutBirdsScreen = (props) => {
             right: 0,
             width: 35,
           },
-          Platform.OS === 'ios' ? { top: 64, height: height - 64 } : { top: 0, height },
+          { top: 0, height },
         ]}
         source={require('../assets/BranchesOverlayRight.png')}
       />
-
-      { /** Activity Indicator **/}
-      {props.infoCards &&
-        <View style={styles.loadingIndicator}>
-          <ActivityIndicator animating={true} size="large" />
-        </View>
-      }
 
     </View>
   );
@@ -355,7 +331,6 @@ const AboutBirdsScreen = (props) => {
 
 AboutBirdsScreen.propTypes = {
   navigatorKey: PropTypes.string.isRequired,
-  screenReader: PropTypes.bool.isRequired,
   infoCards: PropTypes.bool.isRequired,
   birds: PropTypes.arrayOf(PropTypes.object).isRequired,
   actions: PropTypes.shape({

@@ -37,7 +37,6 @@ class InfoCardsScreen extends Component {
   static propTypes = {
     birds: PropTypes.arrayOf(PropTypes.object).isRequired,
     currentCard: PropTypes.object.isRequired,
-    alarmChorus: PropTypes.arrayOf(PropTypes.object),
     actions: PropTypes.shape({
       closeInfoCards: PropTypes.func.isRequired,
     }).isRequired,
@@ -51,9 +50,6 @@ class InfoCardsScreen extends Component {
 
   componentWillMount() {
     this.chorus = this.props.birds;
-    if (this.props.alarmChorus !== null) {
-      this.chorus = this.props.alarmChorus;
-    }
     this.setState({ currentIndex: this.props.currentCard.index });
   }
 

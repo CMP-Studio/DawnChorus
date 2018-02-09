@@ -27,7 +27,7 @@ import {
 
 const styles = StyleSheet.create({
   birdLabel: {
-    width: 120,
+    width: 125,
     height: 49,
     borderRadius: 3,
     flexDirection: 'row',
@@ -36,21 +36,17 @@ const styles = StyleSheet.create({
     backgroundColor: OFFWHITETRANSPARENT,
   },
   birdLabelText: {
-    paddingTop: 5,
-    paddingBottom: 5,
-    paddingRight: 5,
-    width: 110,
+    width: 115,
     justifyContent: 'center',
     textAlign: 'center',
     fontFamily: 'SourceSerifPro-Light',
-    fontSize: 14,
+    fontSize: 16,
   },
 });
 
 class Bird extends Component {
   static propTypes = {
     navKey: PropTypes.string.isRequired,
-    screenReader: PropTypes.bool.isRequired,
     bird: PropTypes.object.isRequired,
     mirror: PropTypes.bool.isRequired,
     label: PropTypes.bool,
@@ -283,19 +279,9 @@ class Bird extends Component {
     }
 
     return (
-      <View
-        style={[
-          this.props.screenReader ? {
-            width,
-            paddingLeft: 40,
-            paddingRight: 40,
-          } : {},
-          (this.props.screenReader && this.props.index % 2 === 1) ? { alignItems: 'flex-end' } : { alignItems: 'flex-start' },
-        ]}
-      >
+      <View>
         { /* HALO */ }
         { this.state.audible &&
-          !this.props.screenReader &&
           <Image
             accessible={false}
             importantForAccessibility="no"
@@ -316,21 +302,15 @@ class Bird extends Component {
           accessible={false}
           importantForAccessibility="no"
           activeOpacity={0.8}
-          style={[
-            this.props.screenReader ?
-            {
-              height: (height / 5.1) - 49,
-            } :
-            {
-              position: 'absolute',
-              alignItems: 'flex-start',
-              justifyContent: 'flex-start',
-              top: birdTop + this.props.topOffset,
-              left: birdLeft,
-              height: birdHeight,
-              width: birdWidth,
-            },
-          ]}
+          style={{
+            position: 'absolute',
+            alignItems: 'flex-start',
+            justifyContent: 'flex-start',
+            top: birdTop + this.props.topOffset,
+            left: birdLeft,
+            height: birdHeight,
+            width: birdWidth,
+          }}
           onPress={() => {
             this.props.onPress();
             this.stopSong();
@@ -375,11 +355,7 @@ class Bird extends Component {
             }}
             style={[
               styles.birdLabel,
-              this.props.screenReader ?
               {
-                width: labelWidth,
-              }
-              : {
                 position: 'absolute',
                 top: labelTop + this.props.topOffset,
                 left: labelLeft,

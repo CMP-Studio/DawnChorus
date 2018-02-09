@@ -11,6 +11,8 @@ import {
   Dimensions,
   StatusBar,
   ViewPagerAndroid,
+  BackAndroid,
+  AppState,
 } from 'react-native';
 
 import TabBar from './tabBar';
@@ -32,18 +34,13 @@ import {
   INFO_CARDS_SCREEN,
 } from '../actions/navigator';
 
-import {
-  NOTIFICATION_PERMISSIONS_STATUS_AUTHORIZED,
-  NOTIFICATION_PERMISSIONS_STATUS_NOTDETERMINED,
-} from '../actions/notifications';
-
-import { OFFWHITE, OFFBLACK, OFFBLACKTRANSPARENT, OFFWHITETRANSPARENT, DARKGREEN, YELLOW, RED } from './../styles.js';
+import { OFFWHITE, OFFBLACK, OFFBLACKTRANSPARENT, OFFWHITETRANSPARENT, GREEN, DARKGREEN, YELLOW, RED } from './../styles.js';
 
 const styles = StyleSheet.create({
   navTitleText: {
     color: OFFBLACK,
     fontFamily: 'SourceSerifPro',
-    fontSize: 20,
+    fontSize: 26,
     textAlign: 'center',
   },
   navBar: {
@@ -62,10 +59,10 @@ const styles = StyleSheet.create({
   navButtonText: {
     color: DARKGREEN,
     fontFamily: 'SourceSerifPro-Regular',
-    fontSize: 17,
+    fontSize: 20,
   },
   navButtonImage: {
-    tintColor: DARKGREEN,
+    tintColor: GREEN,
     width: 20,
     height: 20,
   },
@@ -95,15 +92,17 @@ class RootScreen extends Component {
 
   static propTypes = {
     navigator: PropTypes.object.isRequired,
-    notificationPermission: PropTypes.string.isRequired,
     activeAlarm: PropTypes.object,
     editAlarm: PropTypes.object,
     loaded: PropTypes.bool,
+    alarms: PropTypes.arrayOf(PropTypes.object),
+    infoCards: PropTypes.bool,
     actions: PropTypes.shape({
       navigatorPush: PropTypes.func.isRequired,
       navigatorPop: PropTypes.func.isRequired,
       newAlarm: PropTypes.func.isRequired,
       deleteAlarm: PropTypes.func.isRequired,
+      stopAlarm: PropTypes.func.isRequired,
       saveAlarm: PropTypes.func.isRequired,
       closeInfoCards: PropTypes.func.isRequired,
     }).isRequired,
@@ -116,6 +115,44 @@ class RootScreen extends Component {
       offset: 0,
     },
   };
+
+  onBackButton() {
+    if (this.props.navigator.index > 0) {
+      const sceneKey = this.props.navigator.routes[this.props.navigator.index].key;
+      if (sceneKey === ABOUT_THE_BIRDS_SCREEN) {
+        this.go(0);
+        return true
+      } else if (sceneKey === INFO_CARDS_SCREEN) {
+        this.props.actions.closeInfoCards();
+        return true;
+      } else if (sceneKey === ALARM_SCREEN) {
+        this.props.actions.stopAlarm(this.props.activeAlarm);
+        return true;
+      } else if (sceneKey === EDIT_ALARM_SCREEN || sceneKey === NEW_ALARM_SCREEN) {
+        this.props.actions.navigatorPop();
+        return true;
+      }
+    }
+    return false;
+  }
+
+  handleAppStateChange(nextAppState) {
+    if ((this.props.activeAlarm !== null) &&
+        (nextAppState === "background" || nextAppState === "inactive")) {
+      this.props.actions.stopAlarm(this.props.activeAlarm);
+    }
+  }
+
+  componentDidMount() {
+    BackAndroid.addEventListener('hardwareBackPress', this.onBackButton.bind(this));
+    AppState.addEventListener('change', this.handleAppStateChange.bind(this));
+  }
+
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this.handleAppStateChange.bind(this));
+    BackAndroid.removeEventListener('hardwareBackPress', this.onBackButton.bind(this));
+  }
+
 
   onPageScroll = (e) => {
     this.setState({ progress: e.nativeEvent });
@@ -136,7 +173,7 @@ class RootScreen extends Component {
   go = (page) => { this.viewPager.setPage(page); };
 
   render() {
-    const { width } = Dimensions.get('window');
+    const { width, height } = Dimensions.get('window');
 
     const sceneKey = this.props.navigator.routes[this.props.navigator.index].key;
     const prevSceneKey = this.props.navigator.index > 0 ?
@@ -144,12 +181,15 @@ class RootScreen extends Component {
                          null;
 
     return (
-      <View style={{ flex: 1, backgroundColor: OFFWHITE }} >
+      <View style={{ flex: 1, backgroundColor: OFFWHITE }}
+        onLayout={(event) => { this.setState({height}) }} 
+      >
         <StatusBar
           backgroundColor={OFFWHITE}
+          hidden={sceneKey === ALARM_SCREEN && !this.props.infoCards}
           barStyle="dark-content"
+          animated={false}
         />
-
         {/** *** TAB VIEW *** **/}
         <TabBar
           tabStyle={{ height: 60 }}
@@ -191,21 +231,20 @@ class RootScreen extends Component {
         </ViewPagerAndroid>
 
         { /* New Alarm FAB (On Alarm List Screen) */ }
-        {this.props.loaded &&
-        this.props.notificationPermission !== NOTIFICATION_PERMISSIONS_STATUS_NOTDETERMINED &&
+        {this.props.loaded && this.props.alarms.length > 0 && 
         <Fab
           color={OFFBLACK}
           onPress={() => { this.props.actions.newAlarm(); }}
           image={require('../assets/NewAlarmButton.png')}
           accessibilityLabel={'New Alarm. Button.'}
           position={{ position: 'absolute', bottom: 30, right: 30 }}
-          enabled={sceneKey === ALARM_LIST_SCREEN &&
-                   this.props.notificationPermission === NOTIFICATION_PERMISSIONS_STATUS_AUTHORIZED}
+          enabled={sceneKey === ALARM_LIST_SCREEN}
         />
         }
 
         {/** *** MODALS *** **/}
-        { /** New Alarm Modal **/}
+
+        {/** New Alarm Modal **/}
         {sceneKey === NEW_ALARM_SCREEN &&
           <Animatable.View
             animation="fadeIn"
@@ -215,7 +254,7 @@ class RootScreen extends Component {
           >
             <NavBar
               style={styles.navBar}
-              navTitle={'New Alarm'}
+              navTitle={''}
               leftButton={(<Image
                 style={[styles.navButtonImage, { height: 20, width: 20 }]}
                 source={require('../assets/CancelButton.png')}
@@ -236,7 +275,7 @@ class RootScreen extends Component {
           >
             <NavBar
               style={styles.navBar}
-              navTitle={'Edit Alarm'}
+              navTitle={''}
               leftButton={(<Image
                 style={[styles.navButtonImage, { height: 20, width: 20 }]}
                 source={require('../assets/CancelButton.png')}
@@ -253,7 +292,7 @@ class RootScreen extends Component {
                   'Are you sure you want to delete this alarm?',
                   [
                     { text: 'Cancel', style: 'cancel' },
-                    { text: 'Delete', onPress: () => this.props.actions.deleteAlarm(this.props.editAlarm.uuid), style: 'destructive' },
+                    { text: 'Delete', onPress: () => this.props.actions.deleteAlarm(this.props.editAlarm), style: 'destructive' },
                   ],
                 );
               }}
@@ -263,18 +302,10 @@ class RootScreen extends Component {
         }
 
         { /** Alarm Modal **/}
-        {(sceneKey === ALARM_SCREEN ||
-          (prevSceneKey === ALARM_SCREEN &&
-           sceneKey === INFO_CARDS_SCREEN)
-          ) &&
-            <Animatable.View
-              animation="fadeIn"
-              easing="ease-out"
-              duration={200}
-              style={styles.fullScreen}
-            >
-              <Alarm />
-            </Animatable.View>
+        {sceneKey === ALARM_SCREEN &&
+          <View style={styles.fullScreen}>
+            <Alarm />
+          </View>
         }
 
         { /** Info Cards Modal **/}
