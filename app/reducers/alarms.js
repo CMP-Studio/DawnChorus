@@ -9,6 +9,8 @@ import {
   SET_EDIT_ALARM,
   EDIT_ALARM_TIME,
   EDIT_ALARM_CHORUS,
+  EDIT_ALARM_LABEL,
+  EDIT_ALARM_REPEAT,
 } from '../actions/alarm';
 
 const initialState = {
@@ -21,10 +23,15 @@ const initialState = {
       hour: 8,
       minute: 30,
     },
+    label: "",
+    repeats: false,
+    days: [true, true, true, true, true, true, true],
     notificationTime: null,
     chorus: [],
     snoozed: false,
     snoozeTime: null,
+    highlighted: false,
+    appVersion: 2,
   },
   editAlarm: null,
   activeAlarm: null,
@@ -63,7 +70,7 @@ export default function alarms(state = initialState, action) {
         Object.assign({},
           state,
           {
-            activeAlarm: action.alarmList[action.activeAlarmIndex],
+            activeAlarm: action.activeAlarm,
             alarmList: action.alarmList,
           }
         )
@@ -132,6 +139,40 @@ export default function alarms(state = initialState, action) {
     case EDIT_ALARM_CHORUS: {
       const editAlarm = Object.assign({}, state.editAlarm);
       editAlarm.chorus = action.chorus;
+
+      return (
+        Object.assign({},
+          state,
+          { editAlarm }
+        )
+      );
+    }
+
+    case EDIT_ALARM_LABEL: {
+      const editAlarm = Object.assign({}, state.editAlarm);
+      editAlarm.label = action.label;
+
+      return (
+        Object.assign({},
+          state,
+          { editAlarm }
+        )
+      );
+    }
+
+    case EDIT_ALARM_REPEAT: {
+      const editAlarm = Object.assign({}, state.editAlarm);
+      if ((action.days.filter((day) => {return day})).length === 0) {
+        if (action.repeats === true && state.editAlarm.repeats === false) {
+          editAlarm.days = [true, true, true, true, true, true, true];
+        } else {
+          editAlarm.repeats = false;
+        }
+      } else {
+        editAlarm.repeats = action.repeats;
+        editAlarm.days = action.days;
+      }
+      
 
       return (
         Object.assign({},
