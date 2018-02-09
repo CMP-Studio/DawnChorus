@@ -1,14 +1,18 @@
-# Dawn Chorus
+# Dawn Chorus 
+
+Version 2 of Dawn Chorus no longer uses notifications to sound an alarm! <br>
+Due to API limitations on iOS, it is only available for Android devices.
+
+See the [v1 branch](https://github.com/CMP-Studio/DawnChorus/tree/v1) for the previous iOS and Android versions.
 
 Targets:   
-- iOS 10.0 or greater  
-- Android 4.1 or greater
+- Android 5.0 or greater
 
 ### Description
 
-![Dawn Chorus Screenshots](./appOverview.jpeg)
+![Dawn Chorus Screenshots](./appOverview.png)
 
-Wake up to nature’s chorus with a bird alarm clock developed by Carnegie Museum of Natural History and Innovation Studio. This artfully designed app is a calming, nature-inspired alternative to your usual blaring alarm. When the alarm goes off, birds begin to appear in trees to create a chorus of song. Choose from 20 birds to create a custom alarm. All of the birds are native to the northeastern United States, and users can hear their calls and learn more about them on bird cards developed with museum scientists.
+Wake up to nature’s chorus with a bird alarm clock developed by Carnegie Museum of Natural History and Innovation Studio. This artfully designed app is a calming, nature-inspired alternative to your usual blaring alarm. When the alarm goes off, birds create a chorus of song. Choose from 20 birds to create a custom alarm. All of the birds are native to the northeastern United States, and users can hear their calls and learn more about them on bird cards developed with museum scientists.
 
 ### Collaborators
 
