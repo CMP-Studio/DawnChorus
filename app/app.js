@@ -1,48 +1,60 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react'
 import { Provider } from 'react-redux';
-import { Platform, AppState } from 'react-native';
+import { AppState, BackHandler } from 'react-native';
 
 import Root from './containers/root';
 import configureStore from './store';
 
-import NotificationActor from './actors/notifications';
-import { loadAlarms } from './actions/alarm';
+import { unloadAlarm, loadAlarms, snoozeAlarm, stopAlarm, soundAlarm } from './actions/alarm';
 
-import AccessibilityActor from './actors/accessibility';
-
-const store = configureStore();
-
-async function loader() {
-  await (store.dispatch(loadAlarms()));
-  this.notificationActor = new NotificationActor(store);
-  if (Platform.OS === 'ios') {
-    this.accessibilityActor = new AccessibilityActor(store);
-  }
-  return;
-}
-
-async function alarmsLoader() {
-  await (store.dispatch(loadAlarms()));
-  return;
-}
+var PushNotification = require('react-native-push-notification');
 
 class App extends Component {
 
-  constructor(opts) {
-    super(opts);
+  static propTypes = {
+    // You can define propTypes for keys in `initialProps` here
+    alarmID: PropTypes.string,
+    missedAlarms: PropTypes.string,
+  }
 
-    AppState.addEventListener('change', () => {
-      alarmsLoader();
+  static store;
+
+  constructor(props) {
+    super(props);
+    this.store = configureStore();
+
+    PushNotification.configure({
+        // (optional) Called when Token is generated (iOS and Android)
+        onRegister: function(token) {
+            console.log( 'TOKEN:', token );
+        },
+        // (required) Called when a remote or local notification is opened or received
+        onNotification(notification) {
+          if (notification.action !== undefined) {
+            if (notification.action === 'Stop') {
+              store.dispatch(stopAlarm(notification.alarmUUID));
+            } else if (notification.action === 'Snooze') {
+              store.dispatch(snoozeAlarm(notification.alarmUUID));
+            }
+          } else {
+            store.dispatch(soundAlarm(notification.alarmUUID));
+          }
+        },
+        // Should the initial notification be popped automatically
+        // default: true
+        popInitialNotification: true,
+        requestPermissions: false,
     });
+    PushNotification.registerNotificationActions(['Snooze', 'Stop']);
   }
 
   componentDidMount() {
-    loader();
+    this.store.dispatch(loadAlarms(this.props.alarmID, this.props.missedAlarms));
   }
 
   render() {
     return (
-      <Provider store={store}>
+      <Provider store={this.store}>
         <Root />
       </Provider>
     );

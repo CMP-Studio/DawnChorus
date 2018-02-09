@@ -70,3 +70,53 @@ export function getTimeStrings(time) {
     minuteString,
   };
 }
+
+export function formatLabel(label) {
+  let shortLabel = label;
+  if (label.length > 25) {
+    shortLabel = label.substring(0, 25);
+    shortLabel += "...";
+  }
+  return shortLabel;
+}
+
+export function formatLabelLong(label) {
+  let shortLabel = label;
+  if (label.length > 40) {
+    shortLabel = label.substring(0, 40);
+    shortLabel += "...";
+  }
+  return shortLabel;
+}
+
+
+export function getDayStrings(days) {
+  let daysSymbols = ["M", "Tu", "W", "Th", "F", "Sat", "Sun"];
+  let daysString = "";
+  for (var i = 0; i < days.length; i++) {
+    if (days[i]) { 
+      daysString += daysSymbols[i];
+      daysString += ", ";
+    }
+  }
+  daysString = daysString.slice(0, -2);
+  if (daysString === "M") daysString = "Mondays";
+  else if (daysString === "Tu") daysString = "Tuesdays";
+  else if (daysString === "W") daysString = "Wednesdays";
+  else if (daysString === "Th") daysString = "Thursdays";
+  else if (daysString === "F") daysString = "Fridays";
+  else if (daysString === "Sat") daysString = "Saturdays";
+  else if (daysString === "Sun") daysString = "Sundays";
+  else if (daysString === "M, Tu, W, Th, F, Sat, Sun") daysString = "Every day";
+  else if (daysString === "M, Tu, W, Th, F") daysString = "Weekdays";
+  else if (daysString === "Sat, Sun") daysString = "Weekends";
+
+  return daysString;
+}
+
+export function getDayNames(days) {
+  let dayStrings = ["Mondays, ", "Tuesdays, ", "Wednesdays, ", "Thursdays, ", "Fridays, ", "Saturdays, ", "Sundays, "];
+  let dayString = "";
+  days.map((day, index) => { if (day) { dayString += dayStrings[index]; }});
+  return dayString;
+}

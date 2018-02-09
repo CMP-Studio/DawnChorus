@@ -1,10 +1,12 @@
 import { AsyncStorage } from 'react-native';
 import moment from 'moment';
+import SplashScreen from 'react-native-splash-screen'
 
 import {
   scheduleAlarm,
   scheduleSnoozedAlarm,
   clearNotifications,
+  clearOldNotifications,
 } from './notifications.js';
 
 import { getRandomBirds } from '../utilities.js';
@@ -17,92 +19,133 @@ export const UPDATE_ALARMS_LIST = 'UPDATE_ALARMS_LIST';
 
 export const NEW_ALARM = 'NEW_ALARM';
 export const CHECK_ALARMS = 'CHECK_ALARMS';
-export const SOUND_ALARM = 'SOUND_ALARM';
 export const STOP_ALARM = 'STOP_ALARM';
 export const SNOOZE_ALARM = 'SNOOZE_ALARM';
 export const SET_ACTIVE_ALARM = 'SET_ACTIVE_ALARM';
 export const SET_EDIT_ALARM = 'SET_EDIT_ALARM';
 export const EDIT_ALARM_TIME = 'EDIT_ALARM_TIME';
 export const EDIT_ALARM_CHORUS = 'EDIT_ALARM_CHORUS';
+export const EDIT_ALARM_LABEL = 'EDIT_ALARM_LABEL';
+export const EDIT_ALARM_REPEAT = 'EDIT_ALARM_REPEAT';
 export const SAVE_ALARM = 'SAVE_ALARM';
 
-let alarms;
-let activeAlarm = null;
+let alarms = []; // list of alarm
+let activeAlarm = null; // alarm object
 
-function loadAlarmsSuccess(alarmList, active) {
+export function loadAlarms(alarmID, missedAlarms) {
+  return async (dispatch) => {
+    // Get alarms from storage
+    let storedAlarms = await AsyncStorage.getItem('alarms');
+    alarmList = JSON.parse(storedAlarms);
+
+    if (alarmList === null) {
+      // If they have no alarms saved
+      alarms = [];
+      activeAlarm = null;
+    } else {
+      alarms = alarmList.map((alarm) => { 
+        // Update alarms created in older versions of the app
+        if (alarm.appVersion != 2) { 
+          // Add new fields
+          alarm.label = "";
+          alarm.repeats = false;
+          alarm.days = [true, true, true, true, true, true, true];
+          alarm.highlighted = false;
+          alarm.appVersion = 2;
+          // Clear old notifications
+          if (alarm.notificationTime !== null) {
+            clearOldNotifications(alarm);
+            alarm.notificationTime = null;
+            alarm.notifications = [];
+            alarm.snoozed = false;
+            alarm.snoozeTime = null;
+          }
+          // Reschedule if alarm is on
+          if (alarm.on) { alarm.notificationTime = scheduleAlarm(alarm); }
+        }
+        // clear any previously sounding alarms
+        if (alarm.sounding) { 
+          alarm.sounding = false; 
+          if (!alarm.notificationTime) { alarm.on = false; }
+          // If it doesnt have a future notification time, turn it off
+        }
+        // Clear highlighted alarm
+        if (alarm.highlighted) { alarm.highlighted = false; }
+        // If an alarm fired app
+        if (alarmID !== undefined) {
+          if (alarmID == alarm.uuid) {
+            let nowTime = moment().valueOf();
+            let alarmTime = moment(alarm.notificationTime).valueOf();
+            let timeDiff = nowTime - alarmTime;
+            if (timeDiff > 0 && timeDiff < 6000) {
+              // IF THIS ALARM TIME, set to sounding, active
+              alarm.sounding = true;
+              alarm.snoozed = false;
+              alarm.snoozeTime = null;
+              // schedule Next Alarm
+              if (alarm.repeats) { alarm.notificationTime = scheduleAlarm(alarm); } 
+              else {  alarm.notificationTime = null; }
+              // set as active alarm
+              activeAlarm = Object.assign({}, alarm);
+            } else {
+              // notification bar icon was clicked, higlight the alarm in alarms list
+              alarm.highlighted = true;
+            }
+          }
+        } 
+        // If app was opened on restart because an alarm was missed
+        else if (missedAlarms !== undefined) {
+          if (missedAlarms.contains(","+alarm.uuid+",")) {
+            alarm.snoozed = false;
+            alarm.snoozeTime = null;
+            alarm.sounding = false;
+            alarm.highlighted = true;
+            if (alarm.repeats) {
+              alarm.notificationTime = scheduleAlarm(alarm);
+            } else {
+              alarm.on = false;
+              alarm.notificationTime = null;
+            }
+          }
+        } 
+        // User opened app (not from notification) and they have missed an alarm
+        else if (moment().isAfter(alarm.notificationTime)) {
+          alarm.snoozed = false;
+          alarm.snoozeTime = null;
+          alarm.sounding = false;
+          if (alarm.repeats) {
+            alarm.notificationTime = scheduleAlarm(alarm);
+          } else {
+            alarm.on = false;
+            alarm.notificationTime = null;
+          }
+        }
+        return alarm;
+      });
+    }
+
+    if (activeAlarm === null) {
+      SplashScreen.hide();
+    }
+
+    try {
+      AsyncStorage.setItem('alarms', JSON.stringify(alarms));
+      return dispatch(loadAlarmsSuccess(alarms, activeAlarm));
+    } catch (error) {
+      return null;
+    }
+  };
+}
+
+
+function loadAlarmsSuccess(alarmList, activeAlarm) {
   return {
     type: LOAD_ALARMS,
     alarmList,
-    activeAlarm: active,
+    activeAlarm,
   };
 }
 
-function checkForLingeringAlarms(alarmList) {
-  const now = moment();
-  return alarmList.map((alarm) => {
-    if (alarm.notificationTime !== null) {
-      const alarmTimeDiff = now.diff(alarm.notificationTime, 'minutes');
-      if (alarmTimeDiff >= 5) {
-        clearNotifications(alarm);
-        return (Object.assign({}, alarm, {
-          on: false,
-          snoozeTime: null,
-          snoozed: false,
-          sounding: false,
-          notificationTime: null,
-        }));
-      }
-    } else if (alarm.snoozeTime !== null) {
-      const snoozeTimeDiff = now.diff(alarm.snoozeTime.actual, 'minutes');
-      if (snoozeTimeDiff >= 5) {
-        clearNotifications(alarm);
-        return (Object.assign({}, alarm, {
-          on: false,
-          snoozeTime: null,
-          snoozed: false,
-          sounding: false,
-          notificationTime: null,
-        }));
-      }
-    }
-    return alarm;
-  });
-}
-
-export function loadAlarms() {
-  return async (dispatch) => {
-    const alarmList = await AsyncStorage.getItem('alarms');
-    const activeAlarmUUID = await AsyncStorage.getItem('activeAlarm');
-
-    if (alarmList !== null) {
-      // check for alarms that have gone off without being turned 'off'
-      // if found, turn those alarms off
-      const verifiedAlarmList = checkForLingeringAlarms(JSON.parse(alarmList));
-      // set local alarm list
-      alarms = verifiedAlarmList;
-
-      // double check that active alarm is in list (and on) otherwise set it to null
-      const activeAlarmListing = verifiedAlarmList.filter((alarm) => {
-        return (alarm.uuid === JSON.parse(activeAlarmUUID) && alarm.on);
-      });
-
-      // set locally active alarm
-      if (activeAlarmListing.length > 0) {
-        activeAlarm = activeAlarmListing[0].uuid;
-      }
-
-      // send to reducer
-      return dispatch(
-        loadAlarmsSuccess(
-          verifiedAlarmList,
-          activeAlarmListing.length > 0 ? activeAlarmListing[0] : null
-        ),
-      );
-    }
-    alarms = [];
-    return dispatch(loadAlarmsSuccess([], null));
-  };
-}
 
 function sortAlarms(alarmsList) {
   alarmsList.sort((a, b) => {
@@ -114,20 +157,15 @@ function sortAlarms(alarmsList) {
     }
     return 0;
   });
-
   return alarmsList;
 }
+
 
 export function newAlarm() {
   return async (dispatch) => {
     let uuid = JSON.parse(await AsyncStorage.getItem('notificationID'));
-
-    if (uuid == null) {
-      uuid = 0;
-    }
-
+    if (uuid == null) { uuid = 0; }
     AsyncStorage.setItem('notificationID', JSON.stringify(uuid + 1));
-
     return dispatch({
       type: NEW_ALARM,
       chorus: getRandomBirds(birds, 3),
@@ -136,105 +174,32 @@ export function newAlarm() {
   };
 }
 
-export function replaceAlarm(uuid, snoozed = false) {
-  // Find alarm from list
-  let alarmToSound = alarms.filter((alarm) => {
-    return alarm.uuid === uuid;
-  })[0];
 
-  let alarmToStop = alarms.filter((alarm) => {
-    return alarm.uuid === activeAlarm;
-  })[0];
 
-  // New Alarm: Any remaining notifications should be canceled
-  clearNotifications(alarmToSound);
-  alarmToSound = (Object.assign({}, alarmToSound, {
-    snoozed,
-    sounding: !snoozed,
-    snoozeTime: snoozed ? scheduleSnoozedAlarm(alarmToSound).time : null,
-    notificationTime: null,
-  }));
-
-  // Old Alarm: Any remaining notifications should be canceled, turn alarm off
-  clearNotifications(alarmToStop);
-  alarmToStop = (Object.assign({}, alarmToStop, {
-    snoozeTime: null,
-    snoozed: false,
-    sounding: false,
-    on: false,
-    notificationTime: null,
-  }));
-
-  // Replace both alarms in alarms list
-  let activeAlarmIndex;
-  const alarmsToSave = alarms.map((existingAlarm, index) => {
-    if (existingAlarm.uuid === alarmToStop.uuid) { return alarmToStop; }
-    if (existingAlarm.uuid === alarmToSound.uuid) {
-      activeAlarmIndex = index;
-      return alarmToSound;
+export function snoozeAlarm(alarmToSnooze) {
+  // Schedule snoozed notifications
+  clearNotifications(alarmToSnooze);
+  const { time } = scheduleSnoozedAlarm(alarmToSnooze);
+  alarmToSnooze.snoozeTime = time;
+  alarmToSnooze.snoozed = true;
+  alarmToSnooze.sounding = false;
+  // And save changes into alarm list
+  const alarmsToSave = alarms.map((alarm) => {
+    if (alarm.uuid === alarmToSnooze.uuid) {
+      return alarmToSnooze;
     }
-    return existingAlarm;
+    return alarm;
   });
-
   // ***** Storage ***** //
   // Save the new alarm data
-  activeAlarm = uuid;
+  activeAlarm = Object.assign({}, alarmToSnooze);
   alarms = alarmsToSave;
   try {
     AsyncStorage.setItem('alarms', JSON.stringify(alarmsToSave));
-    AsyncStorage.setItem('activeAlarm', JSON.stringify(uuid));
     return {
-      type: SOUND_ALARM,
-      uuid: alarmToSound.uuid,
+      type: SNOOZE_ALARM,
       alarmList: alarmsToSave,
-      activeAlarmIndex,
-    };
-  } catch (error) {
-    return null;
-  }
-}
-
-export function soundAlarm(uuid) {
-  if (activeAlarm !== null && activeAlarm !== uuid) {
-    return replaceAlarm(uuid);
-  }
-
-  // Find alarm from list
-  let alarmToSound = alarms.filter((alarm) => {
-    return alarm.uuid === uuid;
-  })[0];
-
-  // Any remaining notifications should be canceled
-  clearNotifications(alarmToSound);
-  alarmToSound = (Object.assign({}, alarmToSound, {
-    sounding: true,
-    snoozed: false,
-    snoozeTime: null,
-    notificationTime: null,
-  }));
-
-  // This alarm already exsisted, so overwrite previous version
-  let activeAlarmIndex;
-  const alarmsToSave = alarms.map((existingAlarm, index) => {
-    if (existingAlarm.uuid === alarmToSound.uuid) {
-      activeAlarmIndex = index;
-      return alarmToSound;
-    }
-    return existingAlarm;
-  });
-
-  // ***** Storage ***** //
-  // Save the new alarm data
-  activeAlarm = uuid;
-  alarms = alarmsToSave;
-  try {
-    AsyncStorage.setItem('alarms', JSON.stringify(alarmsToSave));
-    AsyncStorage.setItem('activeAlarm', JSON.stringify(uuid));
-    return {
-      type: SOUND_ALARM,
-      uuid: alarmToSound.uuid,
-      alarmList: alarmsToSave,
-      activeAlarmIndex,
+      activeAlarm: activeAlarm,
     };
   } catch (error) {
     return null;
@@ -242,35 +207,47 @@ export function soundAlarm(uuid) {
 }
 
 
-export function stopAlarm(uuid) {
-  // Find alarm from list
-  let alarmToStop = alarms.filter((alarm) => {
-    return alarm.uuid === uuid;
-  })[0];
-
-  // Any remaining notifications should be canceled, and turn alarm off
-  clearNotifications(alarmToStop);
-  alarmToStop = (Object.assign({}, alarmToStop, {
-    snoozeTime: null,
-    snoozed: false,
-    sounding: false,
-    on: false,
-    notificationTime: null,
-  }));
-
+export function stopAlarm(alarmToStop) {
+  // clear any (snoozed) notifications
+  if (alarmToStop.snoozed) {
+    clearNotifications(alarmToStop)
+    alarmToStop.snoozeTime = null;
+    alarmToStop.snoozed = false;
+    // schedule Next Alarm
+    if (alarmToStop.repeats) { 
+      alarmToStop.on = true;
+      alarmToStop.notificationTime = scheduleAlarm(alarmToStop); 
+    } else { 
+      alarmToStop.on = false;
+      alarmToStop.notificationTime = null; 
+    }
+  } else if (alarmToStop.sounding) {
+    alarmToStop.sounding = false;
+    if (alarmToStop.repeats) { 
+      alarmToStop.on = true;
+    } else { 
+      alarmToStop.on = false;
+    }
+  }
+  // schedule Next Alarm
+  if (alarmToStop.repeats) { 
+    alarmToStop.on = true;
+    alarmToStop.notificationTime = scheduleAlarm(alarmToStop); 
+  } else { 
+    alarmToStop.on = false;
+    alarmToStop.notificationTime = null; 
+  }
   // This alarm already exsisted, so overwrite previous version
-  const alarmsToSave = alarms.map((existingAlarm) => {
-    if (existingAlarm.uuid === alarmToStop.uuid) { return alarmToStop; }
-    return existingAlarm;
+  const alarmsToSave = alarms.map((alarm) => {
+    if (alarm.uuid === alarmToStop.uuid) { return alarmToStop; }
+    return alarm;
   });
-
   // ***** Storage ***** //
   // Save the new alarm data
   alarms = alarmsToSave;
   activeAlarm = null;
   try {
     AsyncStorage.setItem('alarms', JSON.stringify(alarmsToSave));
-    AsyncStorage.setItem('activeAlarm', JSON.stringify(null));
     return {
       type: STOP_ALARM,
       alarmList: alarmsToSave,
@@ -280,127 +257,21 @@ export function stopAlarm(uuid) {
   }
 }
 
-export function cancelAllAlarms() {
-  const alarmsToSave = alarms.map((alarm) => {
-    clearNotifications(alarm);
-    const stoppedAlarm = (Object.assign({}, alarm, {
-      on: false,
-      sounding: false,
-      snoozed: false,
-      snoozeTime: null,
-      notificationTime: null,
-    }));
-    return stoppedAlarm;
-  });
-
-  // ***** Storage ***** //
-  // Save the new alarm data
-  activeAlarm = null;
-  alarms = alarmsToSave;
-  try {
-    AsyncStorage.setItem('alarms', JSON.stringify(alarmsToSave));
-    AsyncStorage.setItem('activeAlarm', JSON.stringify(null));
-    return {
-      type: UPDATE_ALARMS_LIST,
-      alarmList: alarmsToSave,
-    };
-  } catch (error) {
-    return null;
-  }
-}
-
-export function snoozeAlarm(uuid) {
-  if (activeAlarm !== null && activeAlarm !== uuid) {
-    return replaceAlarm(uuid, true);
-  }
-
-  // Find alarm from list
-  let alarmToSnooze = alarms.filter((alarm) => {
-    return alarm.uuid === uuid;
-  })[0];
-
-  // Any remaining notifications should be canceled
-  clearNotifications(alarmToSnooze);
-  // reschedule notifications
-  const { time } = scheduleSnoozedAlarm(alarmToSnooze);
-  alarmToSnooze = (Object.assign({}, alarmToSnooze, {
-    snoozeTime: time,
-    snoozed: true,
-    sounding: false,
-    notificationTime: null,
-  }));
-
-  // This alarm already exsisted, so overwrite previous version
-  let activeAlarmIndex;
-  const alarmsToSave = alarms.map((existingAlarm, index) => {
-    if (existingAlarm.uuid === alarmToSnooze.uuid) {
-      activeAlarmIndex = index;
-      return alarmToSnooze;
-    }
-    return existingAlarm;
-  });
-
-  // ***** Storage ***** //
-  // Save the new alarm data
-  activeAlarm = uuid;
-  alarms = alarmsToSave;
-  try {
-    AsyncStorage.setItem('alarms', JSON.stringify(alarmsToSave));
-    AsyncStorage.setItem('activeAlarm', JSON.stringify(uuid));
-    return {
-      type: SNOOZE_ALARM,
-      alarmList: alarmsToSave,
-      activeAlarmIndex,
-    };
-  } catch (error) {
-    return null;
-  }
-}
-
-export function setActiveAlarm(alarm) {
-  return {
-    type: SET_ACTIVE_ALARM,
-    alarm,
-  };
-}
-
-export function setEditAlarm(alarm) {
-  return {
-    type: SET_EDIT_ALARM,
-    alarm,
-  };
-}
-
-export function editAlarmTime(time) {
-  return {
-    type: EDIT_ALARM_TIME,
-    time,
-  };
-}
-
-export function editAlarmChorus(chorus) {
-  return {
-    type: EDIT_ALARM_CHORUS,
-    chorus,
-  };
-}
 
 export function saveAlarm(alarm, changes) {
   // Assign changes
   const alarmToSave = Object.assign({}, alarm, changes);
   // ***** Notifications ***** //
-  // Notifications should be canceled (and rescheduled if alarm is on)
+  // Notifications should be canceled 
   clearNotifications(alarmToSave);
-
+  // (and rescheduled if alarm is on)
   if (alarmToSave.on) {
     const notificationTime = scheduleAlarm(alarmToSave);
     alarmToSave.notificationTime = notificationTime;
   }
-
   // ***** Alarm List ***** //
   // Now we'll put alarm into alarm list
   let alarmExists = false;
-
   // If this alarm already exsisted, overwrite previous version
   let alarmsToSave = alarms.map((existingAlarm) => {
     if (existingAlarm.uuid === alarmToSave.uuid) {
@@ -409,15 +280,12 @@ export function saveAlarm(alarm, changes) {
     }
     return existingAlarm;
   });
-
   // Otherwise, add the new alarm to the list
   if (!alarmExists) {
     alarmsToSave.push(alarmToSave);
   }
-
   // Sort the alarms
   alarmsToSave = sortAlarms(alarmsToSave);
-
   // ***** Storage ***** //
   // Save the new alarm data
   alarms = alarmsToSave;
@@ -432,15 +300,16 @@ export function saveAlarm(alarm, changes) {
   }
 }
 
-export function deleteAlarm(deleteUUID) {
-  const alarmsToSave = alarms.filter((existingAlarm) => {
-    if (existingAlarm.uuid === deleteUUID) {
-      clearNotifications(existingAlarm);
-      return false;
-    }
+
+export function deleteAlarm(alarmToDelete) {
+  // First clear notifications
+  clearNotifications(alarmToDelete);
+  // Then filter deleted alarm out of the list
+  const alarmsToSave = alarms.filter((alarm) => {
+    if (alarm.uuid === alarmToDelete.uuid) { return false; }
     return true;
   });
-
+  // Save alarms
   alarms = alarmsToSave;
   try {
     AsyncStorage.setItem('alarms', JSON.stringify(alarmsToSave));
@@ -453,34 +322,51 @@ export function deleteAlarm(deleteUUID) {
   }
 }
 
-// This function is only used if notifications are dissallowed
-export function checkAlarms(dispatch) {
-  const now = moment();
-  const hour = now.hour();
-  const minute = now.minute();
-  let activeAlarmObject = null;
-  let foundAlarm = false;
 
-  // See if any alarms should sound
-  alarms.map((alarm) => {
-    if (alarm.uuid === activeAlarm) {
-      activeAlarmObject = alarm;
-      return alarm;
-    }
-    if (alarm.on && alarm.time.hour === hour && alarm.time.minute === minute) {
-      dispatch(soundAlarm(alarm.uuid));
-      foundAlarm = true;
-    }
-    return alarm;
-  });
+export function setActiveAlarm(alarm) {
+  return {
+    type: SET_ACTIVE_ALARM,
+    alarm,
+  };
+}
 
-  if (foundAlarm) return;
+// ACTIONS FOR EDITING ALARMS
+export function setEditAlarm(alarm) {
+  return {
+    type: SET_EDIT_ALARM,
+    alarm,
+  };
+}
 
-  // Sound snoozed alarm if needed
-  if (activeAlarmObject !== null && activeAlarmObject.snoozed) {
-    if (activeAlarmObject.snoozeTime.hour === hour &&
-        activeAlarmObject.snoozeTime.minute === minute) {
-      dispatch(soundAlarm(activeAlarm));
-    }
-  }
+
+export function editAlarmTime(time) {
+  return {
+    type: EDIT_ALARM_TIME,
+    time,
+  };
+}
+
+
+export function editAlarmChorus(chorus) {
+  return {
+    type: EDIT_ALARM_CHORUS,
+    chorus,
+  };
+}
+
+
+export function editAlarmLabel(label) {
+  return {
+    type: EDIT_ALARM_LABEL, 
+    label,
+  };
+}
+
+
+export function editAlarmRepeat(repeats, days) {
+  return {
+    type: EDIT_ALARM_REPEAT,
+    repeats,
+    days,
+  };
 }
