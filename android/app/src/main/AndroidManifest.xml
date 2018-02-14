@@ -1,21 +1,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dawnchorus"
-    android:versionCode="1"
-    android:versionName="1"
+    android:versionCode="2"
+    android:versionName="2"
     xmlns:tools="http://schemas.android.com/tools" >
-
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <permission
-        android:name="${applicationId}.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
-    <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" tools:node="remove" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" tools:node="remove"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" tools:node="remove" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="remove" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" tools:node="remove"/>
+    <uses-permission android:name="android.permission.INTERNET" tools:node="remove"/>
+    <uses-permission android:name="com.dawnchorus.permission.C2D_MESSAGE" tools:node="remove"/>
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" tools:node="remove"/>
     <uses-sdk
         android:minSdkVersion="21"
         android:targetSdkVersion="26" />
@@ -28,15 +27,6 @@
       android:theme="@style/AppTheme"
       tools:replace="android:label"
       >
-        <receiver
-            android:name="com.google.android.gms.gcm.GcmReceiver"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="${applicationId}" />
-            </intent-filter>
-        </receiver>
         <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher" />
         <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationBootEventReceiver">
             <intent-filter>
@@ -56,13 +46,6 @@
           android:name="com.dawnchorus.alarms.RebootService"
           android:exported="false"/>
         <service android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationRegistrationService"/>
-        <service
-            android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerService"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-            </intent-filter>
-        </service>
       <activity
         android:name=".MainActivity"
         android:windowSoftInputMode="adjustNothing"

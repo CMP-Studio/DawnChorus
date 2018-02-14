@@ -90,8 +90,8 @@ android {
         applicationId "com.dawnchorus"
         minSdkVersion 21
         targetSdkVersion 22
-        versionCode 22
-        versionName "2.0"
+        versionCode 26
+        versionName "1.2"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -143,7 +143,6 @@ dependencies {
     compile project(':react-native-android-alarms')
     compile project(':react-native-push-notification')
     compile project(':react-native-shake-event')
-    compile project(':react-native-android-alarms')  // react-native-app-launcher
     compile project(':react-native-volume')
     compile ('com.google.android.gms:play-services-gcm:9.2.1') {
         force = true;
