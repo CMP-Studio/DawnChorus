@@ -79,10 +79,14 @@ class Bird extends Component {
   componentWillMount() {
     RNShakeEventIOS.addEventListener('shake', () => {
       if (this.props.sampling) {
-        this.birdRef.shake(500);
+        if (this.birdRef !== undefined) {
+          this.birdRef.shake(500);
+        }
         this.props.toggleSampleChorus(false);
       } else if (this.state.singing) {
-        this.birdRef.shake(500);
+        if (this.birdRef !== undefined) {
+          this.birdRef.shake(500);
+        }
         this.stopSong();
       }
     });

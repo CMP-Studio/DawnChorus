@@ -77,7 +77,7 @@ export function loadAlarms(alarmID, missedAlarms) {
             let nowTime = moment().valueOf();
             let alarmTime = moment(alarm.notificationTime).valueOf();
             let timeDiff = nowTime - alarmTime;
-            if (timeDiff > 0 && timeDiff < 6000) {
+            if (timeDiff > 0) {
               // IF THIS ALARM TIME, set to sounding, active
               alarm.sounding = true;
               alarm.snoozed = false;

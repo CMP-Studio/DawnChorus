@@ -91,7 +91,9 @@ class AlarmBird extends Component {
     // If the alarm is snoozed, bird should stop singing
     // any scheduled birds should also not sing
     if (nextProps.snoozed !== this.props.snoozed && nextProps.snoozed) {
-      this.birdRef.shake(500);
+      if (this.birdRef !== undefined) {
+        this.birdRef.shake(500);
+      }
       if (this.state.alarmTimeoutId) {
         clearTimeout(this.state.alarmTimeoutId);
       }

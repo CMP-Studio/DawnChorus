@@ -171,8 +171,16 @@ const EditAlarmScreen = (props) => {
         importantForAccessibility="no"
       >
         <ChorusEditor
-          onPress={() => { this.inputRef.blur(); }}
-          limitReached={() => { this.listingRef.shake(250); }}
+          onPress={() => { 
+            if (this.inputRef !== undefined) {
+              this.inputRef.blur(); 
+            }
+          }}
+          limitReached={() => { 
+            if (this.listingRef !== undefined) {
+              this.listingRef.shake(250);
+            }
+          }}
         />
       </Animatable.View>
       <Animatable.View
@@ -189,7 +197,11 @@ const EditAlarmScreen = (props) => {
           { /** Time Picker **/}
             <TimePicker
               styles={styles.timePicker}
-              onPress={() => { this.inputRef.blur(); }}
+              onPress={() => { 
+                if (this.inputRef !== undefined) {
+                  this.inputRef.blur(); 
+                }
+              }}
               time={props.alarm.time}
               editAlarmTime={props.actions.editAlarmTime}
               onTimeChange={(change) => {
@@ -234,7 +246,9 @@ const EditAlarmScreen = (props) => {
               activeOpacity={1}
               style={styles.toggle}
               onPress={() => { 
-                this.inputRef.blur();
+                if (this.inputRef !== undefined) {
+                  this.inputRef.blur(); 
+                }
                 props.actions.editAlarmRepeat(!props.alarm.repeats, props.alarm.days)
               }}
             >
@@ -265,7 +279,9 @@ const EditAlarmScreen = (props) => {
               <View style={styles.week}>
                 <TouchableOpacity
                   onPress={()=> {
-                    this.inputRef.blur();
+                    if (this.inputRef !== undefined) {
+                      this.inputRef.blur(); 
+                    }
                     let updatedDays = props.alarm.days;
                     updatedDays[0] = !props.alarm.days[0];
                     props.actions.editAlarmRepeat(props.alarm.repeats, updatedDays)
@@ -312,7 +328,9 @@ const EditAlarmScreen = (props) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={()=> {
-                    this.inputRef.blur();
+                    if (this.inputRef !== undefined) {
+                      this.inputRef.blur(); 
+                    }
                     let updatedDays = props.alarm.days;
                     updatedDays[2] = !props.alarm.days[2];
                     props.actions.editAlarmRepeat(props.alarm.repeats, updatedDays)
@@ -336,7 +354,9 @@ const EditAlarmScreen = (props) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={()=> {
-                    this.inputRef.blur();
+                    if (this.inputRef !== undefined) {
+                      this.inputRef.blur(); 
+                    }
                     let updatedDays = props.alarm.days;
                     updatedDays[3] = !props.alarm.days[3];
                     props.actions.editAlarmRepeat(props.alarm.repeats, updatedDays)
@@ -360,7 +380,9 @@ const EditAlarmScreen = (props) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={()=> {
-                    this.inputRef.blur();
+                    if (this.inputRef !== undefined) {
+                      this.inputRef.blur(); 
+                    }
                     let updatedDays = props.alarm.days;
                     updatedDays[4] = !props.alarm.days[4];
                     props.actions.editAlarmRepeat(props.alarm.repeats, updatedDays)
@@ -384,7 +406,9 @@ const EditAlarmScreen = (props) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={()=> {
-                    this.inputRef.blur();
+                    if (this.inputRef !== undefined) {
+                      this.inputRef.blur(); 
+                    }
                     let updatedDays = props.alarm.days;
                     updatedDays[5] = !props.alarm.days[5];
                     props.actions.editAlarmRepeat(props.alarm.repeats, updatedDays)
@@ -454,7 +478,9 @@ const EditAlarmScreen = (props) => {
               accessibilityTraits={['button', 'startsMedia']}
               activeOpacity={props.alarm.chorus.length > 0 ? 0.7 : 1}
               onPress={() => {
-                this.inputRef.blur();
+                if (this.inputRef !== undefined) {
+                  this.inputRef.blur(); 
+                }
                 if (props.alarm.chorus.length) {
                   props.actions.toggleSampleChorus(!props.sampleChorus);
                 }
@@ -476,14 +502,18 @@ const EditAlarmScreen = (props) => {
               <ChorusListing
                 chorus={props.alarm.chorus}
                 onBirdPress={(bird) => {
-                  this.inputRef.blur();
+                  if (this.inputRef !== undefined) {
+                    this.inputRef.blur(); 
+                  }
                   const updatedChorus = props.alarm.chorus.filter((chorusBird) => {
                     return bird.uuid !== chorusBird.uuid;
                   });
                   props.actions.editAlarmChorus(updatedChorus);
                 }}
                 emptySlotPress={() => {
-                  this.chorusEditorRef.focus();
+                  if (this.chorusEditorRef !== undefined) {
+                    this.chorusEditorRef.focus();
+                  }
                 }}
                 birdSize={width <= 320 ? 36 : 40}
                 margin={10}
@@ -502,7 +532,9 @@ const EditAlarmScreen = (props) => {
       <Fab
         color={GREEN}
         onPress={() => { 
-          this.inputRef.blur();
+          if (this.inputRef !== undefined) {
+            this.inputRef.blur(); 
+          }
           props.actions.saveAlarm(props.alarm, { on: true }); 
         }}
         image={require('../assets/SaveButton.png')}
