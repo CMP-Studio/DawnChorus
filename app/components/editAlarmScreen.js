@@ -305,6 +305,9 @@ const EditAlarmScreen = (props) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={()=> {
+                    if (this.inputRef !== undefined) {
+                      this.inputRef.blur(); 
+                    }
                     let updatedDays = props.alarm.days;
                     updatedDays[1] = !props.alarm.days[1];
                     props.actions.editAlarmRepeat(props.alarm.repeats, updatedDays)
@@ -432,6 +435,9 @@ const EditAlarmScreen = (props) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={()=> {
+                    if (this.inputRef !== undefined) {
+                      this.inputRef.blur(); 
+                    }
                     let updatedDays = props.alarm.days;
                     updatedDays[6] = !props.alarm.days[6];
                     props.actions.editAlarmRepeat(props.alarm.repeats, updatedDays)
