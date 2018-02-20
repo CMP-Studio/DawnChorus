@@ -90,7 +90,7 @@ android {
         applicationId "com.dawnchorus"
         minSdkVersion 21
         targetSdkVersion 22
-        versionCode 26
+        versionCode 28
         versionName "1.2"
         ndk {
             abiFilters "armeabi-v7a", "x86"
