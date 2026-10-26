@@ -40,7 +40,7 @@ react-native run-android
 
 ### Alarm Module
 
-To set and recieve alarms, we handle events and data from the Android native module [react-native-android-alarms](https://github.com/CMP-Studio/react-native-android-alarms). <br> Visit that repo for more information on integration.
+To set and receive alarms, we handle events and data from the Android native module [react-native-android-alarms](https://github.com/CMP-Studio/react-native-android-alarms). <br> Visit that repo for more information on integration.
 
 ### Intellectual Property
 
